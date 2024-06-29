@@ -1,1 +1,1 @@
-# swing-sitemap
+# Swing | Sitemap
