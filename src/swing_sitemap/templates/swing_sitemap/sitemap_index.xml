@@ -1,0 +1,8 @@
+<!-- swing_sitemap/templates/swing_sitemap/sitemap_index.xml -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for sitemap in sitemaps %}
+    <sitemap>
+        <loc>{{ sitemap }}</loc>
+    </sitemap>
+{% endfor %}
+</sitemapindex>
