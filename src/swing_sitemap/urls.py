@@ -1,9 +1,35 @@
+
+from django.contrib.sitemaps.views import sitemap
+from django.urls import path
+from swing_sitemap.views import sitemap_index, StaticSitemap
+
+sitemaps = {
+    'static': StaticSitemap,
+    # Add other sitemaps here
+}
+
+urlpatterns = [
+    ...
+    path('sitemap_index.xml', sitemap_index, name='sitemap-index'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    # Additional sitemap URLs
+]
+
+
+
+
+
+
+
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import MyModelSitemap
 
 sitemaps = {
     'mymodel': MyModelSitemap,
 }
+
+
+
 
 # Sitemap Handlers
 # =============================================================================
