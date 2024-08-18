@@ -3,9 +3,23 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     {% for url in urlset %}
         <url>
-            <loc>{{ url.location }}</loc>
+            <loc>{{ url.location|escape }}</loc>
             {% for image in url.images %}
-                {{ image|safe }}
+                <image:image>
+                    <image:loc>{{ image.loc|escape }}</image:loc>
+                    {% if image.caption %}
+                        <image:caption>{{ image.caption|escape }}</image:caption>
+                    {% endif %}
+                    {% if image.geo_location %}
+                        <image:geo_location>{{ image.geo_location|escape }}</image:geo_location>
+                    {% endif %}
+                    {% if image.title %}
+                        <image:title>{{ image.title|escape }}</image:title>
+                    {% endif %}
+                    {% if image.license %}
+                        <image:license>{{ image.license|escape }}</image:license>
+                    {% endif %}
+                </image:image>
             {% endfor %}
         </url>
     {% endfor %}
