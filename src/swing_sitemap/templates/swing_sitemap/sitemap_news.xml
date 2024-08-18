@@ -3,7 +3,7 @@
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     {% for url in urlset %}
         <url>
-            <loc>{{ url.location }}</loc>
+            <loc>{{ url.location|escape }}</loc>
             {{ url.news|safe }}
         </url>
     {% endfor %}
