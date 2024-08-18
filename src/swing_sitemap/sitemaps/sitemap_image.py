@@ -29,3 +29,18 @@ class MyModelSitemap(Sitemap):
             if images:
                 url['images'] = images
         return urls
+
+
+# Image Sitemap Example
+from django.contrib.sitemaps import Sitemap
+
+class ImageSitemap(Sitemap):
+    def items(self):
+        # Implement logic to get items that have images
+        pass
+
+    def location(self, item):
+        return item.get_absolute_url()
+
+    def images(self, item):
+        return [{'loc': item.image_url, 'caption': item.image_caption}]
