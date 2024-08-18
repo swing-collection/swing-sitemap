@@ -1,8 +1,11 @@
-<!-- swing_sitemap/templates/swing_sitemap/sitemap_index.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{% for sitemap in sitemaps %}
-    <sitemap>
-        <loc>{{ sitemap }}</loc>
-    </sitemap>
-{% endfor %}
+    {% for sitemap in sitemapindex %}
+        <sitemap>
+            <loc>{{ sitemap.location|escape }}</loc>
+            {% if sitemap.lastmod %}
+                <lastmod>{{ sitemap.lastmod|date:"Y-m-d" }}</lastmod>
+            {% endif %}
+        </sitemap>
+    {% endfor %}
 </sitemapindex>
