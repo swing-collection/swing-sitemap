@@ -3,7 +3,7 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     {% for url in urlset %}
         <url>
-            <loc>{{ url.location }}</loc>
+            <loc>{{ url.location|escape }}</loc>
             {{ url.videos|safe }}
         </url>
     {% endfor %}
