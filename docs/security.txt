@@ -1,0 +1,8 @@
+# Canonical
+Canonical: https://www.swin.dj/security.txt
+
+# Contact
+Contact: mailto:info@scape.agency
+
+# Preferred-Languages
+Preferred-Languages: en
