@@ -2,9 +2,8 @@ name: Deploy Docs
 
 on:
   push:
-    branches:
-      - master 
-      - main
+    tags:
+      - 'v*.*.*'  # Only trigger on version tags (e.g., v1.0.0)
 
 permissions:
   contents: write
