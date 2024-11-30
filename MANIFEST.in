@@ -1,3 +1,0 @@
-include README.md
-recursive-include src/swing_sitemap/static *
-recursive-include src/swing_sitemap/templates *
