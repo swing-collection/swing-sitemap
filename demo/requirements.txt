@@ -1,0 +1,14 @@
+# Core dependencies
+Django>=5.1
+
+# Development dependencies
+pytest
+pytest-django
+black
+flake8
+mypy
+sphinx
+tox
+
+# Documentation dependencies
+sphinx-rtd-theme
