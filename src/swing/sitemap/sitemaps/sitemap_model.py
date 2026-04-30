@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Provides Model Sitemap
+Sturnia Sitemap -Model Sitemap
 ======================
 
 A generic, settings-aware sitemap for any Django model. Replaces the

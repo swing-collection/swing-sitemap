@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Tests for swing.sitemap.sitemaps.sitemap_base module.
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+from __future__ import annotations
+
+import pytest
+from django.contrib.sitemaps import Sitemap
+
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
+
+
+# =============================================================================
+# Tests
+# =============================================================================
+
+
+class TestBaseSitemap:
+    """Tests for BaseSitemap class."""
+
+    def test_inherits_from_django_sitemap(self):
+        """Test that BaseSitemap inherits from Django's Sitemap."""
+        assert issubclass(BaseSitemap, Sitemap)
+
+    def test_is_abstract(self):
+        """Test that BaseSitemap is abstract (ABC)."""
+        from abc import ABC
+
+        assert issubclass(BaseSitemap, ABC)
+
+    def test_has_items_method(self):
+        """Test that BaseSitemap has items method."""
+        assert hasattr(BaseSitemap, "items")
+
+    def test_has_location_method(self):
+        """Test that BaseSitemap has location method."""
+        assert hasattr(BaseSitemap, "location")

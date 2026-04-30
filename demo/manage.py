@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Provides Django Management
+Sturnia Sitemap -Django Management
 ==========================
 
 This script provides Django's command-line utility for administrative tasks

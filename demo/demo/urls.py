@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Provides Demo URL Patterns
+Sturnia Sitemap -Demo URL Patterns
 ==========================
 
 Defines URL patterns for the demo project. This includes:

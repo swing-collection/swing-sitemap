@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Provides Base Sitemap
+Sturnia Sitemap -Base Sitemap
 =====================
 
 This module defines an abstract base class for generating sitemaps in Django.
@@ -51,7 +51,7 @@ class BaseSitemap(Sitemap, ABC):
 
     Attributes:
         changefreq (str): The frequency with which the content is expected to
-            change 
+            change
         priority (float): The priority of this URL relative to other URLs.
 
     """
