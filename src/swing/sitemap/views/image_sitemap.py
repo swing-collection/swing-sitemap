@@ -37,7 +37,7 @@ def image_sitemap(request: HttpRequest) -> HttpResponse:
     urls = sitemap.get_urls()
     return render(
         request,
-        "sitemap_image.xml",
+        "swing/sitemap/sitemap_image.xml",
         {"urlset": urls},
         content_type="application/xml",
     )

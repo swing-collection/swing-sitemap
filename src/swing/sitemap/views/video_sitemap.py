@@ -37,7 +37,7 @@ def video_sitemap(request: HttpRequest) -> HttpResponse:
     urls = sitemap.get_urls()
     return render(
         request,
-        "sitemap_video.xml",
+        "swing/sitemap/sitemap_video.xml",
         {"urlset": urls},
         content_type="application/xml",
     )

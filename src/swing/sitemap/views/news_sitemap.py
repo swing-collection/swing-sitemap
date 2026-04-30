@@ -37,7 +37,7 @@ def news_sitemap(request: HttpRequest) -> HttpResponse:
     urls = sitemap.get_urls()
     return render(
         request,
-        "sitemap_news.xml",
+        "swing/sitemap/sitemap_news.xml",
         {"urlset": urls},
         content_type="application/xml",
     )

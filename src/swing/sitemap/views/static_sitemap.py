@@ -37,7 +37,7 @@ def static_sitemap(request: HttpRequest) -> HttpResponse:
     urls = sitemap.get_urls()
     return render(
         request,
-        "sitemap_static.xml",
+        "swing/sitemap/sitemap_static.xml",
         {"urlset": urls},
         content_type="application/xml",
     )

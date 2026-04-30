@@ -92,8 +92,8 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
     "get_config": (".conf", "get_config"),
     "get_setting": (".conf", "get_setting"),
     # Signals
-    "register_sitemap_signals": (".signals.signal_model", "register_sitemap_signals"),
-    "invalidate_sitemap_cache": (".signals.signal_model", "invalidate_sitemap_cache"),
+    "register_sitemap_signals": (".signals", "register_sitemap_signals"),
+    "invalidate_sitemap_cache": (".signals", "invalidate_sitemap_cache"),
 }
 
 

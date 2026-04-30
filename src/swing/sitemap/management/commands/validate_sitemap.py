@@ -28,7 +28,6 @@ from __future__ import annotations
 
 # Import | Standard Library
 from pathlib import Path
-import re
 import urllib.request
 from xml.etree import ElementTree
 

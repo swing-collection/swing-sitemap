@@ -3,7 +3,7 @@ name: Publish PyPI
 on:
   push:
     tags:
-      - 'v*.*.*'  # Only trigger on version tags (e.g., v1.0.0)
+      - "v*.*.*" # Only trigger on version tags (e.g., v1.0.0)
 
 jobs:
   publish:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.15'  # Specify your Python version
+          python-version: "3.12" # Specify your Python version
 
       - name: Install Poetry
         run: |
