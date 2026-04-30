@@ -7,13 +7,7 @@
 """
 Provides Maps Config Class
 ==========================
-...
 
-Todo:
------
-
-Links:
-------
 
 """
 

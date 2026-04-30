@@ -6,7 +6,7 @@
 
 """
 Sitemap Index with Pagination
-==============================
+=============================
 
 Provides utilities for generating sitemap indexes with automatic pagination
 when sitemaps exceed Google's limits (50,000 URLs or 50MB uncompressed).
@@ -26,7 +26,7 @@ Usage::
 from __future__ import annotations
 
 import math
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any, TypeVar
 
 from django.contrib.sitemaps import Sitemap

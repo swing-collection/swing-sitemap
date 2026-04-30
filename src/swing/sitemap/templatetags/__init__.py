@@ -1,3 +1,14 @@
 # -*- coding: utf-8 -*-
 
-"""Template tags / filters for ``swing_sitemap``."""
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Swing Sitemap - Template Tags
+==============================
+
+Template tags and filters for ``swing.sitemap``.
+
+"""

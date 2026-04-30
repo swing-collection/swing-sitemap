@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-swing.sitemap
+Swing Sitemap
 =============
 
 Reusable, CMS-agnostic Django sitemap toolkit. Exposes a small,
@@ -34,14 +39,30 @@ Public API::
     default_sitemaps       # build the sitemaps dict from settings
     sitemap_urlpatterns    # drop-in URL patterns
     submit_sitemap         # ping search engines
+
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
 from importlib import import_module
 from typing import Any
 
+
+# =============================================================================
+# Configuration
+# =============================================================================
+
 default_app_config = "swing.sitemap.apps.SwingSitemapConfig"
+
+
+# =============================================================================
+# Lazy Exports
+# =============================================================================
 
 # Lazy export map: public name -> (module path relative to this package, attribute).
 _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
@@ -72,7 +93,7 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
 def __getattr__(name: str) -> Any:  # PEP 562
     target = _LAZY_EXPORTS.get(name)
     if target is None:
-        raise AttributeError(f"module 'swing_sitemap' has no attribute {name!r}")
+        raise AttributeError(f"module 'swing.sitemap' has no attribute {name!r}")
     module_path, attr = target
     module = import_module(module_path, __name__)
     value = getattr(module, attr)
@@ -83,6 +104,10 @@ def __getattr__(name: str) -> Any:  # PEP 562
 def __dir__() -> list[str]:
     return sorted(set(globals()) | set(_LAZY_EXPORTS))
 
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 # ``__all__`` is populated dynamically from ``_LAZY_EXPORTS`` so PEP 562
 # lazy attribute lookup remains the single source of truth for the public

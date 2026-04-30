@@ -1,10 +1,26 @@
 # -*- coding: utf-8 -*-
 
-"""Utility helpers for swing_sitemap."""
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Swing Sitemap - Utilities Module
+=================================
+
+Utility helpers for sitemap generation and caching.
+
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
-from .util_cache import (
+from swing.sitemap.utils.util_cache import (
     cached_sitemap_view,
     compress_content,
     decompress_content,
@@ -14,7 +30,12 @@ from .util_cache import (
     make_cache_key,
     set_cached_sitemap,
 )
-from .util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 __all__ = [
     "PING_ENDPOINTS",

@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Tests for StaticSitemap (str-or-dict items, lastmod, settings defaults)."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
@@ -9,6 +20,11 @@ import pytest
 from django.test.utils import override_settings
 
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
+
+
+# =============================================================================
+# Tests
+# =============================================================================
 
 
 def test_string_item_resolves_to_reverse_url():

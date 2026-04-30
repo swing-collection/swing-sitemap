@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Swing Sitemap - Models Module
 =============================
@@ -10,6 +15,7 @@ These models are designed for sites that need database-driven sitemap
 management rather than settings-based configuration.
 
 Available Models:
+
 - :class:`SitemapURL` - Base model for sitemap URLs
 - :class:`URL` - Abstract base class with common fields
 - :class:`StandardSitemapURL` - Standard sitemap entries
@@ -17,7 +23,13 @@ Available Models:
 - :class:`VideoSitemapURL` - Video sitemap entries
 - :class:`NewsSitemapURL` - News sitemap entries
 - :class:`CustomSitemapURL` - Custom/flexible sitemap entries
+
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from swing.sitemap.models.model_sitemap_url import SitemapURL, URL
 from swing.sitemap.models.model_sitemap_url_custom import CustomSitemapURL
@@ -25,6 +37,11 @@ from swing.sitemap.models.model_sitemap_url_image import ImageSitemapURL
 from swing.sitemap.models.model_sitemap_url_news import NewsSitemapURL
 from swing.sitemap.models.model_sitemap_url_standard import StandardSitemapURL
 from swing.sitemap.models.model_sitemap_url_video import VideoSitemapURL
+
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 __all__ = [
     "CustomSitemapURL",

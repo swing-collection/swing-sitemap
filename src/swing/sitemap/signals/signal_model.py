@@ -43,8 +43,6 @@ from __future__ import annotations
 
 import logging
 import threading
-import time
-from functools import wraps
 from typing import Any, Callable
 
 from django.apps import apps
@@ -304,4 +302,3 @@ __all__ = [
     "sitemap_post_save",
     "unregister_sitemap_signals",
 ]
-

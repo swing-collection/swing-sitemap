@@ -44,8 +44,7 @@ Or with a queryset::
 from __future__ import annotations
 
 import datetime as _dt
-from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import Any
+from collections.abc import Callable, Iterable, Sequence
 
 from django.apps import apps
 from django.db.models import Model, QuerySet

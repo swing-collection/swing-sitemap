@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Tests for default_sitemaps factory."""
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Tests for default_sitemaps factory.
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
@@ -10,6 +23,11 @@ from django.test.utils import override_settings
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
+
+
+# =============================================================================
+# Tests
+# =============================================================================
 
 
 def test_only_static_when_no_models_configured():

@@ -1,7 +1,23 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Django settings for tests / type-checking."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
 from pathlib import Path
+
+
+# =============================================================================
+# Base Settings
+# =============================================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,6 +27,11 @@ ALLOWED_HOSTS = ["example.com", "testserver", "localhost"]
 USE_TZ = True
 TIME_ZONE = "UTC"
 SITE_ID = 1
+
+
+# =============================================================================
+# Installed Apps
+# =============================================================================
 
 INSTALLED_APPS: list[str] = [
     "django.contrib.auth",
@@ -24,7 +45,17 @@ INSTALLED_APPS: list[str] = [
     "swing.sitemap.apps.SwingSitemapConfig",
 ]
 
+
+# =============================================================================
+# Middleware
+# =============================================================================
+
 MIDDLEWARE: list[str] = []
+
+
+# =============================================================================
+# URLs and Templates
+# =============================================================================
 
 ROOT_URLCONF = "tst.urls"
 
@@ -43,6 +74,11 @@ TEMPLATES = [
     },
 ]
 
+
+# =============================================================================
+# Database
+# =============================================================================
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -52,10 +88,20 @@ DATABASES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# =============================================================================
+# Static Files
+# =============================================================================
+
 STATIC_URL = "/static/"
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = "/tmp/swing_test_media"
+
+
+# =============================================================================
+# Third-Party Settings
+# =============================================================================
 
 # Common third-party / app-specific settings used by source code.
 # Defined here so mypy_django_plugin sees them and doesn't raise
@@ -69,7 +115,11 @@ EMAIL_PORT = 25
 SITEMAP_URL = "http://example.com/sitemap.xml"
 BAIDU_API_TOKEN = "test-token"
 
-# Swing Sitemap configuration for tests
+
+# =============================================================================
+# Swing Sitemap Configuration
+# =============================================================================
+
 SWING_SITEMAP = {
     "static": {
         "views": ["home", "about"],
@@ -77,3 +127,20 @@ SWING_SITEMAP = {
         "changefreq": "weekly",
     },
 }
+
+
+# =============================================================================
+# Swing Cookie Consent Settings
+# =============================================================================
+
+COOKIE_CONSENT_NAME = "cookie_consent"
+COOKIE_CONSENT_MAX_AGE = 31536000
+COOKIE_CONSENT_DOMAIN: str | None = None
+COOKIE_CONSENT_SECURE = False
+COOKIE_CONSENT_HTTPONLY = True
+COOKIE_CONSENT_SAMESITE = "Lax"
+COOKIE_CONSENT_DECLINE = "declined"
+COOKIE_CONSENT_OPT_OUT = False
+COOKIE_CONSENT_LOG_ENABLED = False
+COOKIE_CONSENT_ENABLED = True
+COOKIE_CONSENT_CACHE_BACKEND = "default"

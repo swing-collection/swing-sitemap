@@ -1,16 +1,28 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Swing Sitemap - Signals Module
-==============================
+===============================
 
 Provides signal handlers for automatic sitemap cache invalidation.
 
 Functions:
+
 - :func:`register_sitemap_signals` - Register signals for configured models
 - :func:`unregister_sitemap_signals` - Unregister signals
 - :func:`invalidate_sitemap_cache` - Manually invalidate cache
+
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from swing.sitemap.signals.signal_model import (
     invalidate_sitemap_cache,
@@ -19,6 +31,11 @@ from swing.sitemap.signals.signal_model import (
     sitemap_post_save,
     unregister_sitemap_signals,
 )
+
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 __all__ = [
     "invalidate_sitemap_cache",

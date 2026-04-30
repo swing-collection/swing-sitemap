@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Tests for ModelSitemap using the built-in auth.User model."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
@@ -14,12 +25,22 @@ from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 pytestmark = pytest.mark.django_db
 
 
+# =============================================================================
+# Fixtures
+# =============================================================================
+
+
 @pytest.fixture
 def alice():
     User = get_user_model()
     return User.objects.create_user(
         username="alice", email="alice@example.com", password="x"
     )
+
+
+# =============================================================================
+# Tests
+# =============================================================================
 
 
 def test_callable_queryset_evaluated_lazily(alice):

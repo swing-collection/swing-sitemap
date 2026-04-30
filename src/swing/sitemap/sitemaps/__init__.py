@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Swing Sitemap - Sitemaps Module
-===============================
+================================
 
 Provides sitemap classes for generating various types of XML sitemaps:
 
@@ -13,8 +18,15 @@ Provides sitemap classes for generating various types of XML sitemaps:
 - :class:`ImageSitemap` - Google Image Sitemaps
 
 Also provides:
+
 - :func:`default_sitemaps` - Factory for canonical sitemaps dict
+
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
@@ -23,6 +35,11 @@ from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 from swing.sitemap.sitemaps.sitemap_news import NewsSitemap
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
+
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 __all__ = [
     "BaseSitemap",

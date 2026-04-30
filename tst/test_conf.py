@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Tests for the swing_sitemap config accessor."""
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Tests for the swing_sitemap config accessor.
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
@@ -9,6 +22,11 @@ import pytest
 from django.test.utils import override_settings
 
 from swing.sitemap.conf import DEFAULTS, get_config, get_setting
+
+
+# =============================================================================
+# Tests
+# =============================================================================
 
 
 def test_defaults_returned_when_no_user_settings():

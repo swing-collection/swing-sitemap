@@ -1,10 +1,26 @@
 # -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Tests for the {% sitemap_url %} template tag and context processor."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from __future__ import annotations
 
 from django.template import Context, RequestContext, Template
 from django.test import RequestFactory
+
+
+# =============================================================================
+# Tests
+# =============================================================================
 
 
 def test_template_tag_returns_relative_without_request():

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 # =============================================================================
 # Docstring
 # =============================================================================
@@ -21,7 +22,9 @@ returned.
 The tag accepts an optional URL name (defaults to ``"swing-sitemap"``)
 and falls back to ``"sitemap"`` for projects that registered the URL
 themselves with that name.
+
 """
+
 
 # =============================================================================
 # Imports
@@ -56,5 +59,9 @@ def sitemap_url(context, name: str = "swing-sitemap") -> str:
         return request.build_absolute_uri(path)
     return path
 
+
+# =============================================================================
+# Exports
+# =============================================================================
 
 __all__ = ["sitemap_url"]

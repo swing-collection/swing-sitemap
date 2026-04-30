@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Submit Sitemap Management Command
 =================================
@@ -16,12 +21,23 @@ Usage::
 
     # Submit to specific endpoints
     python manage.py submit_sitemap --endpoints google bing
+
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from django.core.management.base import BaseCommand, CommandError
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+
+
+# =============================================================================
+# Command
+# =============================================================================
 
 
 class Command(BaseCommand):

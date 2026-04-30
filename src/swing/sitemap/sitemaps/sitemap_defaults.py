@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+
 # =============================================================================
 # Docstring
 # =============================================================================
 
 """
-Default Sitemaps Factory
-========================
+Swing Sitemap - Default Sitemaps Factory
+========================================
 
 Builds the canonical ``sitemaps`` dict that Django's
 :func:`django.contrib.sitemaps.views.sitemap` view expects.
@@ -22,6 +23,7 @@ into the dict themselves::
     from wagtail.contrib.sitemaps import Sitemap as WagtailSitemap
 
     sitemaps = {**default_sitemaps(), "wagtail": WagtailSitemap}
+
 """
 
 # =============================================================================
@@ -40,7 +42,7 @@ from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 
 
 # =============================================================================
-# Public API
+# Functions
 # =============================================================================
 
 
@@ -89,5 +91,8 @@ def default_sitemaps(
 
     return sitemaps
 
+# =============================================================================
+# Exports
+# =============================================================================
 
-__all__ = ["default_sitemaps"]
+__all__ = ["default_sitemaps",]
