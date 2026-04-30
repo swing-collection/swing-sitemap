@@ -185,7 +185,9 @@ def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:
 
     Returns:
         True if cache was invalidated successfully.
-    """    # pylint: disable=import-outside-toplevel    from django.core.cache import cache
+    """
+    # pylint: disable=import-outside-toplevel
+    from django.core.cache import cache
 
     cache_config = get_setting("cache", default={}) or {}
     prefix = cache_config.get("key_prefix", "swing_sitemap")

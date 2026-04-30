@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from django.test import RequestFactory
 
-from swing.sitemap.generator_sitemap import sitemap_index
+from swing.sitemap.views.template_sitemap_index import sitemap_index
 
 
 # =============================================================================

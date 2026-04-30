@@ -187,7 +187,9 @@ class I18nSitemap(HreflangMixin):
 
         Returns:
             Dict mapping language codes to URLs.
-        """        # pylint: disable=import-outside-toplevel        from django.utils.translation import activate, get_language
+        """
+        # pylint: disable=import-outside-toplevel
+        from django.utils.translation import activate, get_language
 
         original_lang = get_language()
         alts = {}

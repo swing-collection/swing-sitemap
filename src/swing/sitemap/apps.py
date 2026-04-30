@@ -95,7 +95,9 @@ class SwingSitemapConfig(AppConfig):
             )
 
     def _register_signals(self) -> None:
-        """Register cache invalidation signals if enabled."""        # pylint: disable=import-outside-toplevel        try:
+        """Register cache invalidation signals if enabled."""
+        # pylint: disable=import-outside-toplevel
+        try:
             from swing.sitemap.conf import get_setting
 
             signals_config = get_setting("signals", default={})

@@ -73,14 +73,20 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
     "VideoSitemap": (".sitemaps.sitemap_video", "VideoSitemap"),
     "NewsSitemap": (".sitemaps.sitemap_news", "NewsSitemap"),
     "ImageSitemap": (".sitemaps.sitemap_image", "ImageSitemap"),
+    # Mixins
+    "HreflangMixin": (".mixins.hreflang_mixin", "HreflangMixin"),
+    "I18nSitemap": (".mixins.hreflang_mixin", "I18nSitemap"),
     # Utilities
     "default_sitemaps": (".sitemaps.sitemap_defaults", "default_sitemaps"),
     "sitemap_urlpatterns": (".urls", "sitemap_urlpatterns"),
     "submit_sitemap": (".utils.submission.submit_sitemap", "submit_sitemap"),
     # Pagination
-    "PaginatedSitemap": (".sitemaps.sitemap_index", "PaginatedSitemap"),
-    "paginate_sitemap": (".sitemaps.sitemap_index", "paginate_sitemap"),
-    "paginate_all_sitemaps": (".sitemaps.sitemap_index", "paginate_all_sitemaps"),
+    "PaginatedSitemap": (".utils.pagination", "PaginatedSitemap"),
+    "paginate_sitemap": (".utils.pagination", "paginate_sitemap"),
+    "paginate_all_sitemaps": (".utils.pagination", "paginate_all_sitemaps"),
+    "calculate_pages": (".utils.pagination", "calculate_pages"),
+    "should_paginate": (".utils.pagination", "should_paginate"),
+    "get_pagination_config": (".utils.pagination", "get_pagination_config"),
     # Configuration
     "get_config": (".conf", "get_config"),
     "get_setting": (".conf", "get_setting"),

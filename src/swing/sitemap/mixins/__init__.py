@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=import-outside-toplevel
 
 
 # =============================================================================
@@ -7,10 +6,11 @@
 # =============================================================================
 
 """
-Tests for swing.sitemap.sitemaps.sitemaps module.
+Swing Sitemap - Mixins Module
+==============================
 
-Note: This module is a placeholder/example and has broken imports.
-Tests are skipped.
+Reusable mixin classes for sitemap functionality.
+
 """
 
 
@@ -20,20 +20,14 @@ Tests are skipped.
 
 from __future__ import annotations
 
-import pytest
+from .hreflang_mixin import HreflangMixin, I18nSitemap
 
 
 # =============================================================================
-# Tests
+# Exports
 # =============================================================================
 
-
-class TestSitemapsModule:
-    """Tests for sitemaps module exports."""
-
-    @pytest.mark.skip(reason="sitemaps.py is a placeholder with broken imports")
-    def test_module_imports(self):
-        """Test that module can be imported."""
-        from swing.sitemap.sitemaps import sitemaps
-
-        assert sitemaps is not None
+__all__ = [
+    "HreflangMixin",
+    "I18nSitemap",
+]

@@ -244,7 +244,7 @@ def _check_database(verbose: bool) -> dict[str, Any]:
     """Check database connectivity."""
     start = time.monotonic()
     try:
-        from django.db import connection
+        from django.db import connection  # pylint: disable=import-outside-toplevel
 
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")

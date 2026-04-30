@@ -28,14 +28,17 @@ Also provides:
 # Imports
 # =============================================================================
 
-from .calculate_pages import calculate_pages
-from .get_pagination_config import get_pagination_config
+from swing.sitemap.mixins import HreflangMixin, I18nSitemap
+from swing.sitemap.utils.pagination import (
+    PaginatedSitemap,
+    calculate_pages,
+    get_pagination_config,
+    paginate_all_sitemaps,
+    paginate_sitemap,
+    should_paginate,
+)
+
 from .get_sitemap_index_urls import get_sitemap_index_urls
-from .hreflang_mixin import HreflangMixin, I18nSitemap
-from .paginate_all_sitemaps import paginate_all_sitemaps
-from .paginate_sitemap import paginate_sitemap
-from .paginated_sitemap import PaginatedSitemap
-from .should_paginate import should_paginate
 from .sitemap_base import BaseSitemap
 from .sitemap_defaults import default_sitemaps
 from .sitemap_image import ImageSitemap
