@@ -45,12 +45,27 @@ default_app_config = "swing_sitemap.apps.SwingSitemapConfig"
 
 # Lazy export map: public name -> (module path relative to this package, attribute).
 _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
+    # Sitemap classes
     "BaseSitemap": (".sitemaps.sitemap_base", "BaseSitemap"),
     "StaticSitemap": (".sitemaps.sitemap_static", "StaticSitemap"),
     "ModelSitemap": (".sitemaps.sitemap_model", "ModelSitemap"),
+    "VideoSitemap": (".sitemaps.sitemap_video", "VideoSitemap"),
+    "NewsSitemap": (".sitemaps.sitemap_news", "NewsSitemap"),
+    "ImageSitemap": (".sitemaps.sitemap_image", "ImageSitemap"),
+    # Utilities
     "default_sitemaps": (".sitemaps.sitemap_defaults", "default_sitemaps"),
     "sitemap_urlpatterns": (".urls", "sitemap_urlpatterns"),
     "submit_sitemap": (".utils.util_submit_sitemap", "submit_sitemap"),
+    # Pagination
+    "PaginatedSitemap": (".sitemaps.sitemap_index", "PaginatedSitemap"),
+    "paginate_sitemap": (".sitemaps.sitemap_index", "paginate_sitemap"),
+    "paginate_all_sitemaps": (".sitemaps.sitemap_index", "paginate_all_sitemaps"),
+    # Configuration
+    "get_config": (".conf", "get_config"),
+    "get_setting": (".conf", "get_setting"),
+    # Signals
+    "register_sitemap_signals": (".signals.signal_model", "register_sitemap_signals"),
+    "invalidate_sitemap_cache": (".signals.signal_model", "invalidate_sitemap_cache"),
 }
 
 
