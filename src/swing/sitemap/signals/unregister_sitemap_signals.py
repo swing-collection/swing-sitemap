@@ -45,6 +45,7 @@ def unregister_sitemap_signals(models: list[str] | None = None) -> None:
         models: Optional list of model paths to unregister.
             If not provided, uses ``SWING_SITEMAP['signals']['models']``.
     """
+    # pylint: disable=import-outside-toplevel
     from .register_sitemap_signals import _signals_registered
 
     signals_config = get_setting("signals", default={}) or {}

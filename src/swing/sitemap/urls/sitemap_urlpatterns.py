@@ -91,6 +91,7 @@ def sitemap_urlpatterns(
             ),
         ]
     if include_health_check:
+        # pylint: disable=import-outside-toplevel
         from swing.sitemap.views import health_check
 
         patterns.append(

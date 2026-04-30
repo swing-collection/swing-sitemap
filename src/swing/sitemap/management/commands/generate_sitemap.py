@@ -127,6 +127,7 @@ class Command(BaseCommand):
 
     def _generate_combined_sitemap(self, sitemaps, domain, protocol):
         """Generate a single combined sitemap XML."""
+        # pylint: disable=import-outside-toplevel
         from django.contrib.sitemaps.views import sitemap as sitemap_view
 
         factory = RequestFactory()
@@ -139,6 +140,7 @@ class Command(BaseCommand):
         self, sitemaps, output_dir, domain, protocol, with_index=False
     ):
         """Generate separate sitemap files in a directory."""
+        # pylint: disable=import-outside-toplevel
         from django.contrib.sitemaps.views import sitemap as sitemap_view
 
         output_path = Path(output_dir)

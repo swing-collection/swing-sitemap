@@ -71,6 +71,7 @@ class SwingSitemapConfig(AppConfig):
     def _validate_settings(self) -> None:
         """Validate SWING_SITEMAP settings on startup."""
         try:
+            # pylint: disable=import-outside-toplevel
             from swing.sitemap.conf.validate_settings import validate_settings
 
             is_valid, warnings = validate_settings(raise_errors=False)
@@ -94,8 +95,7 @@ class SwingSitemapConfig(AppConfig):
             )
 
     def _register_signals(self) -> None:
-        """Register cache invalidation signals if enabled."""
-        try:
+        """Register cache invalidation signals if enabled."""        # pylint: disable=import-outside-toplevel        try:
             from swing.sitemap.conf import get_setting
 
             signals_config = get_setting("signals", default={})

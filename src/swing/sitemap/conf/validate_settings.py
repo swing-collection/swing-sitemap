@@ -191,7 +191,7 @@ def validate_cache_config(config: dict[str, Any]) -> list[str]:
 
         backend = cache_config.get("backend", "default")
         try:
-            from django.core.cache import caches
+            from django.core.cache import caches  # pylint: disable=import-outside-toplevel
             _ = caches[backend]  # Check cache backend exists
         except Exception as e:
             raise ImproperlyConfigured(

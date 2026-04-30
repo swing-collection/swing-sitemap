@@ -126,7 +126,7 @@ def health_check(request) -> JsonResponse:
 
 def _now_iso() -> str:
     """Return current time as ISO string."""
-    from django.utils import timezone
+    from django.utils import timezone  # pylint: disable=import-outside-toplevel
     return timezone.now().isoformat()
 
 
@@ -206,7 +206,7 @@ def _check_cache(verbose: bool) -> dict[str, Any]:
     """Check cache backend."""
     start = time.monotonic()
     try:
-        from django.core.cache import caches
+        from django.core.cache import caches  # pylint: disable=import-outside-toplevel
 
         cache_config = get_setting("cache", default={})
         backend = cache_config.get("backend", "default")

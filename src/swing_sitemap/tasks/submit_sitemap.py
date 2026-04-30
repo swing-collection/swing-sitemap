@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 # =============================================================================
@@ -31,7 +32,7 @@ Configuration via Django settings::
 
 Usage::
 
-    from swing.sitemap.tasks import submit_sitemap_task
+    from swing_sitemap.tasks import submit_sitemap_task
 
     # Submit immediately
     submit_sitemap_task.delay("https://example.com/sitemap.xml")
@@ -48,13 +49,10 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-try:
-    from celery import shared_task
-except ImportError:  # pragma: no cover
-    shared_task = None  # type: ignore[misc,assignment]
+from celery import shared_task
 
 from swing.sitemap.conf import get_setting
-from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +154,7 @@ def submit_sitemap_periodic(self) -> dict[str, Any]:
 
         CELERY_BEAT_SCHEDULE = {
             'submit-sitemap-daily': {
-                'task': 'swing.sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
+                'task': 'swing_sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
                 'schedule': crontab(hour=6, minute=0),
             },
         }
@@ -185,7 +183,8 @@ def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:
 
     Returns:
         True if cache was invalidated successfully.
-    """    # pylint: disable=import-outside-toplevel    from django.core.cache import cache
+    """
+    from django.core.cache import cache
 
     cache_config = get_setting("cache", default={}) or {}
     prefix = cache_config.get("key_prefix", "swing_sitemap")

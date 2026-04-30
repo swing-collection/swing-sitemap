@@ -78,7 +78,7 @@ def default_sitemaps(
         try:
             sitemaps[key] = ModelSitemap.from_settings(key)
         except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
-            import logging
+            import logging  # pylint: disable=import-outside-toplevel
 
             logging.getLogger(__name__).warning(
                 "Skipping sitemap %r: failed to build from settings.",

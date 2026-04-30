@@ -59,6 +59,6 @@ def test_sitemap_section_returns_urlset():
 
 
 def test_settings_drive_priority_and_changefreq():
-    status, body = _get("/sitemap.xml")
+    _, body = _get("/sitemap.xml")
     assert "<priority>0.6</priority>" in body
     assert "<changefreq>weekly</changefreq>" in body

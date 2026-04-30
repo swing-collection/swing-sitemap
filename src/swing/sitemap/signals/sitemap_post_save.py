@@ -86,6 +86,7 @@ def sitemap_post_save(sender: type, instance: Model, **kwargs: Any) -> None:
         # Optionally trigger sitemap submission
         if signals_config.get("auto_submit", False):
             try:
+                # pylint: disable=import-outside-toplevel
                 from swing.sitemap.tasks.submit_sitemap import submit_sitemap_task
 
                 submit_sitemap_task.delay()
