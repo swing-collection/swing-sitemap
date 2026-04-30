@@ -1,13 +1,13 @@
 # Project Information
-site_name: swing.dj
-site_url: https://www.swing.gl/
-site_description: Swing Collection
+site_name: Swing Sitemap
+site_url: https://www.swing.dj/sitemap/
+site_description: A powerful, CMS-agnostic Django sitemap toolkit
 site_author: Scape Press
 
 # Repository
-repo_name: 'GitHub'
-repo_url: https://github.com/swing-collection/swing.dj/
-edit_uri_template: 'docs/{path}'
+repo_name: "swing-collection/swing-sitemap"
+repo_url: https://github.com/swing-collection/swing-sitemap/
+edit_uri_template: "docs/{path}"
 
 dev_addr: 127.0.0.1:8888
 
@@ -15,14 +15,13 @@ dev_addr: 127.0.0.1:8888
 copyright: >
   Copyright &copy; 2024 <a href="https://www.scape.press">Scape Press</a>. All Rights Reserved.
 
-
 # hide:
 #   - footer
 
 # Configuration
 theme:
   name: material
-  custom_dir: 'docs/overrides'
+  custom_dir: "docs/overrides"
   locale: en
   language: en
   palette:
@@ -76,7 +75,7 @@ plugins:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - mkdocstrings:
-  #   custom_templates: templates
+      #   custom_templates: templates
       default_handler: python
       handlers:
         python:
@@ -123,7 +122,6 @@ extra_javascript:
   - assets/script/extra.js
 # extra_templates:
 
-
 # Extensions
 markdown_extensions:
   - abbr
@@ -164,9 +162,12 @@ markdown_extensions:
   #     custom_checkbox: true
   # - pymdownx.tilde
 
-
 # Page Tree
 # =============================================================================
 
 nav:
-  - Introduction: 'index.md'
+  - Home: "index.md"
+  - Quick Start: "quick_start.md"
+  - Configuration: "configuration.md"
+  - Sitemap Classes: "sitemaps.md"
+  - Management Commands: "commands.md"
