@@ -24,11 +24,9 @@ Tasks:
 # Imports
 # =============================================================================
 
-from swing.sitemap.tasks.submit_sitemap import (
-    invalidate_sitemap_cache,
-    submit_sitemap_periodic,
-    submit_sitemap_task,
-)
+from .invalidate_sitemap_cache import invalidate_sitemap_cache
+from .submit_sitemap_periodic import submit_sitemap_periodic
+from .submit_sitemap_task import submit_sitemap_task
 
 
 # =============================================================================

@@ -18,23 +18,24 @@ Django admin configuration for sitemap models.
 # Imports
 # =============================================================================
 
-from django.contrib import admin
-
-from swing.sitemap.models import (
-    CustomSitemapURL,
-    ImageSitemapURL,
-    NewsSitemapURL,
-    StandardSitemapURL,
-    VideoSitemapURL,
-)
+# Import admin classes to trigger registration
+from .admin_sitemap_url_base import BaseSitemapURLAdmin
+from .admin_sitemap_url_custom import CustomSitemapURLAdmin
+from .admin_sitemap_url_image import ImageSitemapURLAdmin
+from .admin_sitemap_url_news import NewsSitemapURLAdmin
+from .admin_sitemap_url_standard import StandardSitemapURLAdmin
+from .admin_sitemap_url_video import VideoSitemapURLAdmin
 
 
 # =============================================================================
-# Admin Registration
+# Exports
 # =============================================================================
 
-admin.site.register(StandardSitemapURL)
-admin.site.register(ImageSitemapURL)
-admin.site.register(VideoSitemapURL)
-admin.site.register(NewsSitemapURL)
-admin.site.register(CustomSitemapURL)
+__all__ = [
+    "BaseSitemapURLAdmin",
+    "CustomSitemapURLAdmin",
+    "ImageSitemapURLAdmin",
+    "NewsSitemapURLAdmin",
+    "StandardSitemapURLAdmin",
+    "VideoSitemapURLAdmin",
+]

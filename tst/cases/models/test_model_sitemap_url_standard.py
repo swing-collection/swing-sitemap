@@ -45,7 +45,7 @@ class TestStandardSitemapURL:
 
     def test_inherits_from_url(self):
         """Test that StandardSitemapURL inherits from URL."""
-        from swing.sitemap.models.model_sitemap_url import URL
+        from swing.sitemap.models import URL
 
         assert issubclass(StandardSitemapURL, URL)
 

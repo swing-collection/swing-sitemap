@@ -28,13 +28,20 @@ Also provides:
 # Imports
 # =============================================================================
 
-from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
-from swing.sitemap.sitemaps.sitemap_image import ImageSitemap
-from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
-from swing.sitemap.sitemaps.sitemap_news import NewsSitemap
-from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
-from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
+from .calculate_pages import calculate_pages
+from .get_pagination_config import get_pagination_config
+from .get_sitemap_index_urls import get_sitemap_index_urls
+from .paginate_all_sitemaps import paginate_all_sitemaps
+from .paginate_sitemap import paginate_sitemap
+from .paginated_sitemap import PaginatedSitemap
+from .should_paginate import should_paginate
+from .sitemap_base import BaseSitemap
+from .sitemap_defaults import default_sitemaps
+from .sitemap_image import ImageSitemap
+from .sitemap_model import ModelSitemap
+from .sitemap_news import NewsSitemap
+from .sitemap_static import StaticSitemap
+from .sitemap_video import VideoSitemap
 
 
 # =============================================================================
@@ -43,10 +50,17 @@ from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
 
 __all__ = [
     "BaseSitemap",
+    "calculate_pages",
     "default_sitemaps",
+    "get_pagination_config",
+    "get_sitemap_index_urls",
     "ImageSitemap",
     "ModelSitemap",
     "NewsSitemap",
+    "paginate_all_sitemaps",
+    "paginate_sitemap",
+    "PaginatedSitemap",
+    "should_paginate",
     "StaticSitemap",
     "VideoSitemap",
 ]

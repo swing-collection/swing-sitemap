@@ -18,7 +18,7 @@ Usage::
 from django.core.management.base import BaseCommand
 
 from swing.sitemap.conf import get_setting
-from swing.sitemap.utils.util_cache import get_cache, invalidate_cache
+from swing.sitemap.utils import get_cache, invalidate_cache
 
 
 class Command(BaseCommand):

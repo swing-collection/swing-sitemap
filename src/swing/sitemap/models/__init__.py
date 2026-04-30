@@ -31,12 +31,13 @@ Available Models:
 # Imports
 # =============================================================================
 
-from swing.sitemap.models.model_sitemap_url import SitemapURL, URL
-from swing.sitemap.models.model_sitemap_url_custom import CustomSitemapURL
-from swing.sitemap.models.model_sitemap_url_image import ImageSitemapURL
-from swing.sitemap.models.model_sitemap_url_news import NewsSitemapURL
-from swing.sitemap.models.model_sitemap_url_standard import StandardSitemapURL
-from swing.sitemap.models.model_sitemap_url_video import VideoSitemapURL
+from .model_sitemap_url_custom import CustomSitemapURL
+from .model_sitemap_url_image import ImageSitemapURL
+from .model_sitemap_url_news import NewsSitemapURL
+from .model_sitemap_url_standard import StandardSitemapURL
+from .model_sitemap_url_video import VideoSitemapURL
+from .sitemap_url import SitemapURL
+from .url import URL
 
 
 # =============================================================================

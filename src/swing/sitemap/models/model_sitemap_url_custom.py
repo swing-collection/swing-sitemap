@@ -20,7 +20,7 @@ Provides a flexible sitemap URL model for custom entries.
 
 from django.db import models
 
-from swing.sitemap.models.model_sitemap_url import URL
+from swing.sitemap.models.url import URL
 
 
 # =============================================================================

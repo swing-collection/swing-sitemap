@@ -28,8 +28,8 @@ from django.core.management.base import BaseCommand, CommandError
 from django.test import RequestFactory
 
 from swing.sitemap.conf import get_setting
-from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
-from swing.sitemap.sitemaps.sitemap_index import (
+from swing.sitemap.sitemaps import (
+    default_sitemaps,
     get_sitemap_index_urls,
     paginate_all_sitemaps,
 )

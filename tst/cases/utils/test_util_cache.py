@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Tests for swing.sitemap.utils.util_cache module.
+Tests for swing.sitemap.utils cache module.
 """
 
 
@@ -20,7 +20,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from swing.sitemap.utils.util_cache import (
+from swing.sitemap.utils import (
     compress_content,
     decompress_content,
     get_cache,

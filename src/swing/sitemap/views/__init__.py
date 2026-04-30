@@ -34,26 +34,16 @@ Class-Based Views:
 # Imports
 # =============================================================================
 
-from swing.sitemap.views.view_sitemap_image import (
-    ImageSitemapView,
-    image_sitemap,
-)
-from swing.sitemap.views.view_sitemap_index import (
-    SitemapIndexView,
-    sitemap_index,
-)
-from swing.sitemap.views.view_sitemap_news import (
-    NewsSitemapView,
-    news_sitemap,
-)
-from swing.sitemap.views.view_sitemap_static import (
-    StaticSitemapView,
-    static_sitemap,
-)
-from swing.sitemap.views.view_sitemap_video import (
-    VideoSitemapView,
-    video_sitemap,
-)
+from .image_sitemap import image_sitemap
+from .image_sitemap_view import ImageSitemapView
+from .news_sitemap import news_sitemap
+from .news_sitemap_view import NewsSitemapView
+from .sitemap_index import sitemap_index
+from .sitemap_index_view import SitemapIndexView
+from .static_sitemap import static_sitemap
+from .static_sitemap_view import StaticSitemapView
+from .video_sitemap import video_sitemap
+from .video_sitemap_view import VideoSitemapView
 
 
 # =============================================================================
