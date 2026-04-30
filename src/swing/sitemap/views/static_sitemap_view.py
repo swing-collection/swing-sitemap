@@ -51,7 +51,7 @@ class StaticSitemapView(View):
     """
 
     sitemap_class = StaticSitemap
-    template_name = "sitemap_static.xml"
+    template_name = "swing/sitemap/sitemap_static.xml"
     content_type = "application/xml"
 
     def get_sitemap(self) -> StaticSitemap:

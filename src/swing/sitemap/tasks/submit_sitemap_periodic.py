@@ -23,7 +23,10 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from celery import shared_task
+try:
+    from celery import shared_task
+except ImportError:  # pragma: no cover
+    shared_task = None  # type: ignore[misc,assignment]
 
 from swing.sitemap.conf import get_setting
 

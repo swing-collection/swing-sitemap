@@ -51,7 +51,7 @@ class VideoSitemapView(View):
     """
 
     sitemap_class = VideoSitemap
-    template_name = "sitemap_video.xml"
+    template_name = "swing/sitemap/sitemap_video.xml"
     content_type = "application/xml"
 
     def get_sitemap(self) -> VideoSitemap:

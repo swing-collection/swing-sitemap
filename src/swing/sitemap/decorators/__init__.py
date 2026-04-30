@@ -6,10 +6,10 @@
 # =============================================================================
 
 """
-Swing Sitemap - Utilities Module
-=================================
+Swing Sitemap - Decorators Module
+==================================
 
-Utility helpers for sitemap generation and caching.
+Decorators for sitemap views and functionality.
 
 """
 
@@ -20,15 +20,7 @@ Utility helpers for sitemap generation and caching.
 
 from __future__ import annotations
 
-from .cache import (
-    get_cache,
-    get_cached_sitemap,
-    invalidate_cache,
-    make_cache_key,
-    set_cached_sitemap,
-)
-from .compression import compress_content, decompress_content
-from .submission import PING_ENDPOINTS, submit_sitemap
+from .cached_sitemap_view import cached_sitemap_view
 
 
 # =============================================================================
@@ -36,13 +28,5 @@ from .submission import PING_ENDPOINTS, submit_sitemap
 # =============================================================================
 
 __all__ = [
-    "PING_ENDPOINTS",
-    "compress_content",
-    "decompress_content",
-    "get_cache",
-    "get_cached_sitemap",
-    "invalidate_cache",
-    "make_cache_key",
-    "set_cached_sitemap",
-    "submit_sitemap",
+    "cached_sitemap_view",
 ]

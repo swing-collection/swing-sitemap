@@ -6,10 +6,10 @@
 # =============================================================================
 
 """
-Swing Sitemap - Utilities Module
-=================================
+Swing Sitemap - Cache Utilities
+================================
 
-Utility helpers for sitemap generation and caching.
+Utilities for caching sitemap content.
 
 """
 
@@ -20,15 +20,11 @@ Utility helpers for sitemap generation and caching.
 
 from __future__ import annotations
 
-from .cache import (
-    get_cache,
-    get_cached_sitemap,
-    invalidate_cache,
-    make_cache_key,
-    set_cached_sitemap,
-)
-from .compression import compress_content, decompress_content
-from .submission import PING_ENDPOINTS, submit_sitemap
+from .get_cache import get_cache
+from .get_cached_sitemap import get_cached_sitemap
+from .invalidate_cache import invalidate_cache
+from .make_cache_key import make_cache_key
+from .set_cached_sitemap import set_cached_sitemap
 
 
 # =============================================================================
@@ -36,13 +32,9 @@ from .submission import PING_ENDPOINTS, submit_sitemap
 # =============================================================================
 
 __all__ = [
-    "PING_ENDPOINTS",
-    "compress_content",
-    "decompress_content",
     "get_cache",
     "get_cached_sitemap",
     "invalidate_cache",
     "make_cache_key",
     "set_cached_sitemap",
-    "submit_sitemap",
 ]

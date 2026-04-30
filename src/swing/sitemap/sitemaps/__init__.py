@@ -31,6 +31,7 @@ Also provides:
 from .calculate_pages import calculate_pages
 from .get_pagination_config import get_pagination_config
 from .get_sitemap_index_urls import get_sitemap_index_urls
+from .hreflang_mixin import HreflangMixin, I18nSitemap
 from .paginate_all_sitemaps import paginate_all_sitemaps
 from .paginate_sitemap import paginate_sitemap
 from .paginated_sitemap import PaginatedSitemap
@@ -54,6 +55,8 @@ __all__ = [
     "default_sitemaps",
     "get_pagination_config",
     "get_sitemap_index_urls",
+    "HreflangMixin",
+    "I18nSitemap",
     "ImageSitemap",
     "ModelSitemap",
     "NewsSitemap",

@@ -16,10 +16,6 @@ Tests for swing.sitemap.utils cache module.
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
-
-import pytest
-
 from swing.sitemap.utils import (
     compress_content,
     decompress_content,

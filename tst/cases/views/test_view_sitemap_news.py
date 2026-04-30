@@ -17,9 +17,8 @@ Tests for swing.sitemap.views.view_sitemap_news module.
 from __future__ import annotations
 
 import pytest
-from django.test import Client, RequestFactory
 
-from swing.sitemap.views import NewsSitemapView, news_sitemap
+from swing.sitemap.views import NewsSitemapView
 from swing.sitemap.sitemaps import NewsSitemap
 
 pytestmark = pytest.mark.django_db
@@ -36,7 +35,7 @@ class TestNewsSitemapView:
     def test_default_template_name(self):
         """Test default template name."""
         view = NewsSitemapView()
-        assert view.template_name == "sitemap_news.xml"
+        assert view.template_name == "swing/sitemap/sitemap_news.xml"
 
     def test_default_content_type(self):
         """Test default content type."""

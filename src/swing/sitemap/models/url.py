@@ -54,7 +54,7 @@ class URL(models.Model):
         abstract = True
 
     def __str__(self) -> str:
-        return self.url
+        return str(self.url)
 
 
 # =============================================================================

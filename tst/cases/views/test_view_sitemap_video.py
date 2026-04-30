@@ -17,9 +17,8 @@ Tests for swing.sitemap.views.view_sitemap_video module.
 from __future__ import annotations
 
 import pytest
-from django.test import Client, RequestFactory
 
-from swing.sitemap.views import VideoSitemapView, video_sitemap
+from swing.sitemap.views import VideoSitemapView
 from swing.sitemap.sitemaps import VideoSitemap
 
 pytestmark = pytest.mark.django_db
@@ -36,7 +35,7 @@ class TestVideoSitemapView:
     def test_default_template_name(self):
         """Test default template name."""
         view = VideoSitemapView()
-        assert view.template_name == "sitemap_video.xml"
+        assert view.template_name == "swing/sitemap/sitemap_video.xml"
 
     def test_default_content_type(self):
         """Test default content type."""

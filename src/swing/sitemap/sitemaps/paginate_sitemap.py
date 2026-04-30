@@ -49,7 +49,7 @@ def paginate_sitemap(
     """
     try:
         all_items = list(sitemap.items())
-    except Exception:
+    except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
         # If we can't get items, return as-is
         return {name: sitemap}
 

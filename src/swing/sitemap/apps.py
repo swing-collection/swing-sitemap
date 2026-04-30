@@ -1,27 +1,36 @@
 # -*- coding: utf-8 -*-
 
+
 # =============================================================================
 # Docstring
 # =============================================================================
 
 """
-Provides Sitemap Config Class
-============================
+Swing Sitemap App Config
+========================
 
+Django application configuration for ``swing.sitemap``.
+
+Handles:
+- Settings validation on startup
+- Signal registration for cache invalidation
 
 """
 
 
 # =============================================================================
-# Import
+# Imports
 # =============================================================================
 
-# Import | Libraries
+from __future__ import annotations
+
+import logging
+
 from django.apps import AppConfig
-# from django.core.signals import request_finished
 from django.utils.translation import gettext_lazy as _
 
-# Import | Local Modules
+
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -48,13 +57,62 @@ class SwingSitemapConfig(AppConfig):
     # The implicit primary key type to add to models within this app.
     default_auto_field = "django.db.models.BigAutoField"
 
-    # def ready(self):
-    #     """
-    #     Apps Config Ready Function
-    #     """
+    def ready(self) -> None:
+        """
+        Hook called when Django starts.
 
-        # Implicitly connect signal handlers decorated with @receiver.
-        # from .. import signals
+        Performs:
+        - Settings validation (logs warnings for issues)
+        - Signal registration if enabled in settings
+        """
+        self._validate_settings()
+        self._register_signals()
 
-        # Explicitly connect a signal handler.
-        # request_finished.connect(signals.my_callback)
+    def _validate_settings(self) -> None:
+        """Validate SWING_SITEMAP settings on startup."""
+        try:
+            from swing.sitemap.conf.validate_settings import validate_settings
+
+            is_valid, warnings = validate_settings(raise_errors=False)
+
+            if warnings:
+                for warning in warnings:
+                    logger.warning("SWING_SITEMAP: %s", warning)
+
+            if is_valid:
+                logger.debug("SWING_SITEMAP: Configuration validated successfully")
+            else:
+                logger.warning(
+                    "SWING_SITEMAP: Configuration has issues, check warnings above"
+                )
+        except Exception as e:  # noqa: BLE001  pylint: disable=broad-exception-caught
+            # Don't prevent app from loading on validation errors
+            logger.error(
+                "SWING_SITEMAP: Failed to validate settings: %s",
+                e,
+                exc_info=True,
+            )
+
+    def _register_signals(self) -> None:
+        """Register cache invalidation signals if enabled."""
+        try:
+            from swing.sitemap.conf import get_setting
+
+            signals_config = get_setting("signals", default={})
+            if not signals_config.get("enabled", False):
+                return
+
+            from swing.sitemap.signals import register_sitemap_signals
+
+            models = signals_config.get("models") or []
+            if models:
+                register_sitemap_signals(models)
+                logger.info(
+                    "SWING_SITEMAP: Registered signals for %d model(s)",
+                    len(models),
+                )
+        except Exception as e:  # noqa: BLE001  pylint: disable=broad-exception-caught
+            logger.warning(
+                "SWING_SITEMAP: Failed to register signals: %s",
+                e,
+            )

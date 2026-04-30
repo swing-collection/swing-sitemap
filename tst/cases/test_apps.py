@@ -16,8 +16,6 @@ Tests for swing.sitemap.apps module.
 
 from __future__ import annotations
 
-import pytest
-
 from swing.sitemap.apps import SwingSitemapConfig
 
 

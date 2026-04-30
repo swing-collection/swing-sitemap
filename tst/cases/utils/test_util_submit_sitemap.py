@@ -18,7 +18,6 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-import pytest
 import requests
 
 from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap

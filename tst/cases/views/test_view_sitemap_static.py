@@ -17,9 +17,8 @@ Tests for swing.sitemap.views.view_sitemap_static module.
 from __future__ import annotations
 
 import pytest
-from django.test import Client, RequestFactory
 
-from swing.sitemap.views import StaticSitemapView, static_sitemap
+from swing.sitemap.views import StaticSitemapView
 from swing.sitemap.sitemaps import StaticSitemap
 
 pytestmark = pytest.mark.django_db
@@ -36,7 +35,7 @@ class TestStaticSitemapView:
     def test_default_template_name(self):
         """Test default template name."""
         view = StaticSitemapView()
-        assert view.template_name == "sitemap_static.xml"
+        assert view.template_name == "swing/sitemap/sitemap_static.xml"
 
     def test_default_content_type(self):
         """Test default content type."""

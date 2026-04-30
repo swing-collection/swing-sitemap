@@ -77,7 +77,7 @@ def default_sitemaps(
     for key in models_config:
         try:
             sitemaps[key] = ModelSitemap.from_settings(key)
-        except Exception:  # noqa: BLE001  pragma: no cover - defensive
+        except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
             import logging
 
             logging.getLogger(__name__).warning(

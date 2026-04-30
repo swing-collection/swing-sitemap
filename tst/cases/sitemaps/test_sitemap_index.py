@@ -5,7 +5,6 @@ Tests for Pagination Support
 ============================
 """
 
-import pytest
 from django.contrib.sitemaps import Sitemap
 from django.test import override_settings
 

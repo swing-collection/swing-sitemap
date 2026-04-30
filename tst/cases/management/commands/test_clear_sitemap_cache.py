@@ -17,9 +17,7 @@ Tests for swing.sitemap.management.commands.clear_sitemap_cache module.
 from __future__ import annotations
 
 from io import StringIO
-from unittest.mock import patch
 
-import pytest
 from django.core.management import call_command
 from django.test import override_settings
 

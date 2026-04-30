@@ -42,6 +42,7 @@ from .apply_legacy_shims import apply_legacy_shims
 from .defaults import DEFAULTS
 from .get_config import get_config
 from .get_setting import get_setting
+from .validate_settings import validate_settings
 
 
 # =============================================================================
@@ -53,4 +54,5 @@ __all__ = [
     "DEFAULTS",
     "get_config",
     "get_setting",
+    "validate_settings",
 ]

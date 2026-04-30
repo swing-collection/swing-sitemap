@@ -58,7 +58,7 @@ def get_sitemap_index_urls(
         if hasattr(sitemap, "get_latest_lastmod"):
             try:
                 lastmod = sitemap.get_latest_lastmod()
-            except Exception:
+            except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
                 pass
 
         url_entry = {

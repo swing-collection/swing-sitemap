@@ -1,18 +1,43 @@
 # -*- coding: utf-8 -*-
 
-
 # =============================================================================
 # Docstring
 # =============================================================================
 
 """
-Submit Sitemap Task
-===================
+Celery Tasks for Sitemap Submission
+===================================
 
-Celery task for submitting sitemap to search engines.
+Provides Celery tasks for automated sitemap submission to search engines.
 
+Tasks:
+- :func:`submit_sitemap_task` - Submit sitemap to search engines
+- :func:`submit_sitemap_periodic` - Periodic submission task
+
+Configuration via Django settings::
+
+    SWING_SITEMAP = {
+        "submit": {
+            "sitemap_url": "https://example.com/sitemap.xml",
+            "endpoints": {
+                "google": "https://www.google.com/ping?sitemap={url}",
+                "bing": "https://www.bing.com/ping?sitemap={url}",
+            },
+            "timeout": 10.0,
+            "retry_delay": 60,
+            "max_retries": 3,
+        },
+    }
+
+Usage::
+
+    from swing.sitemap.tasks import submit_sitemap_task
+
+    # Submit immediately
+    submit_sitemap_task.delay("https://example.com/sitemap.xml")
+
+    # Or schedule periodic submission via Celery Beat
 """
-
 
 # =============================================================================
 # Imports
@@ -21,6 +46,7 @@ Celery task for submitting sitemap to search engines.
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 try:
     from celery import shared_task
@@ -36,6 +62,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Tasks
 # =============================================================================
+
 
 @shared_task(
     bind=True,
@@ -114,8 +141,84 @@ def submit_sitemap_task(
     return results
 
 
+@shared_task(bind=True)
+def submit_sitemap_periodic(self) -> dict[str, Any]:
+    """
+    Periodic task for sitemap submission.
+
+    Designed to be called by Celery Beat. Uses configuration from
+    ``SWING_SITEMAP['submit']``.
+
+    Returns:
+        Dict with 'sitemap_url' and 'results' keys.
+
+    Example Celery Beat config::
+
+        CELERY_BEAT_SCHEDULE = {
+            'submit-sitemap-daily': {
+                'task': 'swing.sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
+                'schedule': crontab(hour=6, minute=0),
+            },
+        }
+    """
+    submit_config = get_setting("submit", default={}) or {}
+    url = submit_config.get("sitemap_url")
+
+    if not url:
+        logger.warning(
+            "Periodic sitemap submission skipped: no sitemap_url configured"
+        )
+        return {"sitemap_url": None, "results": {}, "skipped": True}
+
+    results = submit_sitemap_task(url)
+    return {"sitemap_url": url, "results": results, "skipped": False}
+
+
+@shared_task(bind=True)
+def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:
+    """
+    Invalidate cached sitemap data.
+
+    Args:
+        cache_key: Specific cache key to invalidate. If None, clears all
+            sitemap-related cache entries.
+
+    Returns:
+        True if cache was invalidated successfully.
+    """
+    from django.core.cache import cache
+
+    cache_config = get_setting("cache", default={}) or {}
+    prefix = cache_config.get("key_prefix", "swing_sitemap")
+
+    if cache_key:
+        full_key = f"{prefix}:{cache_key}"
+        cache.delete(full_key)
+        logger.info("Invalidated sitemap cache key: %s", full_key)
+    else:
+        # Clear all sitemap cache keys
+        # Note: This requires cache backend that supports delete_pattern
+        # For other backends, we track keys separately
+        try:
+            cache.delete_pattern(f"{prefix}:*")
+            logger.info("Invalidated all sitemap cache entries")
+        except AttributeError:
+            # Fallback for backends without delete_pattern
+            logger.warning(
+                "Cache backend doesn't support delete_pattern. "
+                "Consider using Redis or Memcached."
+            )
+            return False
+
+    return True
+
+
 # =============================================================================
-# Exports
+# Module Exports
 # =============================================================================
 
-__all__ = ["submit_sitemap_task"]
+__all__ = [
+    "invalidate_sitemap_cache",
+    "submit_sitemap_periodic",
+    "submit_sitemap_task",
+]

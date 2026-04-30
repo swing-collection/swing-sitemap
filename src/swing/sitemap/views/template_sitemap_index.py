@@ -36,7 +36,7 @@ def sitemap_index(request):
         "video_sitemap.xml",
         "news_sitemap.xml",
     ]
-    template = loader.get_template("swing_sitemap/sitemap_index.xml")
+    template = loader.get_template("swing/sitemap/sitemap_index.xml")
     context = {"sitemaps": sitemaps}
     return HttpResponse(template.render(context), content_type="application/xml")
 

@@ -21,13 +21,11 @@ Usage::
     python manage.py generate_sitemap --output-dir /var/www/sitemaps/ --with-index
 """
 
-import os
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
 from django.test import RequestFactory
 
-from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps import (
     default_sitemaps,
     get_sitemap_index_urls,
@@ -106,7 +104,7 @@ class Command(BaseCommand):
             xml_content = self._generate_combined_sitemap(
                 sitemaps, domain, protocol
             )
-            Path(output).write_text(xml_content)
+            Path(output).write_text(xml_content, encoding="utf-8")
             self.stdout.write(
                 self.style.SUCCESS(f"Sitemap written to: {output}")
             )

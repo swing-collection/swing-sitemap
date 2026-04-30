@@ -16,7 +16,6 @@ Tests for swing.sitemap.sitemaps.sitemap_base module.
 
 from __future__ import annotations
 
-import pytest
 from django.contrib.sitemaps import Sitemap
 
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap

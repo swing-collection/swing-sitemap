@@ -76,7 +76,7 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
     # Utilities
     "default_sitemaps": (".sitemaps.sitemap_defaults", "default_sitemaps"),
     "sitemap_urlpatterns": (".urls", "sitemap_urlpatterns"),
-    "submit_sitemap": (".utils.util_submit_sitemap", "submit_sitemap"),
+    "submit_sitemap": (".utils.submission.submit_sitemap", "submit_sitemap"),
     # Pagination
     "PaginatedSitemap": (".sitemaps.sitemap_index", "PaginatedSitemap"),
     "paginate_sitemap": (".sitemaps.sitemap_index", "paginate_sitemap"),

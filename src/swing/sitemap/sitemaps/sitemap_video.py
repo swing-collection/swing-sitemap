@@ -44,6 +44,7 @@ Or with a queryset::
 from __future__ import annotations
 
 import datetime as _dt
+import logging
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any
 
@@ -53,6 +54,9 @@ from django.utils.html import escape
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
+
+
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -212,17 +216,44 @@ class VideoSitemap(BaseSitemap):
             source = source()
         return source
 
+    def _validate_item(self, obj: Model) -> tuple[bool, list[str]]:
+        """
+        Validate an item has required video fields.
+
+        Returns:
+            Tuple of (is_valid, list of missing field names).
+        """
+        missing = []
+
+        # Required: thumbnail_loc, title, description
+        if not self.video_thumbnail_loc(obj):
+            missing.append("thumbnail_loc")
+        if not self.video_title(obj):
+            missing.append("title")
+        if not self.video_description(obj):
+            missing.append("description")
+
+        # Recommended: at least one of content_loc or player_loc
+        if not self.video_content_loc(obj) and not self.video_player_loc(obj):
+            logger.warning(
+                "VideoSitemap: Item %r has neither content_loc nor player_loc. "
+                "Google recommends at least one.",
+                obj,
+            )
+
+        return len(missing) == 0, missing
+
     def lastmod(self, obj: Model) -> _dt.date | _dt.datetime | None:
         if not self.date_field:
             return None
         return getattr(obj, self.date_field, None)
 
-    def location(self, obj: Model) -> str:
+    def location(self, item: Model) -> str:  # noqa: W0237
         """Return the absolute URL for the video page."""
         attr = self.location_attr
         if callable(attr):
-            return attr(obj)
-        value = getattr(obj, attr)
+            return attr(item)
+        value = getattr(item, attr)
         return value() if callable(value) else value
 
     # -------------------------------------------------------------------------
@@ -351,6 +382,16 @@ class VideoSitemap(BaseSitemap):
 
     def _build_video_xml(self, obj: Model) -> str:
         """Build the video:video XML element for an item."""
+        # Validate required fields
+        is_valid, missing = self._validate_item(obj)
+        if not is_valid:
+            logger.warning(
+                "VideoSitemap: Item %r is missing required fields: %s. "
+                "Video may not be indexed properly.",
+                obj,
+                ", ".join(missing),
+            )
+
         parts = ["<video:video>"]
 
         # Required fields

@@ -16,7 +16,6 @@ Tests for swing.sitemap.context_processors module.
 
 from __future__ import annotations
 
-import pytest
 from django.test import RequestFactory
 
 from swing.sitemap.context_processors import sitemap_url

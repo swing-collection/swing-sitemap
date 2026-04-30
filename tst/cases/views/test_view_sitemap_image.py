@@ -17,9 +17,8 @@ Tests for swing.sitemap.views.view_sitemap_image module.
 from __future__ import annotations
 
 import pytest
-from django.test import Client, RequestFactory
 
-from swing.sitemap.views import ImageSitemapView, image_sitemap
+from swing.sitemap.views import ImageSitemapView
 from swing.sitemap.sitemaps import ImageSitemap
 
 pytestmark = pytest.mark.django_db
@@ -36,7 +35,7 @@ class TestImageSitemapView:
     def test_default_template_name(self):
         """Test default template name."""
         view = ImageSitemapView()
-        assert view.template_name == "sitemap_image.xml"
+        assert view.template_name == "swing/sitemap/sitemap_image.xml"
 
     def test_default_content_type(self):
         """Test default content type."""

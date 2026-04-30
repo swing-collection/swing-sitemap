@@ -41,6 +41,8 @@ def sitemap_urlpatterns(
     include_index: bool = False,
     index_url: str = "sitemap-index.xml",
     section_url_template: str = "sitemap-<str:section>.xml",
+    include_health_check: bool = False,
+    health_check_url: str = "sitemap/health/",
 ) -> Sequence[URLPattern]:
     """
     Return URL patterns for a single ``sitemap.xml`` (and optionally a
@@ -58,6 +60,8 @@ def sitemap_urlpatterns(
         section_url_template: URL template (with a ``<str:section>``
             converter) for each per-section sitemap. Used only when
             ``include_index`` is true.
+        include_health_check: If ``True`` add a health check endpoint.
+        health_check_url: Path for the health check endpoint.
     """
     sm = dict(sitemaps) if sitemaps is not None else default_sitemaps()
     patterns: list[URLPattern] = [
@@ -86,6 +90,16 @@ def sitemap_urlpatterns(
                 name="swing-sitemap-section",
             ),
         ]
+    if include_health_check:
+        from swing.sitemap.views import health_check
+
+        patterns.append(
+            path(
+                health_check_url,
+                health_check,
+                name="swing-sitemap-health",
+            ),
+        )
     return patterns
 
 

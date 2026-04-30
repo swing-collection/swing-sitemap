@@ -11,6 +11,11 @@ Paginated Sitemap
 
 Sitemap wrapper with pagination support.
 
+Features:
+- Database-level pagination (LIMIT/OFFSET) for QuerySet sources
+- Memory-efficient handling of large sitemaps
+- Preserves source sitemap attributes
+
 """
 
 
@@ -24,6 +29,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from django.contrib.sitemaps import Sitemap
+from django.db.models import QuerySet
 
 from .get_pagination_config import get_pagination_config
 
@@ -37,6 +43,7 @@ class PaginatedSitemap(Sitemap):
     A sitemap wrapper that provides pagination support.
 
     Wraps an existing sitemap and returns only items for a specific page.
+    Uses database LIMIT/OFFSET when source returns a QuerySet for efficiency.
     """
 
     def __init__(
@@ -69,11 +76,29 @@ class PaginatedSitemap(Sitemap):
             self.protocol = source_sitemap.protocol
 
     def items(self) -> Sequence[Any]:
-        """Return items for the current page."""
-        all_items = list(self._source.items())
+        """
+        Return items for the current page.
+
+        Uses database LIMIT/OFFSET for QuerySet sources to avoid
+        loading all items into memory.
+        """
+        source_items = self._source.items()
         start = (self._page - 1) * self._items_per_page
-        end = start + self._items_per_page
-        return all_items[start:end]
+
+        # Use database-level slicing for QuerySet (uses LIMIT/OFFSET)
+        if isinstance(source_items, QuerySet):
+            return source_items[start : start + self._items_per_page]
+
+        # For other iterables, we still need to convert to list
+        # but only if this is a small enough page
+        if hasattr(source_items, "__getitem__"):
+            # Sliceable sequence
+            return source_items[start : start + self._items_per_page]
+
+        # Fall back to list conversion for generators/iterators
+        # This is unavoidable for non-sliceable sources
+        all_items = list(source_items)
+        return all_items[start : start + self._items_per_page]
 
     def location(self, item: Any) -> str:
         """Delegate to source sitemap."""

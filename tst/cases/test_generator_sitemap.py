@@ -16,7 +16,6 @@ Tests for swing.sitemap.generator_sitemap module.
 
 from __future__ import annotations
 
-import pytest
 from django.test import RequestFactory
 
 from swing.sitemap.generator_sitemap import sitemap_index

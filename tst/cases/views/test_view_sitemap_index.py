@@ -17,9 +17,8 @@ Tests for swing.sitemap.views.view_sitemap_index module.
 from __future__ import annotations
 
 import pytest
-from django.test import Client, RequestFactory
 
-from swing.sitemap.views import SitemapIndexView, sitemap_index
+from swing.sitemap.views import SitemapIndexView
 
 pytestmark = pytest.mark.django_db
 

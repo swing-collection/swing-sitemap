@@ -42,8 +42,10 @@ from .sitemap_index import sitemap_index
 from .sitemap_index_view import SitemapIndexView
 from .static_sitemap import static_sitemap
 from .static_sitemap_view import StaticSitemapView
+from .template_sitemap_index import sitemap_index as template_sitemap_index
 from .video_sitemap import video_sitemap
 from .video_sitemap_view import VideoSitemapView
+from .view_health_check import health_check
 
 
 # =============================================================================
@@ -52,10 +54,12 @@ from .video_sitemap_view import VideoSitemapView
 
 __all__ = [
     # Function-based views
+    "health_check",
     "image_sitemap",
     "news_sitemap",
     "sitemap_index",
     "static_sitemap",
+    "template_sitemap_index",
     "video_sitemap",
     # Class-based views
     "ImageSitemapView",

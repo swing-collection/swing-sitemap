@@ -59,7 +59,7 @@ def register_sitemap_signals(models: list[str] | None = None) -> None:
                 from swing.sitemap.signals import register_sitemap_signals
                 register_sitemap_signals()
     """
-    global _signals_registered
+    global _signals_registered  # noqa: PLW0603  pylint: disable=global-statement
 
     if _signals_registered:
         return

@@ -154,11 +154,11 @@ class ModelSitemap(BaseSitemap):
             return None
         return getattr(obj, self.date_field, None)
 
-    def location(self, obj: Model) -> str:
+    def location(self, item: Model) -> str:  # noqa: W0237
         attr = self.location_attr
         if callable(attr):
-            return attr(obj)
-        value = getattr(obj, attr)
+            return attr(item)
+        value = getattr(item, attr)
         return value() if callable(value) else value
 
 

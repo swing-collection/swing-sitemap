@@ -28,9 +28,7 @@ from django.http import HttpRequest, HttpResponse
 
 from swing.sitemap.conf import get_setting
 
-from .get_cached_sitemap import get_cached_sitemap
-from .make_cache_key import make_cache_key
-from .set_cached_sitemap import set_cached_sitemap
+from swing.sitemap.utils.cache import get_cached_sitemap, make_cache_key, set_cached_sitemap
 
 logger = logging.getLogger(__name__)
 

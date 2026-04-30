@@ -51,7 +51,7 @@ class NewsSitemapView(View):
     """
 
     sitemap_class = NewsSitemap
-    template_name = "sitemap_news.xml"
+    template_name = "swing/sitemap/sitemap_news.xml"
     content_type = "application/xml"
 
     def get_sitemap(self) -> NewsSitemap:
