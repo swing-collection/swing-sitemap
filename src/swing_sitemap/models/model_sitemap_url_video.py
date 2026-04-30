@@ -1,3 +1,7 @@
+from django.db import models
+from .model_sitemap_url import URL
+
+
 class VideoSitemapURL(URL):
     video_title = models.CharField(max_length=255)
     video_description = models.TextField()

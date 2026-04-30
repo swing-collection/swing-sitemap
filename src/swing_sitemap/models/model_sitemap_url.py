@@ -21,8 +21,6 @@ class SitemapURL(models.Model):
 from django.db import models
 
 
-
-
 class URL(models.Model):
     url = models.URLField()
     priority = models.FloatField(default=0.5)

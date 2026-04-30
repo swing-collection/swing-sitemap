@@ -1,3 +1,7 @@
+from django.db import models
+from .model_sitemap_url import URL
+
+
 class CustomSitemapURL(URL):
     custom_field = models.CharField(max_length=255)
     custom_data = models.JSONField(default=dict)

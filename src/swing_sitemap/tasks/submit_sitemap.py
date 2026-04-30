@@ -1,136 +1,223 @@
 
+# -*- coding: utf-8 -*-
 
-
-
-
-"""
-
-
-### Additional Enhancements and Considerations:
-
-1. **Customize for Each Search Engine:**
-   - Different search engines might have specific requirements for sitemap submission. Ensure that you adhere to their guidelines, such as using the correct URL format and handling response codes appropriately.
-
-2. **API Keys and Tokens:**
-   - Some search engines (like Baidu in the example) may require authentication in the form of API keys or tokens. Make sure these are securely stored and accessed, preferably through your Django settings.
-
-3. **Rate Limiting and Compliance:**
-   - Be mindful of rate limiting and other usage policies imposed by the search engines. Submitting too frequently or improperly can result in your requests being blocked.
-
-4. **Expandable Structure:**
-   - The dictionary-based approach allows for easy addition of more search engines in the future. Just add the new engine and its submission URL to the `search_engines` dictionary.
-
-5. **Testing:**
-   - Thoroughly test with each search engine to ensure your requests are correctly formatted and successfully received.
-
-6. **Error Reporting and Monitoring:**
-   - Consider integrating with an error reporting and monitoring service for better visibility and alerting in case of issues.
-
-Remember, while automating sitemap submissions can be beneficial, it's also important to ensure that the sitemap itself is correctly formatted and up-to-date to be effectively processed by the search engines.
+# =============================================================================
+# Docstring
+# =============================================================================
 
 """
+Celery Tasks for Sitemap Submission
+===================================
 
+Provides Celery tasks for automated sitemap submission to search engines.
 
+Tasks:
+- :func:`submit_sitemap_task` - Submit sitemap to search engines
+- :func:`submit_sitemap_periodic` - Periodic submission task
 
+Configuration via Django settings::
 
-from celery import shared_task
-import requests
-import logging
-from django.conf import settings
-
-# Configure logging
-logger = logging.getLogger(__name__)
-
-@shared_task(bind=True)
-def submit_sitemap(self):
-    sitemap_url = settings.SITEMAP_URL  # Use Django settings to manage the sitemap URL
-    sitemap_url = "http://www.example.com/sitemap.xml"  # Replace with your sitemap URL
-    search_engines = {
-        "Google": f"http://www.google.com/ping?sitemap={sitemap_url}",
-        "Bing": f"http://www.bing.com/ping?sitemap={sitemap_url}",
-        "Yandex": f"http://blogs.yandex.ru/pings/?status=success&url={sitemap_url}",
-        "Baidu": f"http://data.zz.baidu.com/urls?site=www.example.com&token=your_token&sitemap={sitemap_url}",
-        # Additional search engines can be added here
-        "DuckDuckGo": f"https://duckduckgo.com/?q=!ping+sitemap+{sitemap_url}",  # Note: DuckDuckGo doesn't officially support sitemap submission
-        "Ask.com": f"http://submissions.ask.com/ping?sitemap={sitemap_url}",  # Note: As of my last update, Ask.com does not officially support this anymore
-        "AOL": f"http://www.aol.com/?q=!ping+sitemap+{sitemap_url}",  # Note: AOL uses Bing's search engine
-        "WolframAlpha": f"https://www.wolframalpha.com/input/?i=Submit+Sitemap+{sitemap_url}",  # Note: WolframAlpha doesn't officially support sitemap submission
+    SWING_SITEMAP = {
+        "submit": {
+            "sitemap_url": "https://example.com/sitemap.xml",
+            "endpoints": {
+                "google": "https://www.google.com/ping?sitemap={url}",
+                "bing": "https://www.bing.com/ping?sitemap={url}",
+            },
+            "timeout": 10.0,
+            "retry_delay": 60,
+            "max_retries": 3,
+        },
     }
 
+Usage::
 
-   for name, url in search_engines.items():
-      try:
-         if name == 'Google':
-            # Google-specific logic
-            response = requests.get(url)
-            # Google might use specific response codes or provide additional info in the response body
-            if response.status_code == 200:
-                # Log success or handle it as needed
-            else:
-                # Log error or retry as appropriate
+    from swing_sitemap.tasks import submit_sitemap_task
 
-         elif name == 'Bing':
-            # Bing-specific logic
-            response = requests.get(url)
-            # Check for Bing-specific response codes or messages
-            if response.status_code == 200:
-                # Handle successful submission
-            else:
-                # Handle failure
+    # Submit immediately
+    submit_sitemap_task.delay("https://example.com/sitemap.xml")
 
-        elif name == 'Yandex':
-            # Yandex-specific logic
-            response = requests.get(url)
-            # Yandex might have different indicators of success or failure
-            if response.status_code == 200:
-                # Handle success
-            else:
-                # Handle failure or retry
+    # Or schedule periodic submission via Celery Beat
+"""
 
-        elif name == 'Baidu':
-            # Baidu-specific logic
-            # Baidu might require POST requests with API keys
-            headers = {'Content-Type': 'application/xml'}
-            token = settings.BAIDU_API_TOKEN
-            baidu_url = f"http://data.zz.baidu.com/urls?site=www.example.com&token={token}&sitemap={sitemap_url}"
-            response = requests.post(baidu_url, headers=headers)
-            # Check Baidu's response
-            if response.status_code == 200:
-                # Handle success
-            else:
-                # Handle failure
+# =============================================================================
+# Imports
+# =============================================================================
+
+from __future__ import annotations
+
+import logging
+from typing import Any
+
+from celery import shared_task
+
+from swing_sitemap.conf import get_setting
+from swing_sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+
+logger = logging.getLogger(__name__)
 
 
-
-            if name == 'Google':
-                # Handle Google-specific logic
-            elif name == 'Bing':
-                # Handle Bing-specific logic
-            # Add more conditions for other search engines
-            elif name == 'Baidu':
-               token = settings.BAIDU_API_TOKEN  # Stored in Django settings
-               baidu_url = f"http://data.zz.baidu.com/urls?site=www.example.com&token={token}&sitemap={sitemap_url}"
-               response = requests.post(baidu_url)
-            if name == 'CustomEngine':
-               headers = {'Content-Type': 'application/xml'}
-               response = requests.post(url, data=sitemap_content, headers=headers)
-               # Handle response
-            # General success and error handling
-            if response.status_code == 200:
-                # Handle success
-                logger.info(f"Successfully submitted sitemap to {name}")
-            else:
-                # Handle failure
-                logger.error(f"Failed to submit sitemap to {name}: HTTP {response.status_code}")
-                
-                # Optionally, retry or send notifications
-
-        except requests.exceptions.RequestException as e:
-            # Handle exception
-            logger.error(f"Exception occurred when submitting sitemap to {name}: {e}")
+# =============================================================================
+# Tasks
+# =============================================================================
 
 
+@shared_task(
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_backoff_max=600,
+    retry_jitter=True,
+    max_retries=3,
+    default_retry_delay=60,
+)
+def submit_sitemap_task(
+    self,
+    sitemap_url: str | None = None,
+    endpoints: dict[str, str] | None = None,
+    timeout: float | None = None,
+) -> dict[str, int | None]:
+    """
+    Submit a sitemap to search engine ping endpoints.
+
+    Args:
+        sitemap_url: Absolute URL of the sitemap. Falls back to
+            ``SWING_SITEMAP['submit']['sitemap_url']`` if not provided.
+        endpoints: Mapping of endpoint names to URL templates. Falls back
+            to ``SWING_SITEMAP['submit']['endpoints']`` or built-in defaults.
+        timeout: Request timeout in seconds. Falls back to
+            ``SWING_SITEMAP['submit']['timeout']`` or 10.0.
+
+    Returns:
+        Mapping of endpoint name to HTTP status code (or None on failure).
+
+    Raises:
+        ValueError: If no sitemap_url is provided or configured.
+    """
+    # Get configuration
+    submit_config = get_setting("submit", default={}) or {}
+
+    url = sitemap_url or submit_config.get("sitemap_url")
+    if not url:
+        raise ValueError(
+            "sitemap_url must be provided or configured in "
+            "SWING_SITEMAP['submit']['sitemap_url']"
+        )
+
+    eps = endpoints or submit_config.get("endpoints") or dict(PING_ENDPOINTS)
+    to = timeout or submit_config.get("timeout", 10.0)
+
+    logger.info("Submitting sitemap %s to %d endpoints", url, len(eps))
+
+    results = submit_sitemap(url, endpoints=eps, timeout=to)
+
+    # Log results
+    for name, status in results.items():
+        if status is None:
+            logger.warning("Sitemap submission to %s failed", name)
+        elif status >= 400:
+            logger.warning(
+                "Sitemap submission to %s returned HTTP %d", name, status
+            )
+        else:
+            logger.info("Sitemap submitted to %s: HTTP %d", name, status)
+
+    # Check for failures that should trigger retry
+    failures = [n for n, s in results.items() if s is None or (s and s >= 500)]
+    if failures and self.request.retries < self.max_retries:
+        logger.info(
+            "Retrying failed endpoints: %s (attempt %d/%d)",
+            failures,
+            self.request.retries + 1,
+            self.max_retries,
+        )
+        # Let Celery's autoretry handle it
+        # Only raise if all endpoints failed
+        if len(failures) == len(results):
+            raise RuntimeError(f"All sitemap submissions failed: {failures}")
+
+    return results
 
 
-            # If you want to retry, you can use Celery's retry mechanism:
-            # self.retry(exc=e, max_retries=3, countdown=60)  # Retry up to 3 times with a 1-minute delay
+@shared_task(bind=True)
+def submit_sitemap_periodic(self) -> dict[str, Any]:
+    """
+    Periodic task for sitemap submission.
+
+    Designed to be called by Celery Beat. Uses configuration from
+    ``SWING_SITEMAP['submit']``.
+
+    Returns:
+        Dict with 'sitemap_url' and 'results' keys.
+
+    Example Celery Beat config::
+
+        CELERY_BEAT_SCHEDULE = {
+            'submit-sitemap-daily': {
+                'task': 'swing_sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
+                'schedule': crontab(hour=6, minute=0),
+            },
+        }
+    """
+    submit_config = get_setting("submit", default={}) or {}
+    url = submit_config.get("sitemap_url")
+
+    if not url:
+        logger.warning(
+            "Periodic sitemap submission skipped: no sitemap_url configured"
+        )
+        return {"sitemap_url": None, "results": {}, "skipped": True}
+
+    results = submit_sitemap_task(url)
+    return {"sitemap_url": url, "results": results, "skipped": False}
+
+
+@shared_task(bind=True)
+def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:
+    """
+    Invalidate cached sitemap data.
+
+    Args:
+        cache_key: Specific cache key to invalidate. If None, clears all
+            sitemap-related cache entries.
+
+    Returns:
+        True if cache was invalidated successfully.
+    """
+    from django.core.cache import cache
+
+    cache_config = get_setting("cache", default={}) or {}
+    prefix = cache_config.get("key_prefix", "swing_sitemap")
+
+    if cache_key:
+        full_key = f"{prefix}:{cache_key}"
+        cache.delete(full_key)
+        logger.info("Invalidated sitemap cache key: %s", full_key)
+    else:
+        # Clear all sitemap cache keys
+        # Note: This requires cache backend that supports delete_pattern
+        # For other backends, we track keys separately
+        try:
+            cache.delete_pattern(f"{prefix}:*")
+            logger.info("Invalidated all sitemap cache entries")
+        except AttributeError:
+            # Fallback for backends without delete_pattern
+            logger.warning(
+                "Cache backend doesn't support delete_pattern. "
+                "Consider using Redis or Memcached."
+            )
+            return False
+
+    return True
+
+
+# =============================================================================
+# Module Exports
+# =============================================================================
+
+__all__ = [
+    "invalidate_sitemap_cache",
+    "submit_sitemap_periodic",
+    "submit_sitemap_task",
+]
+

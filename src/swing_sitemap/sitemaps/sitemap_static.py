@@ -1,89 +1,113 @@
 # -*- coding: utf-8 -*-
 
-
 # =============================================================================
 # Docstring
 # =============================================================================
 
 """
-Provides Static Sitemap
-=======================
+Static Sitemap
+==============
 
-This module provides a `StaticSitemap` class for generating sitemaps of static
-views in a Django application. It is based on a custom `BaseSitemap` class,
-which provides the core functionality for building sitemaps.
+A sitemap class for generating URLs of static (named) views.
 
-Classes:
-    - StaticSitemap: A class for creating sitemaps for static views.
+Each ``items`` entry may be either:
 
-Links:
-    - https://github.com/django/django/blob/master/docs/ref/contrib/sitemaps.txt
+* a plain string  — the Django URL name to ``reverse()``, or
+* a dict          — ``{"view_name": "...", "kwargs": {...}, "args": [...],
+                       "lastmod": <date|datetime>, "priority": float,
+                       "changefreq": str}``.
 
+When given a dict, per-item ``lastmod`` / ``priority`` / ``changefreq``
+override the sitemap-level defaults.
 """
-
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-# Import | Standard Library
-from typing import Any, Dict, List
+from __future__ import annotations
 
-# Import | Libraries
-from django.contrib.sitemaps import Sitemap
+import datetime as _dt
+from collections.abc import Iterable, Sequence
+
 from django.urls import reverse
-from django.utils.translation import gettext as _
 
-# Import | Local Modules
+from swing_sitemap.conf import get_setting
 from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+
+# =============================================================================
+# Types
+# =============================================================================
+
+#: An entry may be a URL name string or a configuration dict.
+StaticItem = str | dict
 
 
 # =============================================================================
 # Class
 # =============================================================================
 
+
 class StaticSitemap(BaseSitemap):
-    """
-    Static Sitemap
-    ==============
+    """Sitemap of named Django views with optional per-entry overrides."""
 
+    # Defaults populated from ``SWING_SITEMAP["static"]`` in ``__init__``.
+    changefreq: str = "monthly"
+    priority: float = 0.5
 
-    A sitemap class for generating URLs of static views to be included in an
-    XML sitemap.
+    def __init__(
+        self,
+        items: Iterable[StaticItem] | None = None,
+        *,
+        priority: float | None = None,
+        changefreq: str | None = None,
+    ) -> None:
+        super().__init__(list(items) if items is not None else [])
+        self.priority = (
+            priority
+            if priority is not None
+            else get_setting("static", "priority", default=self.priority)
+        )
+        self.changefreq = (
+            changefreq
+            if changefreq is not None
+            else get_setting("static", "changefreq", default=self.changefreq)
+        )
 
-    Attributes:
-        changefreq (str): The frequency with which the content is expected
-            to change.
-        priority (float): The priority of this URL relative to other URLs.
+    # -------------------------------------------------------------------------
+    # Construction helpers
+    # -------------------------------------------------------------------------
 
-    """
+    @classmethod
+    def from_setting(cls) -> "StaticSitemap":
+        """Build a sitemap from ``SWING_SITEMAP["static"]["views"]``."""
+        return cls(get_setting("static", "views", default=[]) or [])
 
-    # Parameters
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # Sitemap protocol
+    # -------------------------------------------------------------------------
 
-    changefreq = "weekly"
-    priority = 0.9
-
-
-    # Utility Methods
-    # =========================================================================
-
-    def items(self) -> List[Dict[str, Any]]:
-        """
-        Retrieve the list of static views to include in the sitemap.
-
-        Returns:
-            List[Dict[str, Any]]: A list of items to include in the sitemap,
-                where each item is a dictionary containing the 'view_name' and
-                optional 'kwargs'.
-        """
+    def items(self) -> Sequence[StaticItem]:
         return self.items_list
+
+    def location(self, item: StaticItem) -> str:
+        if isinstance(item, str):
+            return reverse(item)
+        return reverse(
+            item["view_name"],
+            args=item.get("args"),
+            kwargs=item.get("kwargs"),
+        )
+
+    # Per-item overrides (Django's ``Sitemap`` calls these with the item).
+    def lastmod(self, item: StaticItem) -> _dt.date | _dt.datetime | None:
+        if isinstance(item, dict):
+            return item.get("lastmod")
+        return None
 
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
-__all__ = [
-    "StaticSitemap",
-]
+__all__ = ["StaticSitemap", "StaticItem"]

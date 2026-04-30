@@ -1,101 +1,119 @@
+# -*- coding: utf-8 -*-
 
-from django.contrib.sitemaps.views import sitemap
-from django.urls import path
-from swing_sitemap.views import sitemap_index, StaticSitemap
-
-sitemaps = {
-    'static': StaticSitemap,
-    # Add other sitemaps here
-}
-
-urlpatterns = [
-    ...
-    path('sitemap_index.xml', sitemap_index, name='sitemap-index'),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    # Additional sitemap URLs
-]
-
-
-
-
-
-
-
-from django.contrib.sitemaps.views import sitemap
-from .sitemaps import MyModelSitemap
-
-sitemaps = {
-    'mymodel': MyModelSitemap,
-}
-
-
-
-
-# Sitemap Handlers
+# =============================================================================
+# Docstring
 # =============================================================================
 
-sitemaps = {
-    # "static":   StaticViewSitemap,
-    "views": StaticSitemap(STATIC_VIEWS),
-    # "projects": GenericSitemap(
-    #     {
-    #         "queryset":     Project.objects.all(),
-    #         "date_field":   "updated_date",
-    #         },
-    #         priority=0.9),
-    # "stories": GenericSitemap(
-    #     {
-    #         "queryset":     Story.objects.all(),
-    #         "date_field":   "updated_date",
-    #         },
-    #         priority=0.9),
-}
+"""
+URL Helpers
+===========
 
-urlpatterns = [
-    # ... your other url patterns ...
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-         name='django.contrib.sitemaps.views.sitemap')
-]
+Drop-in URL patterns for sites that want a one-line sitemap setup.
 
+Usage in a project's ``urls.py``::
 
+    from swing_sitemap.urls import sitemap_urlpatterns
 
+    urlpatterns = [
+        # ... your patterns ...
+        *sitemap_urlpatterns(),
+    ]
 
+Or, with custom sitemaps::
 
-# sitemaps = {
-#     'mymodel': MyModelSitemap,
-# }
+    urlpatterns = [
+        *sitemap_urlpatterns({"pages": MyPageSitemap}, include_index=True),
+    ]
+"""
 
-# urlpatterns = [
-#     # ... your other url patterns ...
-#     path('sitemap.xml', sitemap, {'sitemaps': sitemaps, 'template_name': 'custom_sitemap.xml'},
-#          name='django.contrib.sitemaps.views.sitemap')
-# ]
+# =============================================================================
+# Imports
+# =============================================================================
 
+from __future__ import annotations
 
-# from django.contrib.sitemaps.views import sitemap
-# from .sitemaps import VideoSitemap
+from collections.abc import Mapping, Sequence
 
-# sitemaps = {
-#     'videos': VideoSitemap,
-#     # ... other sitemaps ...
-# }
+from django.contrib.sitemaps import Sitemap
+from django.contrib.sitemaps.views import index as sitemap_index_view
+from django.contrib.sitemaps.views import sitemap as sitemap_view
+from django.urls import URLPattern, path
 
-# urlpatterns = [
-#     # ... your other url patterns ...
-#     path('sitemap_videos.xml', sitemap, {'sitemaps': sitemaps, 'template_name': 'custom_video_sitemap.xml'},
-#          name='django.contrib.sitemaps.views.sitemap')
-# ]
+from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
 
 
+# =============================================================================
+# Public API
+# =============================================================================
 
-sitemaps = {
-    'news': NewsSitemap,
-    # ... other sitemaps ...
-}
 
-urlpatterns = [
-    # ... your other url patterns ...
-    path('sitemap_news
-.xml', sitemap, {'sitemaps': sitemaps, 'template_name': 'custom_news_sitemap.xml'},
-name='django.contrib.sitemaps.views.sitemap')
-]
+def sitemap_urlpatterns(
+    sitemaps: Mapping[str, Sitemap | type[Sitemap]] | None = None,
+    *,
+    sitemap_url: str = "sitemap.xml",
+    include_index: bool = False,
+    index_url: str = "sitemap-index.xml",
+    section_url_template: str = "sitemap-<str:section>.xml",
+) -> Sequence[URLPattern]:
+    """
+    Return URL patterns for a single ``sitemap.xml`` (and optionally a
+    sitemap index + per-section URLs).
+
+    Args:
+        sitemaps: Mapping of section name -> sitemap class/instance.
+            Defaults to :func:`~swing_sitemap.default_sitemaps`.
+        sitemap_url: Path for the combined sitemap. Default
+            ``sitemap.xml``.
+        include_index: If ``True`` also expose an index plus per-section
+            URLs (recommended for sites with many entries).
+        index_url: Path for the sitemap index. Used only when
+            ``include_index`` is true.
+        section_url_template: URL template (with a ``<str:section>``
+            converter) for each per-section sitemap. Used only when
+            ``include_index`` is true.
+    """
+    sm = dict(sitemaps) if sitemaps is not None else default_sitemaps()
+    patterns: list[URLPattern] = [
+        path(
+            sitemap_url,
+            sitemap_view,
+            {"sitemaps": sm},
+            name="swing-sitemap",
+        ),
+    ]
+    if include_index:
+        patterns += [
+            path(
+                index_url,
+                sitemap_index_view,
+                {
+                    "sitemaps": sm,
+                    "sitemap_url_name": "swing-sitemap-section",
+                },
+                name="swing-sitemap-index",
+            ),
+            path(
+                section_url_template,
+                sitemap_view,
+                {"sitemaps": sm},
+                name="swing-sitemap-section",
+            ),
+        ]
+    return patterns
+
+
+# Default ``urlpatterns`` for projects that prefer ``include()``::
+#
+#     path("", include("swing_sitemap.urls")),
+#
+# Computed lazily on first attribute access so importing this module does
+# not require Django settings to be configured yet.
+def __getattr__(name: str):  # PEP 562
+    if name == "urlpatterns":
+        value = list(sitemap_urlpatterns())
+        globals()["urlpatterns"] = value
+        return value
+    raise AttributeError(f"module 'swing_sitemap.urls' has no attribute {name!r}")
+
+
+__all__ = ["sitemap_urlpatterns", "urlpatterns"]  # noqa: F822

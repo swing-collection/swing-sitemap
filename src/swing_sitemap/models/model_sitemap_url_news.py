@@ -1,3 +1,7 @@
+from django.db import models
+from .model_sitemap_url import URL
+
+
 class NewsSitemapURL(URL):
     publication_name = models.CharField(max_length=255)
     publication_language = models.CharField(max_length=10)

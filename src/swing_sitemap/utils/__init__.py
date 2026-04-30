@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from .sitemap_static import StaticSitemap
+"""Utility helpers for swing_sitemap."""
 
+from __future__ import annotations
 
-from .sitemap import StaticViewSitemap
-from .sitemap import ProjectSitemap
-from .sitemap import StorySitemap
+from .util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
 
+__all__ = ["PING_ENDPOINTS", "submit_sitemap"]

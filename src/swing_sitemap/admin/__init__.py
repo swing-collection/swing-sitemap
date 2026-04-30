@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import StandardSitemapURL, ImageSitemapURL, VideoSitemapURL, NewsSitemapURL, CustomSitemapURL
+from ..models import StandardSitemapURL, ImageSitemapURL, VideoSitemapURL, NewsSitemapURL, CustomSitemapURL
 
 admin.site.register(StandardSitemapURL)
 admin.site.register(ImageSitemapURL)

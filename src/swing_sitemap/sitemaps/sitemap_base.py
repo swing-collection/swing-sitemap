@@ -26,7 +26,7 @@ Links:
 
 
 # Import | Standard Library
-from typing import Any, Dict, List, Optional
+from typing import Any
 from abc import ABC, abstractmethod
 
 # Import | Libraries
@@ -65,12 +65,12 @@ class BaseSitemap(Sitemap, ABC):
     # Constructor
     # =========================================================================
 
-    def __init__(self, items: Optional[List[Dict[str, Any]]] = None):
+    def __init__(self, items: list[dict[str, Any]] | None = None):
         """
         Initialize the BaseSitemap with a list of items.
 
         Args:
-            items (Optional[List[Dict[str, Any]]]): A list of dictionaries
+            items (list[dict[str, Any]] | None): A list of dictionaries
                 where each dictionary contains the 'view_name' and optional
                 'kwargs' for reversing URLs. Defaults to an empty list if not
                 provided.
@@ -81,23 +81,23 @@ class BaseSitemap(Sitemap, ABC):
     # =========================================================================
 
     @abstractmethod
-    def items(self) -> List[Dict[str, Any]]:
+    def items(self) -> list[dict[str, Any]]:
         """
         Abstract method that should return the list of items to include in the
         sitemap.
 
         Returns:
-            List[Dict[str, Any]]: A list of items where each item is a dictionary
+            list[dict[str, Any]]: A list of items where each item is a dictionary
             containing at least a 'view_name' key.
         """
         pass
 
-    def location(self, item: Dict[str, Any]) -> str:
+    def location(self, item: dict[str, Any]) -> str:
         """
         Return the URL for a given item in the sitemap.
 
         Args:
-            item (Dict[str, Any]): A dictionary containing the 'view_name' and
+            item (dict[str, Any]): A dictionary containing the 'view_name' and
                 optional 'kwargs' for reversing the URL.
 
         Returns:

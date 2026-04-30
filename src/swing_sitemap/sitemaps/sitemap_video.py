@@ -1,171 +1,463 @@
 # -*- coding: utf-8 -*-
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Video Sitemap Generator
-========================
+Video Sitemap
+=============
 
-This module provides a `VideoSitemap` class for generating sitemaps that include video content.
-It retrieves the model reference from Django settings, allowing for flexible configuration.
+A sitemap class for generating Google Video Sitemaps following the official
+specification at https://developers.google.com/search/docs/crawling-indexing/sitemaps/video-sitemaps
 
-Key Points to Remember:
------------------------
-1. **Required Video Tags**: Ensure all required video tags are included in your sitemap.
-   At a minimum, include `thumbnail_loc`, `title`, and `description`. You may also add 
-   optional tags like `content_loc`, `duration`, `expiration_date`, `rating`, depending 
-   on your needs and the specifics of your video content.
+Video sitemaps include rich metadata about video content including:
+- Required: thumbnail_loc, title, description
+- Recommended: content_loc or player_loc, duration
+- Optional: expiration_date, rating, view_count, publication_date,
+  family_friendly, restriction, platform, requires_subscription, live
 
-2. **Performance Considerations**: For a large number of videos, consider performance implications.
-   Generating a sitemap for thousands of videos might be resource-intensive. Consider paginating 
-   your sitemap or splitting it into multiple files.
+Usage::
 
-3. **SEO Best Practices**: Ensure the metadata in your video sitemap accurately reflects your video content.
-   This improves the chances of your videos appearing in search engine results.
+    from swing_sitemap import VideoSitemap
 
-4. **Regular Updates**: Keep your video sitemap up-to-date with new content. Automating this process 
-   with Django signals or scheduled tasks can be very efficient.
+    video_sitemap = VideoSitemap.from_settings("videos")
 
-5. **Accessibility and Quality**: Ensure your videos are of high quality and accessible. Good practices 
-   include providing subtitles or transcripts and ensuring that your videos are viewable on various devices.
+Or with a queryset::
 
-6. **Submit Your Sitemap**: Submit your video sitemap to search engines through their respective webmaster tools.
-
-Links:
-------
-- https://github.com/django/django/blob/master/docs/ref/contrib/sitemaps.txt
+    video_sitemap = VideoSitemap(
+        queryset=lambda: Video.objects.filter(is_published=True),
+        video_fields={
+            "thumbnail_loc": "thumbnail_url",
+            "title": "video_title",
+            "description": "video_description",
+            "content_loc": "video_url",
+            "duration": "duration_seconds",
+        },
+    )
 """
 
 # =============================================================================
 # Imports
 # =============================================================================
 
-from typing import Any, Dict, List, Type
+from __future__ import annotations
+
+import datetime as _dt
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from typing import Any
+
 from django.apps import apps
-from django.conf import settings
+from django.db.models import Model, QuerySet
 from django.utils.html import escape
+
+from swing_sitemap.conf import get_setting
 from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+
+
+# =============================================================================
+# Types
+# =============================================================================
+
+QuerySetSource = QuerySet | Iterable[Model] | Callable[[], Iterable[Model]]
+
 
 # =============================================================================
 # Video Sitemap Class
 # =============================================================================
 
+
 class VideoSitemap(BaseSitemap):
     """
-    VideoSitemap
-    ============
+    A Django sitemap class for generating video sitemaps following Google's
+    Video Sitemap specification.
 
-    A Django sitemap class for generating video sitemaps. This class is designed to
-    generate XML sitemaps that include video content, following search engine guidelines.
+    Supports both queryset-based and settings-based configuration.
 
     Attributes:
-        changefreq (str): The frequency with which the content is expected to change.
-        priority (float): The priority of this URL relative to other URLs.
-        model (Type): The Django model class that represents videos, retrieved from settings.
+        changefreq: Expected change frequency (default: "weekly").
+        priority: URL priority relative to other URLs (default: 0.8).
     """
 
     changefreq: str = "weekly"
     priority: float = 0.8
 
-    def __init__(self, items: List[Dict[str, Any]] = None):
+    # Default field mappings from model attributes to video sitemap fields
+    DEFAULT_VIDEO_FIELDS: Mapping[str, str] = {
+        "thumbnail_loc": "video_thumbnail_url",
+        "title": "video_title",
+        "description": "video_description",
+        "content_loc": "video_content_url",
+        "player_loc": "video_player_url",
+        "duration": "video_duration",
+        "expiration_date": "video_expiration_date",
+        "publication_date": "video_publication_date",
+        "rating": "video_rating",
+        "view_count": "video_view_count",
+        "family_friendly": "video_family_friendly",
+        "restriction": "video_restriction",
+        "platform": "video_platform",
+        "requires_subscription": "video_requires_subscription",
+        "live": "video_live",
+        "tag": "video_tags",
+        "category": "video_category",
+        "uploader": "video_uploader",
+    }
+
+    def __init__(
+        self,
+        queryset: QuerySetSource | None = None,
+        *,
+        date_field: str | None = None,
+        location_attr: str | Callable[[Model], str] = "get_absolute_url",
+        video_fields: Mapping[str, str] | None = None,
+        priority: float | None = None,
+        changefreq: str | None = None,
+    ) -> None:
         """
-        Initialize the VideoSitemap by retrieving the video model from settings.
+        Initialize VideoSitemap.
 
         Args:
-            items (Optional[List[Dict[str, Any]]]): A list of dictionaries where
-                each dictionary contains the 'view_name' and optional 'kwargs'
-                for reversing URLs. Defaults to an empty list if not provided.
+            queryset: QuerySet or callable returning items.
+            date_field: Model attribute for lastmod.
+            location_attr: Model attribute or callable for URL.
+            video_fields: Mapping of video sitemap fields to model attributes.
+            priority: URL priority (0.0-1.0).
+            changefreq: Change frequency string.
         """
-        super().__init__(items=items)
-        self.model = self._get_video_model()
+        super().__init__(items=None)
+        self._queryset_source = queryset
+        self.date_field = date_field
+        self.location_attr = location_attr
+        self.video_fields = {**self.DEFAULT_VIDEO_FIELDS, **(video_fields or {})}
+        if priority is not None:
+            self.priority = priority
+        if changefreq is not None:
+            self.changefreq = changefreq
 
-    def _get_video_model(self) -> Type[Any]:
+    # -------------------------------------------------------------------------
+    # Construction helpers
+    # -------------------------------------------------------------------------
+
+    @classmethod
+    def from_settings(cls, key: str = "video") -> "VideoSitemap":
         """
-        Retrieves the video model class from the Django settings.
+        Build a VideoSitemap from ``SWING_SITEMAP['video']`` or
+        ``SWING_SITEMAP['models'][key]``.
 
-        Returns:
-            Type[Any]: The video model class.
+        Settings structure::
+
+            SWING_SITEMAP = {
+                "video": {
+                    "model": "myapp.Video",
+                    "filters": {"is_published": True},
+                    "exclude": {},
+                    "order_by": ["-publication_date"],
+                    "date_field": "updated_at",
+                    "location_attr": "get_absolute_url",
+                    "video_fields": {
+                        "thumbnail_loc": "thumbnail_url",
+                        "title": "title",
+                        "description": "description",
+                    },
+                    "priority": 0.8,
+                    "changefreq": "weekly",
+                },
+            }
         """
-        model_name = settings.VIDEO_SITEMAP_MODEL
-        return apps.get_model(model_name)
+        # Try video-specific config first, fall back to models config
+        spec = get_setting("video", default=None) or {}
+        if not spec.get("model"):
+            spec = get_setting("models", key, default=None) or {}
 
-    def items(self) -> List[Any]:
-        """
-        Retrieves all video items from the database to be included in the sitemap.
+        if not spec or "model" not in spec:
+            raise ValueError(
+                f"SWING_SITEMAP['video'] or SWING_SITEMAP['models'][{key!r}] "
+                "must define a 'model' dotted path (e.g. 'myapp.Video')."
+            )
 
-        Returns:
-            List[Any]: A list of all video objects in the database.
-        """
-        return self.model.objects.all()
+        model = apps.get_model(spec["model"])
+        filters = spec.get("filters") or {}
+        exclude = spec.get("exclude") or {}
+        order_by = spec.get("order_by") or ()
 
-    def location(self, obj: Any) -> str:
-        """
-        Returns the absolute URL for a given video object.
+        def queryset_factory() -> QuerySet:
+            qs = model._default_manager.all()
+            if filters:
+                qs = qs.filter(**filters)
+            if exclude:
+                qs = qs.exclude(**exclude)
+            if order_by:
+                qs = qs.order_by(*order_by)
+            return qs
 
-        Args:
-            obj (Any): A video object.
+        return cls(
+            queryset=queryset_factory,
+            date_field=spec.get("date_field"),
+            location_attr=spec.get("location_attr", "get_absolute_url"),
+            video_fields=spec.get("video_fields"),
+            priority=spec.get("priority"),
+            changefreq=spec.get("changefreq"),
+        )
 
-        Returns:
-            str: The absolute URL of the video page.
-        """
-        return obj.get_absolute_url()
+    # -------------------------------------------------------------------------
+    # Sitemap protocol
+    # -------------------------------------------------------------------------
 
-    def video_urls(self, obj: Any) -> Dict[str, str]:
-        """
-        Returns a dictionary of video metadata for inclusion in the sitemap.
+    def items(self) -> Sequence[Model]:
+        source = self._queryset_source
+        if source is None:
+            return []
+        if callable(source):
+            source = source()
+        return source
 
-        Args:
-            obj (Any): A video object.
+    def lastmod(self, obj: Model) -> _dt.date | _dt.datetime | None:
+        if not self.date_field:
+            return None
+        return getattr(obj, self.date_field, None)
 
-        Returns:
-            Dict[str, str]: A dictionary containing the video metadata fields.
-        """
-        return {
-            'thumbnail_loc': obj.thumbnail_url,  # URL of the video thumbnail
-            'title': obj.title,
-            'description': obj.description,
-            'content_loc': obj.video_file.url,  # URL of the video file
-            # Additional optional fields can be added here, e.g., 'duration', 'expiration_date', etc.
-        }
+    def location(self, obj: Model) -> str:
+        """Return the absolute URL for the video page."""
+        attr = self.location_attr
+        if callable(attr):
+            return attr(obj)
+        value = getattr(obj, attr)
+        return value() if callable(value) else value
 
-    def _videos(self, obj: Any) -> str:
-        """
-        Generates the XML for video tags based on the video metadata.
+    # -------------------------------------------------------------------------
+    # Video-specific metadata
+    # -------------------------------------------------------------------------
 
-        Args:
-            obj (Any): A video object.
+    def _get_video_attr(self, obj: Model, field: str) -> Any:
+        """Get a video attribute from the model using field mapping."""
+        attr_name = self.video_fields.get(field)
+        if not attr_name:
+            return None
+        value = getattr(obj, attr_name, None)
+        return value() if callable(value) else value
 
-        Returns:
-            str: An XML string containing the video tags.
-        """
-        video_data = self.video_urls(obj)
-        video_tag = '<video:video>'
-        for key, value in video_data.items():
-            video_tag += f'<video:{key}>{escape(value)}</video:{key}>'
-        video_tag += '</video:video>'
-        return video_tag
+    def video_thumbnail_loc(self, obj: Model) -> str | None:
+        """Return the video thumbnail URL (required)."""
+        return self._get_video_attr(obj, "thumbnail_loc")
 
-    def _urls(self, page: int, protocol: str, domain: str) -> List[Dict[str, Any]]:
-        """
-        Overrides the base class method to include video tags in the sitemap URLs.
+    def video_title(self, obj: Model) -> str | None:
+        """Return the video title (required, max 100 chars)."""
+        title = self._get_video_attr(obj, "title")
+        return escape(title[:100]) if title else None
 
-        Args:
-            page (int): The page number.
-            protocol (str): The protocol used (http or https).
-            domain (str): The domain of the website.
+    def video_description(self, obj: Model) -> str | None:
+        """Return the video description (required, max 2048 chars)."""
+        desc = self._get_video_attr(obj, "description")
+        return escape(desc[:2048]) if desc else None
 
-        Returns:
-            List[Dict[str, Any]]: A list of dictionaries where each dictionary represents a URL and its associated videos.
-        """
-        urls = super(VideoSitemap, self)._urls(page, protocol, domain)
+    def video_content_loc(self, obj: Model) -> str | None:
+        """Return the video file URL (recommended if no player_loc)."""
+        return self._get_video_attr(obj, "content_loc")
+
+    def video_player_loc(self, obj: Model) -> str | None:
+        """Return the video player embed URL (recommended if no content_loc)."""
+        return self._get_video_attr(obj, "player_loc")
+
+    def video_duration(self, obj: Model) -> int | None:
+        """Return the video duration in seconds (recommended, 1-28800)."""
+        duration = self._get_video_attr(obj, "duration")
+        if duration is not None:
+            return max(1, min(28800, int(duration)))
+        return None
+
+    def video_expiration_date(self, obj: Model) -> str | None:
+        """Return the video expiration date in W3C format."""
+        date = self._get_video_attr(obj, "expiration_date")
+        return self._format_date(date)
+
+    def video_publication_date(self, obj: Model) -> str | None:
+        """Return the video publication date in W3C format."""
+        date = self._get_video_attr(obj, "publication_date")
+        return self._format_date(date)
+
+    def video_rating(self, obj: Model) -> float | None:
+        """Return the video rating (0.0-5.0)."""
+        rating = self._get_video_attr(obj, "rating")
+        if rating is not None:
+            return max(0.0, min(5.0, float(rating)))
+        return None
+
+    def video_view_count(self, obj: Model) -> int | None:
+        """Return the video view count."""
+        count = self._get_video_attr(obj, "view_count")
+        return int(count) if count is not None else None
+
+    def video_family_friendly(self, obj: Model) -> str | None:
+        """Return 'yes' or 'no' for family-friendly status."""
+        value = self._get_video_attr(obj, "family_friendly")
+        if value is None:
+            return None
+        return "yes" if value else "no"
+
+    def video_restriction(self, obj: Model) -> dict | None:
+        """Return restriction info: {'relationship': 'allow|deny', 'countries': 'US CA'}."""
+        return self._get_video_attr(obj, "restriction")
+
+    def video_platform(self, obj: Model) -> dict | None:
+        """Return platform info: {'relationship': 'allow|deny', 'platforms': 'web mobile'}."""
+        return self._get_video_attr(obj, "platform")
+
+    def video_requires_subscription(self, obj: Model) -> str | None:
+        """Return 'yes' or 'no' for subscription requirement."""
+        value = self._get_video_attr(obj, "requires_subscription")
+        if value is None:
+            return None
+        return "yes" if value else "no"
+
+    def video_live(self, obj: Model) -> str | None:
+        """Return 'yes' or 'no' for live stream status."""
+        value = self._get_video_attr(obj, "live")
+        if value is None:
+            return None
+        return "yes" if value else "no"
+
+    def video_tags(self, obj: Model) -> list[str] | None:
+        """Return list of video tags (max 32 tags)."""
+        tags = self._get_video_attr(obj, "tag")
+        if tags:
+            if isinstance(tags, str):
+                tags = [t.strip() for t in tags.split(",")]
+            return [escape(t) for t in tags[:32]]
+        return None
+
+    def video_category(self, obj: Model) -> str | None:
+        """Return video category (max 256 chars)."""
+        category = self._get_video_attr(obj, "category")
+        return escape(category[:256]) if category else None
+
+    def video_uploader(self, obj: Model) -> dict | None:
+        """Return uploader info: {'name': '...', 'info': 'url'}."""
+        return self._get_video_attr(obj, "uploader")
+
+    # -------------------------------------------------------------------------
+    # XML generation helpers
+    # -------------------------------------------------------------------------
+
+    def _format_date(self, date: _dt.date | _dt.datetime | None) -> str | None:
+        """Format a date/datetime to W3C format."""
+        if date is None:
+            return None
+        if isinstance(date, _dt.datetime):
+            return date.strftime("%Y-%m-%dT%H:%M:%S%z") or date.strftime(
+                "%Y-%m-%dT%H:%M:%S+00:00"
+            )
+        return date.strftime("%Y-%m-%d")
+
+    def _build_video_xml(self, obj: Model) -> str:
+        """Build the video:video XML element for an item."""
+        parts = ["<video:video>"]
+
+        # Required fields
+        thumb = self.video_thumbnail_loc(obj)
+        title = self.video_title(obj)
+        desc = self.video_description(obj)
+
+        if thumb:
+            parts.append(f"<video:thumbnail_loc>{escape(thumb)}</video:thumbnail_loc>")
+        if title:
+            parts.append(f"<video:title>{title}</video:title>")
+        if desc:
+            parts.append(f"<video:description>{desc}</video:description>")
+
+        # Recommended: content_loc or player_loc
+        content = self.video_content_loc(obj)
+        player = self.video_player_loc(obj)
+        if content:
+            parts.append(f"<video:content_loc>{escape(content)}</video:content_loc>")
+        if player:
+            parts.append(f"<video:player_loc>{escape(player)}</video:player_loc>")
+
+        # Optional fields
+        duration = self.video_duration(obj)
+        if duration is not None:
+            parts.append(f"<video:duration>{duration}</video:duration>")
+
+        exp_date = self.video_expiration_date(obj)
+        if exp_date:
+            parts.append(f"<video:expiration_date>{exp_date}</video:expiration_date>")
+
+        pub_date = self.video_publication_date(obj)
+        if pub_date:
+            parts.append(
+                f"<video:publication_date>{pub_date}</video:publication_date>"
+            )
+
+        rating = self.video_rating(obj)
+        if rating is not None:
+            parts.append(f"<video:rating>{rating:.1f}</video:rating>")
+
+        view_count = self.video_view_count(obj)
+        if view_count is not None:
+            parts.append(f"<video:view_count>{view_count}</video:view_count>")
+
+        family = self.video_family_friendly(obj)
+        if family:
+            parts.append(f"<video:family_friendly>{family}</video:family_friendly>")
+
+        restriction = self.video_restriction(obj)
+        if restriction:
+            rel = restriction.get("relationship", "allow")
+            countries = restriction.get("countries", "")
+            parts.append(
+                f'<video:restriction relationship="{rel}">{countries}</video:restriction>'
+            )
+
+        platform = self.video_platform(obj)
+        if platform:
+            rel = platform.get("relationship", "allow")
+            platforms = platform.get("platforms", "")
+            parts.append(
+                f'<video:platform relationship="{rel}">{platforms}</video:platform>'
+            )
+
+        requires_sub = self.video_requires_subscription(obj)
+        if requires_sub:
+            parts.append(
+                f"<video:requires_subscription>{requires_sub}</video:requires_subscription>"
+            )
+
+        live = self.video_live(obj)
+        if live:
+            parts.append(f"<video:live>{live}</video:live>")
+
+        tags = self.video_tags(obj)
+        if tags:
+            for tag in tags:
+                parts.append(f"<video:tag>{tag}</video:tag>")
+
+        category = self.video_category(obj)
+        if category:
+            parts.append(f"<video:category>{category}</video:category>")
+
+        uploader = self.video_uploader(obj)
+        if uploader:
+            name = escape(uploader.get("name", ""))
+            info = uploader.get("info", "")
+            if info:
+                parts.append(f'<video:uploader info="{escape(info)}">{name}</video:uploader>')
+            else:
+                parts.append(f"<video:uploader>{name}</video:uploader>")
+
+        parts.append("</video:video>")
+        return "\n".join(parts)
+
+    def _urls(self, page, protocol, domain):
+        """Override to inject video XML into URL data."""
+        urls = super()._urls(page, protocol, domain)
         for url in urls:
-            item = url['item']
-            videos = self._videos(item)
-            if videos:
-                url['videos'] = videos
+            item = url["item"]
+            url["videos"] = self._build_video_xml(item)
         return urls
+
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
-__all__ = [
-    "VideoSitemap",
-]
+__all__ = ["VideoSitemap"]

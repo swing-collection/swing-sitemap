@@ -22,10 +22,6 @@ Links:
 # Import
 # =============================================================================
 
-# Import | Standard Library
-from typing import Dict, List, Union
-
-
 # Import | Libraries
 from django.apps import AppConfig
 # from django.core.signals import request_finished
@@ -38,25 +34,22 @@ from django.utils.translation import gettext_lazy as _
 # Classes
 # =============================================================================
 
-class MapsConfig(AppConfig):
+class SwingSitemapConfig(AppConfig):
     """
-    Maps Config Class
-    =================
+    Swing Sitemap App Config
+    ========================
+
+    Django application configuration for ``swing_sitemap``.
     """
 
     # Full Python path to the application
-    name = "website.maps"
+    name = "swing_sitemap"
 
     # Short name for the application
-    label = "maps"
+    label = "swing_sitemap"
 
     # Human-readable name for the application
-    verbose_name = _("Website Maps")
-
-    # Filesystem path to the application directory,
-    # path = "/usr/lib/pythonX.Y/dist-packages/django/contrib/admin"
-
-    # default = True
+    verbose_name = _("Swing Sitemap")
 
     # The implicit primary key type to add to models within this app.
     default_auto_field = "django.db.models.BigAutoField"

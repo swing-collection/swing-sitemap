@@ -1,3 +1,7 @@
+from django.db import models
+from .model_sitemap_url import URL
+
+
 class ImageSitemapURL(URL):
     image_url = models.URLField()
     image_caption = models.CharField(max_length=255, blank=True)
