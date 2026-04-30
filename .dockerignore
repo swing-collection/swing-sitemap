@@ -1,0 +1,264 @@
+# =============================================================================
+# Docker Ignore
+# =============================================================================
+#
+# Files and directories excluded from the Docker build context.
+# Documentation: https://docs.docker.com/build/building/context/#dockerignore-files
+#
+# This file is portable - copy to other repos without modification.
+#
+# -----------------------------------------------------------------------------
+# How It Works
+# -----------------------------------------------------------------------------
+#
+# When running `docker build`, Docker sends the build context (current
+# directory) to the daemon. This file excludes files from that context.
+#
+# Benefits:
+#   - Faster builds (less data to send)
+#   - Smaller images (excluded files can't be copied)
+#   - Security (secrets not accidentally included)
+#   - Cache efficiency (irrelevant changes don't invalidate cache)
+#
+# -----------------------------------------------------------------------------
+# Syntax
+# -----------------------------------------------------------------------------
+#
+#   pattern     Exclude files matching pattern
+#   !pattern    Re-include previously excluded files
+#   #           Comment
+#   *           Matches any sequence of characters
+#   ?           Matches any single character
+#   **          Matches any number of directories
+#
+# =============================================================================
+
+
+# =============================================================================
+# Version Control
+# =============================================================================
+#
+# Git history and config are not needed in containers.
+#
+# -----------------------------------------------------------------------------
+
+.git
+.gitignore
+.gitattributes
+.gitmodules
+
+
+# =============================================================================
+# Python Artifacts
+# =============================================================================
+#
+# Bytecode and caches should be regenerated inside the container.
+#
+# -----------------------------------------------------------------------------
+
+# Bytecode
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+
+# Build artifacts
+.Python
+*.egg-info
+*.egg
+*.whl
+
+# Virtual environments (container has its own)
+.venv
+venv
+env
+ENV
+
+# Caches
+.mypy_cache
+.pytest_cache
+.ruff_cache
+
+# Testing
+.coverage
+coverage.xml
+htmlcov
+.tox
+.nox
+
+
+# =============================================================================
+# Node.js Artifacts
+# =============================================================================
+#
+# Dependencies should be installed fresh in the container.
+#
+# -----------------------------------------------------------------------------
+
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+
+# =============================================================================
+# Build Outputs
+# =============================================================================
+#
+# Build artifacts are generated inside the container, not copied in.
+#
+# -----------------------------------------------------------------------------
+
+build
+dist
+*.egg-info
+*.whl
+public
+
+
+# =============================================================================
+# IDE & Editor
+# =============================================================================
+#
+# Editor configurations are developer-specific.
+#
+# -----------------------------------------------------------------------------
+
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.project
+.settings
+.classpath
+
+
+# =============================================================================
+# Documentation
+# =============================================================================
+#
+# Generated docs are not needed for runtime.
+#
+# -----------------------------------------------------------------------------
+
+doc/_build
+docs/_build
+site
+
+
+# =============================================================================
+# Testing & Quality Reports
+# =============================================================================
+#
+# Test results and coverage are development artifacts.
+#
+# -----------------------------------------------------------------------------
+
+.coverage
+coverage.xml
+coverage.json
+*.cover
+*.log
+tst/reports
+reports
+htmlcov
+
+
+# =============================================================================
+# Development Directories
+# =============================================================================
+#
+# Scratch directories for local development.
+#
+# -----------------------------------------------------------------------------
+
+bup
+wip
+tmp
+*.tmp
+*.temp
+*.bak
+*.backup
+
+
+# =============================================================================
+# Database Files
+# =============================================================================
+#
+# Local development databases should not be in containers.
+# Production uses external database services.
+#
+# -----------------------------------------------------------------------------
+
+*.sqlite3
+*.db
+db.sqlite3
+
+
+# =============================================================================
+# Environment & Secrets
+# =============================================================================
+#
+# NEVER include secrets in Docker images!
+# Use Docker secrets, environment variables, or secret managers.
+#
+# -----------------------------------------------------------------------------
+
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.secrets.baseline
+
+
+# =============================================================================
+# OS Files
+# =============================================================================
+#
+# Operating system artifacts should never be in containers.
+#
+# -----------------------------------------------------------------------------
+
+.DS_Store
+Thumbs.db
+*.pid
+
+
+# =============================================================================
+# Project Documentation & Metadata
+# =============================================================================
+#
+# Documentation and metadata files not needed at runtime.
+#
+# -----------------------------------------------------------------------------
+
+Makefile
+Procfile
+honcho.local.yml
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+CITATION.cff
+TODO.md
+VERSION
+codemeta.json
+mkdocs.yml
+
+
+# =============================================================================
+# CI/CD Configuration
+# =============================================================================
+#
+# CI configs are for the pipeline, not the container.
+#
+# -----------------------------------------------------------------------------
+
+.github
+.gitlab-ci.yml
+.travis.yml
+azure-pipelines.yml
+.circleci

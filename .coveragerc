@@ -1,0 +1,209 @@
+# =============================================================================
+# Coverage.py Configuration
+# =============================================================================
+#
+# Code coverage measurement for Python.
+# Documentation: https://coverage.readthedocs.io/
+#
+# This file is portable - copy to other repos without modification.
+#
+# -----------------------------------------------------------------------------
+# Usage
+# -----------------------------------------------------------------------------
+#
+#   Run tests with coverage:
+#     coverage run -m pytest tst/
+#
+#   Generate terminal report:
+#     coverage report
+#
+#   Generate HTML report:
+#     coverage html
+#     open htmlcov/index.html
+#
+#   Generate XML report (for CI):
+#     coverage xml
+#
+#   Combine parallel coverage data:
+#     coverage combine
+#     coverage report
+#
+#   With pytest-cov (recommended):
+#     pytest --cov=swing_sitemap tst/
+#     pytest --cov=swing_sitemap --cov-report=html tst/
+#
+# =============================================================================
+
+
+# =============================================================================
+# [run] - Data Collection Settings
+# =============================================================================
+
+[run]
+
+# ---------------------------------------------------------------------------
+# source
+# ---------------------------------------------------------------------------
+# Directories to measure coverage for.
+# Measures coverage for the swing_sitemap package.
+#
+source = src/swing_sitemap
+
+# ---------------------------------------------------------------------------
+# branch
+# ---------------------------------------------------------------------------
+# Measure branch coverage in addition to statement coverage.
+# Reports both "line was executed" and "all branches were taken".
+#
+# Example:
+#   if condition:      # Branch: True taken? False taken?
+#       do_something()
+#
+branch = true
+
+# ---------------------------------------------------------------------------
+# parallel
+# ---------------------------------------------------------------------------
+# Enable parallel test execution support.
+# Creates separate .coverage.* files that can be combined with `coverage combine`.
+# Essential for pytest-xdist parallel testing.
+#
+parallel = true
+
+# ---------------------------------------------------------------------------
+# omit
+# ---------------------------------------------------------------------------
+# File patterns to exclude from coverage measurement.
+# These files exist but shouldn't count toward coverage percentages.
+#
+omit =
+    # Test files (we measure what they test, not the tests themselves)
+    */tests/*
+    */tst/*
+    **/conftest.py
+
+    # Auto-generated Django files
+    */migrations/*
+
+    # Cache directories
+    */__pycache__/*
+
+
+# =============================================================================
+# [paths] - Source Path Mapping
+# =============================================================================
+#
+# Maps paths from different environments to canonical paths.
+# Useful when combining coverage from multiple CI runs or containers.
+#
+
+[paths]
+
+source =
+    src/swing_sitemap
+    */site-packages/swing_sitemap
+
+
+# =============================================================================
+# [report] - Reporting Options
+# =============================================================================
+
+[report]
+
+# ---------------------------------------------------------------------------
+# show_missing
+# ---------------------------------------------------------------------------
+# Show line numbers of statements not covered.
+# Output: Name    Stmts   Miss  Cover   Missing
+#         module    100     5    95%    10-12, 45
+#
+show_missing = true
+
+# ---------------------------------------------------------------------------
+# precision
+# ---------------------------------------------------------------------------
+# Decimal places in coverage percentages.
+# 2 = 95.45%, 0 = 95%
+#
+precision = 2
+
+# ---------------------------------------------------------------------------
+# exclude_lines
+# ---------------------------------------------------------------------------
+# Regex patterns for lines to exclude from coverage.
+# Lines matching these patterns won't count as missed.
+#
+exclude_lines =
+    # Standard pragma comment
+    pragma: no cover
+
+    # Debug/repr methods (boilerplate)
+    def __repr__
+
+    # Defensive assertions (shouldn't be reached)
+    raise AssertionError
+    raise NotImplementedError
+
+    # Type checking imports (not executed at runtime)
+    if TYPE_CHECKING:
+
+    # Script entry points
+    if __name__ == .__main__.:
+
+    # Abstract methods (implemented by subclasses)
+    @abstract
+
+    # Typing overloads (not executed)
+    @overload
+
+# ---------------------------------------------------------------------------
+# fail_under
+# ---------------------------------------------------------------------------
+# Minimum coverage percentage required.
+# `coverage report` exits with error if below this threshold.
+# Uncomment and set for CI enforcement.
+#
+# fail_under = 80
+
+
+# =============================================================================
+# [html] - HTML Report Settings
+# =============================================================================
+
+[html]
+
+# Output directory for HTML reports
+directory = htmlcov
+
+# Title shown in HTML report
+title = Swing Coverage Report
+
+# Uncomment to skip files with 100% coverage in the report:
+# skip_covered = true
+
+# Uncomment to skip empty files:
+# skip_empty = true
+
+
+# =============================================================================
+# [xml] - XML Report Settings (for CI integration)
+# =============================================================================
+
+[xml]
+
+# Output path for XML report
+# Used by: Codecov, Coveralls, SonarQube, GitHub Actions
+output = coverage.xml
+
+
+# =============================================================================
+# [json] - JSON Report Settings
+# =============================================================================
+
+[json]
+
+# Output path for JSON report
+output = coverage.json
+
+# Include pretty-printed output
+# pretty_print = true

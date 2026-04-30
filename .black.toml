@@ -1,0 +1,160 @@
+# =============================================================================
+# Black Configuration
+# =============================================================================
+#
+# The uncompromising Python code formatter.
+# Documentation: https://black.readthedocs.io/
+#
+# This file is portable - copy to other repos without modification.
+#
+# -----------------------------------------------------------------------------
+# Usage
+# -----------------------------------------------------------------------------
+#
+#   Format all Python files:
+#     black src/ tst/ exe/
+#
+#   Check without modifying (CI mode):
+#     black --check src/ tst/ exe/
+#
+#   Show diff of changes:
+#     black --diff src/
+#
+#   Format single file:
+#     black src/swing/package/module.py
+#
+# -----------------------------------------------------------------------------
+# Philosophy
+# -----------------------------------------------------------------------------
+#
+# Black is opinionated by design - it has very few configuration options.
+# This reduces bikeshedding and ensures consistent formatting across projects.
+#
+# "Any color you like, as long as it's black."
+#
+# -----------------------------------------------------------------------------
+# Integration
+# -----------------------------------------------------------------------------
+#
+# Black works well with:
+#   - isort: Import sorting (configure with profile = "black")
+#   - flake8: Linting (disable E501 line length, let Black handle it)
+#   - pre-commit: Auto-format on commit
+#
+# =============================================================================
+
+
+[tool.black]
+
+
+# =============================================================================
+# Line Length
+# =============================================================================
+#
+# Maximum line length. Black defaults to 88, but we use 79 to match PEP 8.
+#
+# PEP 8 recommends 79 for code, 72 for docstrings/comments.
+# This works well for side-by-side diffs and smaller screens.
+#
+# -----------------------------------------------------------------------------
+
+line-length = 79
+
+
+# =============================================================================
+# Target Python Version
+# =============================================================================
+#
+# Python versions to target. Black uses this to determine which syntax
+# features are available (e.g., walrus operator :=, match statements).
+#
+# Format: List of "pyXY" strings
+# Include all supported versions from pyproject.toml
+# Note: py314 not yet supported by Black
+#
+# -----------------------------------------------------------------------------
+
+target-version = ["py312", "py313", "py314", "py315"]
+
+
+# =============================================================================
+# File Selection
+# =============================================================================
+#
+# include: Regex pattern for files to format (default: \.pyi?$)
+# extend-exclude: Patterns to exclude in addition to defaults
+#
+# Black's defaults already exclude:
+#   .git, .hg, .mypy_cache, .tox, .venv, _build, buck-out, build, dist
+#
+# -----------------------------------------------------------------------------
+
+include = '\.pyi?$'
+
+
+# =============================================================================
+# Exclusions
+# =============================================================================
+#
+# Extended regex pattern for directories to exclude.
+# Uses verbose regex (can span multiple lines with comments).
+#
+# Note: Use extend-exclude instead of exclude to keep Black's defaults.
+#
+# -----------------------------------------------------------------------------
+
+exclude = '''
+/(
+    # Version control
+    \.git
+  | \.hg
+
+    # Python tooling caches
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | __pycache__
+
+    # Build outputs
+  | _build
+  | buck-out
+  | build
+  | dist
+
+    # Coverage reports
+  | htmlcov
+
+    # Development scratch directories
+  | bup
+  | wip
+  | tmp
+
+    # Django auto-generated files
+  | migrations
+)/
+'''
+
+
+# =============================================================================
+# Additional Options (Usually Left as Defaults)
+# =============================================================================
+#
+# skip-string-normalization:
+#   false (default): Prefer double quotes "
+#   true: Keep original quote style
+#
+# skip-magic-trailing-comma:
+#   false (default): Respect trailing commas as "expand this" hints
+#   true: Ignore trailing commas, Black decides formatting
+#
+# preview:
+#   false (default): Stable formatting only
+#   true: Enable preview style (may change between versions)
+#
+# -----------------------------------------------------------------------------
+
+# Uncomment to keep single quotes:
+# skip-string-normalization = true
+
+# Uncomment to enable preview features:
+# preview = true

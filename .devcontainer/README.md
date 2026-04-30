@@ -33,7 +33,7 @@ To get started with the development environment, follow these steps:
 
 ## Features
 
-- **Python 3.9**: The development environment uses Python 3.9.
+- **Python 3.15**: The development environment uses Python 3.15.
 - **Poetry**: Dependency management is handled by Poetry, ensuring that you have all the required packages.
 - **Pre-installed Extensions**: Useful VS Code extensions such as Python and Django are pre-installed.
 

@@ -1,0 +1,36 @@
+# =============================================================================
+# Honcho Local Configuration
+# =============================================================================
+#
+# Local overrides for Honcho process manager.
+# Documentation: https://honcho.readthedocs.io/
+#
+# This file is portable across swing-* repos. Per-repo ports are configured
+# in ports.mk and exported by the Makefile.
+#
+# Usage:
+#   make start            # via Makefile (recommended)
+#   honcho start          # direct
+#
+# =============================================================================
+
+env:
+  # ---------------------------------------------------------------------------
+  # Python Configuration
+  # ---------------------------------------------------------------------------
+  PYTHONPATH: "./src:./exe"
+  PYTHONUNBUFFERED: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+  # ---------------------------------------------------------------------------
+  # Django Configuration
+  # ---------------------------------------------------------------------------
+  DJANGO_SETTINGS_MODULE: demo_project.settings
+  DJANGO_PROJECT_ROOT: "."
+  DEBUG: "True"
+  DJANGO_DEBUG_TOOLBAR: "True"
+
+  # ---------------------------------------------------------------------------
+  # Logging Configuration
+  # ---------------------------------------------------------------------------
+  LOG_LEVEL: DEBUG

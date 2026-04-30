@@ -1,0 +1,411 @@
+# =============================================================================
+# Pylint Configuration
+# https://pylint.pycqa.org/en/latest/
+# =============================================================================
+#
+# This file is portable - copy to other repos without modification.
+#
+# Pylint is a static code analyzer that checks for errors, enforces coding
+# standards, and looks for code smells. It's more comprehensive than flake8
+# but also slower and more opinionated.
+#
+# Usage:
+#   poetry run pylint src/                  # Check src/ directory
+#   poetry run pylint src/ --errors-only    # Only show errors (faster)
+#   poetry run pylint src/ -j 0             # Use all CPU cores
+#   poetry run pylint src/ --output-format=json  # JSON output for CI
+#   poetry run pylint src/ --generate-rcfile     # Generate default config
+#
+# Message categories:
+#   C = Convention (style violations)
+#   R = Refactor (code smell)
+#   W = Warning (potential issues)
+#   E = Error (probable bugs)
+#   F = Fatal (prevented analysis)
+#
+# Disable inline: # pylint: disable=C0111
+# Disable block:  # pylint: disable=all ... # pylint: enable=all
+#
+# =============================================================================
+
+
+# =============================================================================
+# Main Settings
+# =============================================================================
+
+[MAIN]
+
+# Target Python version (minimum supported)
+# Supports: 3.12, 3.13, 3.14 (see pyproject.toml)
+py-version=3.12
+
+# Source roots for import resolution
+source-roots=src
+
+# Recurse into subdirectories
+recursive=yes
+
+# Don't load C extensions (security)
+unsafe-load-any-extension=no
+
+# Modify sys.path for imports (src layout)
+init-hook='import sys; sys.path.append("src")'
+
+# Parallel processing (0 = auto-detect CPU count)
+jobs=0
+
+# Limit type inference for performance
+limit-inference-results=100
+
+# Cache results for incremental analysis
+persistent=yes
+
+# Minimum score to pass (0-10)
+fail-under=10.0
+
+# Directories to skip entirely
+ignore=CVS,.git,__pycache__,build,dist,.venv,htmlcov,bup,wip,tmp,tst,migrations,node_modules
+
+# File patterns to skip (regex)
+ignore-patterns=^\.#
+
+# Allow these C extensions to be loaded
+extension-pkg-allow-list=pydantic,lxml
+
+
+# =============================================================================
+# Django Plugin
+# =============================================================================
+#
+# pylint-django understands Django's dynamic attributes.
+# Install: poetry add pylint-django --group dev
+# Comment out if not a Django project.
+#
+# =============================================================================
+
+load-plugins=pylint_django
+django-settings-module=settings
+
+
+# =============================================================================
+# Message Control
+# =============================================================================
+#
+# Disable specific messages by code or name.
+# Use sparingly - prefer fixing issues over disabling.
+#
+# Find codes: pylint --list-msgs | grep <pattern>
+#
+# =============================================================================
+
+[MESSAGES CONTROL]
+
+disable=
+    # Convention (C) - Style issues
+    C0103,  # invalid-name: Allow short names like i, j, k, id, pk
+    C0111,  # missing-docstring: Deprecated, use C0114-C0116
+    C0114,  # missing-module-docstring: Not all modules need docstrings
+    C0115,  # missing-class-docstring: Not all classes need docstrings
+    C0116,  # missing-function-docstring: Not all functions need docstrings
+    C0301,  # line-too-long: Handled by black/flake8
+    C0415,  # import-outside-toplevel: Sometimes needed for lazy imports
+
+    # Refactor (R) - Code smells
+    R0801,  # duplicate-code: Too many false positives
+    R0903,  # too-few-public-methods: Data classes, DTOs are fine
+    R0913,  # too-many-arguments: Sometimes unavoidable
+
+    # Warning (W) - Potential issues
+    W0212,  # protected-access: Sometimes needed for testing/internals
+    W0511,  # fixme: Allow TODO/FIXME comments
+    W0613,  # unused-argument: Callbacks, overrides often have unused args
+    W0621,  # redefined-outer-name: Common pattern in pytest fixtures
+
+    # Error (E) - Probable bugs
+    E1101,  # no-member: False positives with Django/dynamic attributes
+
+
+# =============================================================================
+# Reports
+# =============================================================================
+
+[REPORTS]
+
+# Output format: text, parseable, colorized, json, msvs
+output-format=text
+
+# Include full report with statistics
+reports=no
+
+# Display score at end
+score=yes
+
+
+# =============================================================================
+# Refactoring Checks
+# =============================================================================
+
+[REFACTORING]
+
+# Maximum nesting depth
+max-nested-blocks=5
+
+# Functions that never return (for unreachable code detection)
+never-returning-functions=sys.exit,argparse.parse_error
+
+
+# =============================================================================
+# Naming Conventions
+# =============================================================================
+#
+# Enforce consistent naming styles across the codebase.
+# Styles: snake_case, camelCase, PascalCase, UPPER_CASE, any
+#
+# =============================================================================
+
+[BASIC]
+
+# Naming styles by type
+argument-naming-style=snake_case
+attr-naming-style=snake_case
+class-attribute-naming-style=any
+class-const-naming-style=UPPER_CASE
+class-naming-style=PascalCase
+const-naming-style=UPPER_CASE
+function-naming-style=snake_case
+method-naming-style=snake_case
+module-naming-style=snake_case
+variable-naming-style=snake_case
+
+# Short names that are always acceptable
+good-names=i,j,k,ex,Run,_,id,pk,db,qs
+
+# Names to always reject
+bad-names=foo,bar,baz,toto,tutu,tata
+
+
+# =============================================================================
+# Formatting
+# =============================================================================
+
+[FORMAT]
+
+# Line ending style: LF, CRLF, or empty for any
+expected-line-ending-format=LF
+
+# Regex for lines allowed to exceed max length (URLs, etc.)
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+
+# Indentation settings
+indent-after-paren=4
+indent-string='    '
+
+# Maximum line length (matches black/flake8)
+max-line-length=79
+
+# Maximum lines per module
+max-module-lines=1000
+
+# Don't allow single-line if/class statements
+single-line-if-stmt=no
+single-line-class-stmt=no
+
+
+# =============================================================================
+# Logging
+# =============================================================================
+
+[LOGGING]
+
+# Logging string format style: old (%), new ({}), fstr (f-string)
+logging-format-style=old
+
+# Modules to check for logging usage
+logging-modules=logging
+
+
+# =============================================================================
+# Type Checking
+# =============================================================================
+
+[TYPECHECK]
+
+# Dynamically generated members (avoid false positives)
+generated-members=
+    logging.TRACE,
+    logging.SUCCESS,
+    REQUEST.*,
+    Objects.*,
+
+# Context manager decorators
+contextmanager-decorators=contextlib.contextmanager
+
+# Ignore mixin class members
+ignore-mixin-members=yes
+
+# Ignore None when checking member access
+ignore-none=yes
+
+# Skip inference on opaque objects
+ignore-on-opaque-inference=yes
+
+# Classes to skip member checking
+ignored-classes=optparse.Values,thread._local,_thread._local
+
+
+# =============================================================================
+# Miscellaneous
+# =============================================================================
+
+[MISCELLANEOUS]
+
+# Comment tags to flag as warnings (W0511)
+notes=FIXME,XXX,TODO
+
+
+# =============================================================================
+# Similarity / Duplicate Code
+# =============================================================================
+
+[SIMILARITIES]
+
+# Minimum lines for similarity detection
+min-similarity-lines=10
+
+# Ignore these when checking similarity
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
+ignore-signatures=yes
+
+
+# =============================================================================
+# Spelling
+# =============================================================================
+
+[SPELLING]
+
+# Maximum spelling suggestions to show
+max-spelling-suggestions=4
+
+# Comment directives to ignore for spell checking
+spelling-ignore-comment-directives=fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:
+
+
+# =============================================================================
+# String Handling
+# =============================================================================
+
+[STRING]
+
+# Check for consistent quote style (handled by black)
+check-quote-consistency=no
+
+
+# =============================================================================
+# Variables
+# =============================================================================
+
+[VARIABLES]
+
+# Allow unused variables at module level
+allow-global-unused-variables=yes
+
+# Callback function name patterns
+callbacks=cb_,_cb
+
+# Patterns for dummy/unused variables
+dummy-variables-rgx=_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_
+
+# Patterns for ignored argument names
+ignored-argument-names=_.*|^ignored_|^unused_
+
+# Check __init__.py for imports
+init-import=no
+
+# Modules that redefine builtins (compatibility layers)
+redefining-builtins-modules=six.moves,past.builtins,future.builtins,builtins,io
+
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+[CLASSES]
+
+# Methods that define attributes (for attribute detection)
+defining-attr-methods=__init__,__new__,setUp,__post_init__
+
+# Protected members to exclude from checks
+exclude-protected=_asdict,_fields,_replace,_source,_make
+
+# First argument name for classmethods
+valid-classmethod-first-arg=cls
+
+# First argument name for metaclass classmethods
+valid-metaclass-classmethod-first-arg=cls
+
+
+# =============================================================================
+# Design Complexity Limits
+# =============================================================================
+#
+# These limits help identify overly complex code that may need refactoring.
+# Exceeding these triggers R09xx (too-many-*) messages.
+#
+# =============================================================================
+
+[DESIGN]
+
+# Function/method arguments
+max-args=10
+
+# Instance attributes
+max-attributes=15
+
+# Boolean expressions in a single statement
+max-bool-expr=5
+
+# Branches (if/elif/else)
+max-branches=15
+
+# Local variables
+max-locals=20
+
+# Parent classes
+max-parents=7
+
+# Public methods per class
+max-public-methods=25
+
+# Return statements per function
+max-returns=6
+
+# Statements per function
+max-statements=50
+
+# Minimum public methods (0 allows data classes)
+min-public-methods=0
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+[IMPORTS]
+
+# Allow from module import * if __all__ is defined
+allow-wildcard-with-all=no
+
+# Analyze fallback import blocks (try/except ImportError)
+analyse-fallback-blocks=no
+
+
+# =============================================================================
+# Exceptions
+# =============================================================================
+
+[EXCEPTIONS]
+
+# Exceptions that are too broad to catch
+overgeneral-exceptions=builtins.BaseException,builtins.Exception

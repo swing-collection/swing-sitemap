@@ -1,0 +1,137 @@
+# =============================================================================
+# Bandit Configuration
+# =============================================================================
+#
+# Python security linter for finding common security issues.
+# Documentation: https://bandit.readthedocs.io/
+#
+# This file is portable - copy to other repos without modification.
+#
+# -----------------------------------------------------------------------------
+# Usage
+# -----------------------------------------------------------------------------
+#
+#   Scan source directory:
+#     bandit -r src/ -c .bandit.yaml
+#
+#   Scan with verbose output:
+#     bandit -r src/ -c .bandit.yaml -v
+#
+#   Generate report (JSON):
+#     bandit -r src/ -c .bandit.yaml -f json -o bandit-report.json
+#
+#   List all available tests:
+#     bandit --list
+#
+# -----------------------------------------------------------------------------
+# Severity Levels
+# -----------------------------------------------------------------------------
+#
+#   LOW:    Informational, low impact
+#   MEDIUM: Possible security issue, should investigate
+#   HIGH:   Likely security vulnerability, requires attention
+#
+# -----------------------------------------------------------------------------
+# Confidence Levels
+# -----------------------------------------------------------------------------
+#
+#   LOW:    Uncertain detection, may be false positive
+#   MEDIUM: Likely correct, review recommended
+#   HIGH:   Very likely a real issue
+#
+# =============================================================================
+
+# =============================================================================
+# Excluded Directories
+# =============================================================================
+#
+# Directories to skip during scanning.
+# Typically excludes tests, dependencies, and development artifacts.
+#
+# -----------------------------------------------------------------------------
+
+exclude_dirs:
+  # Test directories (assertions and test data are expected)
+  - tst
+  - tests
+
+  # Development scratch directories
+  - bup
+  - wip
+  - tmp
+
+  # Django migrations (auto-generated, not security-relevant)
+  - migrations
+
+  # Dependencies (scanned separately or not our code)
+  - node_modules
+  - .venv
+  - venv
+
+# =============================================================================
+# Skipped Tests
+# =============================================================================
+#
+# Test IDs to skip globally. Use sparingly - prefer inline # nosec comments
+# for specific false positives.
+#
+# Test ID Reference: https://bandit.readthedocs.io/en/latest/plugins/
+#
+# Format: B### where ### is the test number
+#
+# Common categories:
+#   B1xx: Miscellaneous tests
+#   B2xx: Application/framework-specific
+#   B3xx: Blacklists (dangerous function calls)
+#   B4xx: Cryptographic issues
+#   B5xx: Shell injection risks
+#   B6xx: SSH/XML issues
+#   B7xx: Django/Flask-specific
+#
+# -----------------------------------------------------------------------------
+
+skips:
+  # -------------------------------------------------------------------------
+  # B101: assert_used
+  # -------------------------------------------------------------------------
+  # Using assert statements for validation.
+  # Asserts are stripped in optimized bytecode (python -O), but we use them
+  # intentionally in tests and for internal invariant checks.
+  # Skip: Tests use assert; non-test asserts should use proper validation.
+  - B101
+
+  # -------------------------------------------------------------------------
+  # B311: random
+  # -------------------------------------------------------------------------
+  # Using pseudo-random generators (random module).
+  # The random module is NOT cryptographically secure, but is fine for:
+  #   - Test data generation
+  #   - UI shuffling
+  #   - Non-security randomness
+  # Skip: We don't use random for security-sensitive operations.
+  - B311
+
+  # -------------------------------------------------------------------------
+  # B601: paramiko_calls
+  # -------------------------------------------------------------------------
+  # Paramiko SSH library usage.
+  # Skip: This project doesn't use Paramiko.
+  - B601
+
+# =============================================================================
+# Per-File Ignores (Alternative to skips)
+# =============================================================================
+#
+# Instead of global skips, you can use inline comments:
+#
+#   # nosec B101
+#   assert user.is_authenticated
+#
+#   result = random.choice(items)  # nosec B311 - not security-sensitive
+#
+# Or configure per-file in pyproject.toml:
+#
+#   [tool.bandit.assert_used]
+#   skips = ["**/test_*.py", "**/conftest.py"]
+#
+# =============================================================================

@@ -1,0 +1,326 @@
+# =============================================================================
+# NPM Ignore
+# =============================================================================
+#
+# Files and directories excluded from the npm package.
+# Documentation: https://docs.npmjs.com/cli/v10/using-npm/developers
+#
+# -----------------------------------------------------------------------------
+# How It Works
+# -----------------------------------------------------------------------------
+#
+# When running `npm publish` or `npm pack`, npm creates a tarball containing
+# only files intended for distribution. This file specifies what to EXCLUDE.
+#
+# Priority (highest to lowest):
+#   1. package.json "files" field (whitelist, overrides .npmignore)
+#   2. .npmignore (this file)
+#   3. .gitignore (used if no .npmignore exists)
+#
+# Always included (cannot be excluded):
+#   - package.json
+#   - README (any case/extension)
+#   - LICENSE / LICENCE
+#   - Main file specified in package.json
+#
+# Always excluded (cannot be included):
+#   - .git/
+#   - node_modules/
+#   - .npmrc
+#   - package-lock.json (unless explicitly in "files")
+#
+# -----------------------------------------------------------------------------
+# Usage
+# -----------------------------------------------------------------------------
+#
+#   Preview package contents:
+#     npm pack --dry-run
+#
+#   List files in tarball:
+#     tar -tzf package-name-1.0.0.tgz
+#
+#   Check package size:
+#     npm publish --dry-run
+#
+# =============================================================================
+
+
+# =============================================================================
+# Source Directories
+# =============================================================================
+#
+# Only ship compiled/bundled output (dist/).
+# Source files are excluded to reduce package size.
+#
+# -----------------------------------------------------------------------------
+
+src/
+exe/
+tst/
+bin/
+doc/
+bup/
+img/
+log/
+res/
+
+
+# =============================================================================
+# Python Files
+# =============================================================================
+#
+# This is a hybrid Python/JS project. Python files are not needed in the
+# npm package - they're distributed via PyPI instead.
+#
+# -----------------------------------------------------------------------------
+
+*.py
+*.pyc
+*.pyo
+__pycache__/
+
+# Python environment & tooling
+.venv/
+poetry.lock
+pyproject.toml
+.python-version
+
+# Python linting & testing config
+.coveragerc
+.flake8
+.pylintrc
+pytest.ini
+tox.ini
+mypy.ini
+.isort.cfg
+setup.py
+setup.cfg
+MANIFEST.in
+
+
+# =============================================================================
+# Package Manager Lockfiles
+# =============================================================================
+#
+# Lockfiles are for development reproducibility, not for published packages.
+# Consumers use their own lockfiles with the version ranges in package.json.
+#
+# -----------------------------------------------------------------------------
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+
+# =============================================================================
+# Editor & IDE Configuration
+# =============================================================================
+#
+# Editor-specific settings are developer preferences, not package dependencies.
+#
+# -----------------------------------------------------------------------------
+
+.editorconfig
+*.code-workspace
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# =============================================================================
+# CI/CD Configuration
+# =============================================================================
+#
+# Pipeline configs are repository-specific, not useful to package consumers.
+#
+# -----------------------------------------------------------------------------
+
+.travis.yml
+.circleci/
+.gitlab-ci.yml
+azure-pipelines.yml
+.github/
+
+
+# =============================================================================
+# Docker Configuration
+# =============================================================================
+#
+# Container configs are for deployment, not package distribution.
+#
+# -----------------------------------------------------------------------------
+
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+
+# =============================================================================
+# Linting & Formatting Configuration
+# =============================================================================
+#
+# These enforce project code style - not relevant to consumers.
+#
+# -----------------------------------------------------------------------------
+
+.prettierrc
+.prettierrc.*
+.prettierignore
+.eslintrc*
+eslint.config.*
+.stylelintrc*
+stylelint.config.*
+
+
+# =============================================================================
+# Build Configuration
+# =============================================================================
+#
+# Build tooling configs are used to CREATE the dist/ output.
+# Consumers only need the built artifacts, not the build system.
+#
+# -----------------------------------------------------------------------------
+
+vite.config.ts
+tsconfig*.json
+webpack*.cjs
+
+
+# =============================================================================
+# Tests & Coverage
+# =============================================================================
+#
+# Test files and coverage reports are development artifacts.
+#
+# -----------------------------------------------------------------------------
+
+tests/
+*.spec.js
+*.spec.ts
+*.test.js
+*.test.ts
+coverage/
+htmlcov/
+.coverage
+
+
+# =============================================================================
+# Documentation
+# =============================================================================
+#
+# Exclude documentation except README.md (auto-included by npm).
+# Full docs are published separately (e.g., GitHub Pages, ReadTheDocs).
+#
+# -----------------------------------------------------------------------------
+
+doc/
+docs/
+*.md
+!README.md
+mkdocs.yml
+site/
+
+
+# =============================================================================
+# Metadata Files
+# =============================================================================
+#
+# Citation and license files - LICENSE is auto-included by npm.
+#
+# -----------------------------------------------------------------------------
+
+CITATION.cff
+codemeta.json
+
+# Note: LICENSE is automatically included by npm, no need to list here
+
+
+# =============================================================================
+# Operating System Files
+# =============================================================================
+#
+# OS-generated files that should never be in packages.
+#
+# -----------------------------------------------------------------------------
+
+.DS_Store
+Thumbs.db
+
+
+# =============================================================================
+# Logs
+# =============================================================================
+#
+# Log files from npm/yarn/development are not distributable.
+#
+# -----------------------------------------------------------------------------
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# =============================================================================
+# Environment Variables
+# =============================================================================
+#
+# NEVER publish environment files - may contain secrets!
+#
+# -----------------------------------------------------------------------------
+
+.env
+*.env
+.env.*
+
+
+# =============================================================================
+# Temporary & Development Files
+# =============================================================================
+#
+# Scratch files, backups, and local development artifacts.
+#
+# -----------------------------------------------------------------------------
+
+*.tmp
+*.bak
+*.local
+wip/
+tmp/
+
+
+# =============================================================================
+# Build & Automation Files
+# =============================================================================
+#
+# Project automation that isn't needed by package consumers.
+#
+# -----------------------------------------------------------------------------
+
+Makefile
+honcho*.yml
+Procfile
+
+
+# =============================================================================
+# Database Files
+# =============================================================================
+#
+# Local development databases should never be published.
+#
+# -----------------------------------------------------------------------------
+
+*.sqlite3
+*.db
+
+
+# =============================================================================
+# Version Control
+# =============================================================================
+#
+# Note: .git/ is automatically excluded by npm, listed here for clarity.
+#
+# -----------------------------------------------------------------------------
+
+.git/

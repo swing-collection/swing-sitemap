@@ -1,0 +1,70 @@
+# =============================================================================
+# Python Version
+# =============================================================================
+#
+# Specifies the Python version for this project.
+# Used by: pyenv, poetry, and other Python version managers.
+#
+# This file is portable - copy to other repos without modification.
+#
+# -----------------------------------------------------------------------------
+# How It Works
+# -----------------------------------------------------------------------------
+#
+# When you `cd` into a directory with .python-version, pyenv automatically
+# activates the specified Python version (if installed).
+#
+# This ensures all developers use the same Python version, preventing
+# compatibility issues between different Python releases.
+#
+# -----------------------------------------------------------------------------
+# Usage (pyenv)
+# -----------------------------------------------------------------------------
+#
+#   Install the specified version:
+#     pyenv install $(cat .python-version)
+#
+#   List installed versions:
+#     pyenv versions
+#
+#   Check current version:
+#     python --version
+#
+#   Set as global default:
+#     pyenv global $(cat .python-version)
+#
+# -----------------------------------------------------------------------------
+# Usage (Poetry)
+# -----------------------------------------------------------------------------
+#
+# Poetry reads this file when creating virtual environments:
+#
+#   poetry env use $(cat .python-version)
+#   poetry install
+#
+# If poetry.toml has `prefer-active-python = true`, Poetry will use
+# whatever Python version pyenv has activated.
+#
+# -----------------------------------------------------------------------------
+# Supported Formats
+# -----------------------------------------------------------------------------
+#
+#   3.12        Minor version (pyenv uses latest 3.12.x)
+#   3.12.0      Exact version
+#   system      Use system Python
+#   pypy3.10    PyPy interpreter
+#
+# -----------------------------------------------------------------------------
+# Python 3.12 Features
+# -----------------------------------------------------------------------------
+#
+# Key features in Python 3.12:
+#   - Improved error messages with suggestions
+#   - Per-interpreter GIL (experimental)
+#   - Type parameter syntax (PEP 695)
+#   - F-string improvements
+#   - Faster startup and runtime
+#   - Support for the Linux perf profiler
+#
+# =============================================================================
+3.12

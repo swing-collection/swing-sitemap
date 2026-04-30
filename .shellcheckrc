@@ -1,0 +1,24 @@
+# =============================================================================
+# ShellCheck Configuration
+# =============================================================================
+#
+# Documentation: https://www.shellcheck.net/wiki/
+#
+# =============================================================================
+
+# Use bash as default shell
+shell=bash
+
+# Enable all optional checks
+enable=all
+
+# Severity threshold (error, warning, info, style)
+severity=warning
+
+# Exclude specific rules
+# SC1091: Not following sourced files (can't always resolve paths)
+# SC2034: Unused variables (sometimes set for external use)
+disable=SC1091,SC2034
+
+# Follow external sources when possible
+external-sources=true

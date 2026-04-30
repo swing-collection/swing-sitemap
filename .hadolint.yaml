@@ -1,0 +1,36 @@
+# =============================================================================
+# Hadolint Configuration - Dockerfile Linter
+# =============================================================================
+#
+# Documentation: https://github.com/hadolint/hadolint
+#
+# Severity levels: error, warning, info, style
+# =============================================================================
+
+# Fail on these severity levels
+failure-threshold: warning
+
+# Trusted registries for DL3026 (use COPY instead of ADD for URLs)
+trustedRegistries:
+  - docker.io
+  - quay.io
+  - ghcr.io
+  - mcr.microsoft.com
+
+# Ignored rules
+ignored:
+  # DL3018: Pin versions in apk add (MinIO base image handles this)
+  - DL3018
+  # DL3008: Pin versions in apt-get install
+  - DL3008
+
+# Rule-specific overrides
+override:
+  warning:
+    # Treat these as warnings instead of errors
+    - DL3025  # Use JSON notation for CMD
+
+# Labels to require
+label-schema:
+  maintainer: text
+  org.opencontainers.image.source: url

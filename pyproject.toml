@@ -5,12 +5,51 @@
 # Project Configuration
 # =============================================================================
 
+[project]
+name = "swing_sitemap"
+version = "0.0.1"
+description = "Django app for generating XML sitemaps"
+license = { text = "BSD-3-Clause" }
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+authors = [{ name = "Scape Press", email = "info@scape.press" }]
+maintainers = [{ name = "Lars van Vianen", email = "lars@scape.press" }]
+keywords = ["Django", "sitemap", "seo", "swing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Framework :: Django :: 5",
+    "Framework :: Django :: 6",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["dependencies"]
+
+
+# =============================================================================
+# Project URLs
+# =============================================================================
+
+[project.urls]
+homepage = "https://swing.dj/"
+repository = "https://github.com/swing-collection/swing-sitemap"
+documentation = "https://github.com/swing-collection/swing-sitemap/tree/dev/docs"
+
+
+# =============================================================================
+# Poetry
+# =============================================================================
+
 [tool.poetry]
-name = "my_django_plugin"
-version = "0.1.0"
-description = "A Django plugin for..."
-authors = ["Your Name <your.email@example.com>"]
-license = "MIT"
+package-mode = true
+packages = [{ include = "swing_sitemap", from = "src" }]
 
 
 # =============================================================================
@@ -18,8 +57,7 @@ license = "MIT"
 # =============================================================================
 
 [tool.poetry.dependencies]
-python = "^3.8"
-Django = "^4.0"
+django = ">=5.0,<7.0"
 
 
 # =============================================================================
@@ -27,15 +65,86 @@ Django = "^4.0"
 # =============================================================================
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"           # Framework for testing
-pytest-cov = "^6.1.1"       # Code coverage for tests
-black = "^24.8.0"           # Code formatter
-flake8 = "^7.2.0"           # Linter for code quality
-mypy = "^1.15.0"            # Static type checker
-sphinx = "^8.0.2"           # Documentation generator
-isort = "^5.10.1"           # Import sorter
-tox = "^4.4.6"              # Testing multiple environments
-pre-commit = "^4.0.1"       # Pre-commit hooks for linting and formatting
+pytest = "^8.0"
+pytest-django = "^4.8"
+pytest-cov = "^5.0"
+black = "^24.0"
+isort = "^5.13"
+flake8 = "^7.1"
+mypy = "^1.10"
+pylint = "^3.2"
+pylint-django = "^2.5"
+django-stubs = "^5.0"
+bandit = { extras = ["toml"], version = "^1.7" }
+pre-commit = "^3.7"
+honcho = "^1.1"
+tox = "^4.15"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "^1.6"
+mkdocs-material = "^9.5"
+
+
+# =============================================================================
+# Scripts
+# =============================================================================
+
+[project.scripts]
+swing_sitemap = "swing_sitemap.__main__:main"
+
+
+# =============================================================================
+# Plugins
+# =============================================================================
+
+[tool.poetry.plugins."django.apps"]
+"swing_sitemap" = "swing_sitemap.apps.SwingSitemapConfig"
+
+
+# =============================================================================
+# Pylint Configuration
+# =============================================================================
+
+[tool.pylint.master]
+load-plugins = ["pylint_django"]
+django_settings_module = "exe.demo_project.settings"
+ignore = ["bup", "tmp", "tst", "migrations"]
+
+[tool.pylint."messages control"]
+disable = [
+    "import-outside-toplevel",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "line-too-long",
+    "too-few-public-methods",
+    "redefined-outer-name",       # Normal pytest fixture pattern
+    "unused-argument",            # db fixture required by pytest-django
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+
+# =============================================================================
+# Mypy Configuration
+# =============================================================================
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+strict = false
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "*.migrations.*"
+ignore_errors = true
+
+[tool.django-stubs]
+django_settings_module = "exe.demo_project.settings"
 
 
 # =============================================================================
@@ -43,8 +152,5 @@ pre-commit = "^4.0.1"       # Pre-commit hooks for linting and formatting
 # =============================================================================
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-my_django_plugin = 'my_django_plugin:main'
