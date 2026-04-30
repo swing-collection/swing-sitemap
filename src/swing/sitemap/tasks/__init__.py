@@ -12,7 +12,7 @@ Tasks:
 - :func:`invalidate_sitemap_cache` - Invalidate sitemap cache
 """
 
-from swing_sitemap.tasks.submit_sitemap import (
+from swing.sitemap.tasks.submit_sitemap import (
     invalidate_sitemap_cache,
     submit_sitemap_periodic,
     submit_sitemap_task,

@@ -32,8 +32,8 @@ from collections.abc import Iterable, Sequence
 
 from django.urls import reverse
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 
 # =============================================================================
 # Types

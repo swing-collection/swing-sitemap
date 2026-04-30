@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 import pytest
 from django.test import override_settings
 
-from swing_sitemap.sitemaps.sitemap_video import VideoSitemap
+from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
 
 
 class MockVideo:

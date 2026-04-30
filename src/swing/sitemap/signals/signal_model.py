@@ -31,7 +31,7 @@ your app's ``ready()`` method::
 
     class MyAppConfig(AppConfig):
         def ready(self):
-            from swing_sitemap.signals import register_sitemap_signals
+            from swing.sitemap.signals import register_sitemap_signals
             register_sitemap_signals()
 """
 
@@ -52,7 +52,7 @@ from django.core.cache import cache
 from django.db.models import Model
 from django.db.models.signals import post_delete, post_save
 
-from swing_sitemap.conf import get_setting
+from swing.sitemap.conf import get_setting
 
 logger = logging.getLogger(__name__)
 
@@ -178,7 +178,7 @@ def sitemap_post_save(sender: type, instance: Model, **kwargs: Any) -> None:
         # Optionally trigger sitemap submission
         if signals_config.get("auto_submit", False):
             try:
-                from swing_sitemap.tasks.submit_sitemap import submit_sitemap_task
+                from swing.sitemap.tasks.submit_sitemap import submit_sitemap_task
 
                 submit_sitemap_task.delay()
             except ImportError:
@@ -236,7 +236,7 @@ def register_sitemap_signals(models: list[str] | None = None) -> None:
 
         class MyAppConfig(AppConfig):
             def ready(self):
-                from swing_sitemap.signals import register_sitemap_signals
+                from swing.sitemap.signals import register_sitemap_signals
                 register_sitemap_signals()
     """
     global _signals_registered

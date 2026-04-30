@@ -12,7 +12,7 @@ Drop-in URL patterns for sites that want a one-line sitemap setup.
 
 Usage in a project's ``urls.py``::
 
-    from swing_sitemap.urls import sitemap_urlpatterns
+    from swing.sitemap.urls import sitemap_urlpatterns
 
     urlpatterns = [
         # ... your patterns ...
@@ -39,7 +39,7 @@ from django.contrib.sitemaps.views import index as sitemap_index_view
 from django.contrib.sitemaps.views import sitemap as sitemap_view
 from django.urls import URLPattern, path
 
-from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
+from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 
 
 # =============================================================================
@@ -61,7 +61,7 @@ def sitemap_urlpatterns(
 
     Args:
         sitemaps: Mapping of section name -> sitemap class/instance.
-            Defaults to :func:`~swing_sitemap.default_sitemaps`.
+            Defaults to :func:`~swing.sitemap.default_sitemaps`.
         sitemap_url: Path for the combined sitemap. Default
             ``sitemap.xml``.
         include_index: If ``True`` also expose an index plus per-section
@@ -104,7 +104,7 @@ def sitemap_urlpatterns(
 
 # Default ``urlpatterns`` for projects that prefer ``include()``::
 #
-#     path("", include("swing_sitemap.urls")),
+#     path("", include("swing.sitemap.urls")),
 #
 # Computed lazily on first attribute access so importing this module does
 # not require Django settings to be configured yet.
@@ -113,7 +113,7 @@ def __getattr__(name: str):  # PEP 562
         value = list(sitemap_urlpatterns())
         globals()["urlpatterns"] = value
         return value
-    raise AttributeError(f"module 'swing_sitemap.urls' has no attribute {name!r}")
+    raise AttributeError(f"module 'swing.sitemap.urls' has no attribute {name!r}")
 
 
 __all__ = ["sitemap_urlpatterns", "urlpatterns"]  # noqa: F822

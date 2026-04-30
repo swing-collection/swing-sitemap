@@ -11,7 +11,7 @@ from unittest.mock import Mock
 import pytest
 from django.test import override_settings
 
-from swing_sitemap.sitemaps.sitemap_image import ImageSitemap
+from swing.sitemap.sitemaps.sitemap_image import ImageSitemap
 
 
 class MockPage:

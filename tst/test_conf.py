@@ -8,7 +8,7 @@ import warnings
 import pytest
 from django.test.utils import override_settings
 
-from swing_sitemap.conf import DEFAULTS, get_config, get_setting
+from swing.sitemap.conf import DEFAULTS, get_config, get_setting
 
 
 def test_defaults_returned_when_no_user_settings():

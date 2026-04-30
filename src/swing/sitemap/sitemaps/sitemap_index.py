@@ -13,7 +13,7 @@ when sitemaps exceed Google's limits (50,000 URLs or 50MB uncompressed).
 
 Usage::
 
-    from swing_sitemap.sitemaps.sitemap_index import paginate_sitemap
+    from swing.sitemap.sitemaps.sitemap_index import paginate_sitemap
 
     # Automatically paginate large sitemaps
     sitemaps = paginate_sitemap(my_large_sitemap, max_urls=50000)
@@ -31,7 +31,7 @@ from typing import Any, TypeVar
 
 from django.contrib.sitemaps import Sitemap
 
-from swing_sitemap.conf import get_setting
+from swing.sitemap.conf import get_setting
 
 T = TypeVar("T")
 

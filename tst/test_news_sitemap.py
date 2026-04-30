@@ -12,7 +12,7 @@ import pytest
 from django.test import override_settings
 from django.utils import timezone
 
-from swing_sitemap.sitemaps.sitemap_news import NewsSitemap
+from swing.sitemap.sitemaps.sitemap_news import NewsSitemap
 
 
 class MockArticle:

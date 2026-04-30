@@ -21,7 +21,7 @@ def test_template_tag_returns_absolute_with_request():
 
 
 def test_context_processor_provides_absolute_url():
-    from swing_sitemap.context_processors import sitemap_url
+    from swing.sitemap.context_processors import sitemap_url
 
     req = RequestFactory().get("/", HTTP_HOST="example.com")
     ctx = sitemap_url(req)

@@ -32,7 +32,7 @@ Configuration via Django settings::
 
 Usage::
 
-    from swing_sitemap.tasks import submit_sitemap_task
+    from swing.sitemap.tasks import submit_sitemap_task
 
     # Submit immediately
     submit_sitemap_task.delay("https://example.com/sitemap.xml")
@@ -51,8 +51,8 @@ from typing import Any
 
 from celery import shared_task
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
 
 logger = logging.getLogger(__name__)
 
@@ -154,7 +154,7 @@ def submit_sitemap_periodic(self) -> dict[str, Any]:
 
         CELERY_BEAT_SCHEDULE = {
             'submit-sitemap-daily': {
-                'task': 'swing_sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
+                'task': 'swing.sitemap.tasks.submit_sitemap.submit_sitemap_periodic',
                 'schedule': crontab(hour=6, minute=0),
             },
         }

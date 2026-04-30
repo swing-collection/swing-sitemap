@@ -7,9 +7,9 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.test.utils import override_settings
 
-from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
-from swing_sitemap.sitemaps.sitemap_model import ModelSitemap
-from swing_sitemap.sitemaps.sitemap_static import StaticSitemap
+from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
+from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
+from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 
 
 def test_only_static_when_no_models_configured():

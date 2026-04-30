@@ -20,8 +20,8 @@ Usage::
 
 from django.core.management.base import BaseCommand, CommandError
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
 
 
 class Command(BaseCommand):

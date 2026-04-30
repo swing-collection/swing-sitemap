@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-swing_sitemap
+swing.sitemap
 =============
 
 Reusable, CMS-agnostic Django sitemap toolkit. Exposes a small,
@@ -10,7 +10,7 @@ lazy-loaded public API.
 Quick start::
 
     # project/urls.py
-    from swing_sitemap.urls import sitemap_urlpatterns
+    from swing.sitemap.urls import sitemap_urlpatterns
     urlpatterns = [..., *sitemap_urlpatterns()]
 
     # project/settings.py
@@ -41,7 +41,7 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-default_app_config = "swing_sitemap.apps.SwingSitemapConfig"
+default_app_config = "swing.sitemap.apps.SwingSitemapConfig"
 
 # Lazy export map: public name -> (module path relative to this package, attribute).
 _LAZY_EXPORTS: dict[str, tuple[str, str]] = {

@@ -19,7 +19,7 @@ Video sitemaps include rich metadata about video content including:
 
 Usage::
 
-    from swing_sitemap import VideoSitemap
+    from swing.sitemap import VideoSitemap
 
     video_sitemap = VideoSitemap.from_settings("videos")
 
@@ -51,8 +51,8 @@ from django.apps import apps
 from django.db.models import Model, QuerySet
 from django.utils.html import escape
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 
 
 # =============================================================================

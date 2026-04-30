@@ -12,7 +12,7 @@ Functions:
 - :func:`invalidate_sitemap_cache` - Manually invalidate cache
 """
 
-from swing_sitemap.signals.signal_model import (
+from swing.sitemap.signals.signal_model import (
     invalidate_sitemap_cache,
     register_sitemap_signals,
     sitemap_post_delete,

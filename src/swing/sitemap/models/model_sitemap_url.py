@@ -1,4 +1,4 @@
-# swing_sitemap/models.py
+# swing/sitemap/models.py
 from django.db import models
 
 class SitemapURL(models.Model):

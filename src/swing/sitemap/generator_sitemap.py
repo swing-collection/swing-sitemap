@@ -1,4 +1,4 @@
-# swing_sitemap/views.py
+# swing/sitemap/views.py
 from django.http import HttpResponse
 from django.template import loader
 

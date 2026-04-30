@@ -22,7 +22,7 @@ Important Notes:
 
 Usage::
 
-    from swing_sitemap import NewsSitemap
+    from swing.sitemap import NewsSitemap
 
     news_sitemap = NewsSitemap.from_settings("news")
 
@@ -56,8 +56,8 @@ from django.db.models import Model, QuerySet
 from django.utils import timezone
 from django.utils.html import escape
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 
 
 # =============================================================================

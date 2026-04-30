@@ -25,7 +25,7 @@ Important Notes:
 
 Usage::
 
-    from swing_sitemap import ImageSitemap
+    from swing.sitemap import ImageSitemap
 
     image_sitemap = ImageSitemap.from_settings("images")
 
@@ -51,8 +51,8 @@ from django.apps import apps
 from django.db.models import Model, QuerySet
 from django.utils.html import escape
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 
 
 # =============================================================================

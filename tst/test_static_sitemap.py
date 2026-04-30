@@ -8,7 +8,7 @@ import datetime as _dt
 import pytest
 from django.test.utils import override_settings
 
-from swing_sitemap.sitemaps.sitemap_static import StaticSitemap
+from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 
 
 def test_string_item_resolves_to_reverse_url():

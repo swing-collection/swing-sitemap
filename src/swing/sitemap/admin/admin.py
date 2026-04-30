@@ -10,7 +10,7 @@ Admin Registration for Sitemap Models
 
 Provides Django admin interfaces for managing sitemap URL entries.
 
-These admin classes are optional - the main swing_sitemap functionality
+These admin classes are optional - the main swing.sitemap functionality
 is settings-driven and doesn't require database models.
 
 To enable admin, add this to your INSTALLED_APPS and the models will
@@ -25,7 +25,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from swing_sitemap.models import (
+from swing.sitemap.models import (
     CustomSitemapURL,
     ImageSitemapURL,
     NewsSitemapURL,

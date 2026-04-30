@@ -7,8 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "test"
 DEBUG = True
+ALLOWED_HOSTS = ["example.com", "testserver", "localhost"]
 USE_TZ = True
 TIME_ZONE = "UTC"
+SITE_ID = 1
 
 INSTALLED_APPS: list[str] = [
     "django.contrib.auth",
@@ -17,7 +19,9 @@ INSTALLED_APPS: list[str] = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "swing_sitemap.apps.SwingSitemapConfig",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
+    "swing.sitemap.apps.SwingSitemapConfig",
 ]
 
 MIDDLEWARE: list[str] = []
@@ -31,6 +35,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
@@ -63,3 +68,12 @@ EMAIL_HOST = "localhost"
 EMAIL_PORT = 25
 SITEMAP_URL = "http://example.com/sitemap.xml"
 BAIDU_API_TOKEN = "test-token"
+
+# Swing Sitemap configuration for tests
+SWING_SITEMAP = {
+    "static": {
+        "views": ["home", "about"],
+        "priority": 0.6,
+        "changefreq": "weekly",
+    },
+}

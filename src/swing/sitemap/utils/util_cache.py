@@ -40,7 +40,7 @@ from typing import Any, Callable
 from django.core.cache import caches
 from django.http import HttpRequest, HttpResponse
 
-from swing_sitemap.conf import get_setting
+from swing.sitemap.conf import get_setting
 
 logger = logging.getLogger(__name__)
 

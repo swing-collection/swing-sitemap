@@ -39,11 +39,11 @@ class SwingSitemapConfig(AppConfig):
     Swing Sitemap App Config
     ========================
 
-    Django application configuration for ``swing_sitemap``.
+    Django application configuration for ``swing.sitemap``.
     """
 
     # Full Python path to the application
-    name = "swing_sitemap"
+    name = "swing.sitemap"
 
     # Short name for the application
     label = "swing_sitemap"

@@ -16,13 +16,13 @@ Also provides:
 - :func:`default_sitemaps` - Factory for canonical sitemaps dict
 """
 
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
-from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
-from swing_sitemap.sitemaps.sitemap_image import ImageSitemap
-from swing_sitemap.sitemaps.sitemap_model import ModelSitemap
-from swing_sitemap.sitemaps.sitemap_news import NewsSitemap
-from swing_sitemap.sitemaps.sitemap_static import StaticSitemap
-from swing_sitemap.sitemaps.sitemap_video import VideoSitemap
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
+from swing.sitemap.sitemaps.sitemap_image import ImageSitemap
+from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
+from swing.sitemap.sitemaps.sitemap_news import NewsSitemap
+from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
+from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
 
 __all__ = [
     "BaseSitemap",

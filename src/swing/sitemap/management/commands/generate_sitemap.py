@@ -27,9 +27,9 @@ from pathlib import Path
 from django.core.management.base import BaseCommand, CommandError
 from django.test import RequestFactory
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
-from swing_sitemap.sitemaps.sitemap_index import (
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
+from swing.sitemap.sitemaps.sitemap_index import (
     get_sitemap_index_urls,
     paginate_all_sitemaps,
 )

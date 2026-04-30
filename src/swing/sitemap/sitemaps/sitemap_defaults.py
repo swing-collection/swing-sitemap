@@ -11,14 +11,14 @@ Default Sitemaps Factory
 Builds the canonical ``sitemaps`` dict that Django's
 :func:`django.contrib.sitemaps.views.sitemap` view expects.
 
-Per the project's design decision, ``swing_sitemap`` is **CMS-agnostic**:
+Per the project's design decision, ``swing.sitemap`` is **CMS-agnostic**:
 the factory ships a ``static`` entry sourced from
 ``SWING_SITEMAP["static"]["views"]`` and any model entries declared under
 ``SWING_SITEMAP["models"]``. Sites that need a CMS-page sitemap (e.g.
 Wagtail's ``wagtail.contrib.sitemaps.Sitemap``) are expected to merge it
 into the dict themselves::
 
-    from swing_sitemap import default_sitemaps
+    from swing.sitemap import default_sitemaps
     from wagtail.contrib.sitemaps import Sitemap as WagtailSitemap
 
     sitemaps = {**default_sitemaps(), "wagtail": WagtailSitemap}
@@ -34,9 +34,9 @@ from collections.abc import Mapping
 
 from django.contrib.sitemaps import Sitemap
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_model import ModelSitemap
-from swing_sitemap.sitemaps.sitemap_static import StaticSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
+from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 
 
 # =============================================================================
@@ -53,10 +53,10 @@ def default_sitemaps(
 
     Includes:
 
-    * ``"static"`` — :class:`~swing_sitemap.StaticSitemap` configured from
+    * ``"static"`` — :class:`~swing.sitemap.StaticSitemap` configured from
       ``SWING_SITEMAP["static"]["views"]``. The entry is omitted if no
       static views are configured.
-    * One :class:`~swing_sitemap.ModelSitemap` per key under
+    * One :class:`~swing.sitemap.ModelSitemap` per key under
       ``SWING_SITEMAP["models"]``. Bad entries are skipped silently with
       a logger warning so a misconfigured model never breaks
       ``/sitemap.xml`` for the rest of the site.

@@ -9,7 +9,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.test.utils import override_settings
 
-from swing_sitemap.sitemaps.sitemap_model import ModelSitemap
+from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 
 pytestmark = pytest.mark.django_db
 

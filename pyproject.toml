@@ -49,7 +49,7 @@ documentation = "https://github.com/swing-collection/swing-sitemap/tree/dev/docs
 
 [tool.poetry]
 package-mode = true
-packages = [{ include = "swing_sitemap", from = "src" }]
+packages = [{ include = "swing", from = "src" }]
 
 
 # =============================================================================
@@ -90,7 +90,7 @@ mkdocs-material = "^9.5"
 # =============================================================================
 
 [project.scripts]
-swing_sitemap = "swing_sitemap.__main__:main"
+swing_sitemap = "swing.sitemap.__main__:main"
 
 
 # =============================================================================
@@ -98,7 +98,7 @@ swing_sitemap = "swing_sitemap.__main__:main"
 # =============================================================================
 
 [tool.poetry.plugins."django.apps"]
-"swing_sitemap" = "swing_sitemap.apps.SwingSitemapConfig"
+"swing.sitemap" = "swing.sitemap.apps.SwingSitemapConfig"
 
 
 # =============================================================================

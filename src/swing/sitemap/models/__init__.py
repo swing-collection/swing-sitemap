@@ -19,12 +19,12 @@ Available Models:
 - :class:`CustomSitemapURL` - Custom/flexible sitemap entries
 """
 
-from swing_sitemap.models.model_sitemap_url import SitemapURL, URL
-from swing_sitemap.models.model_sitemap_url_custom import CustomSitemapURL
-from swing_sitemap.models.model_sitemap_url_image import ImageSitemapURL
-from swing_sitemap.models.model_sitemap_url_news import NewsSitemapURL
-from swing_sitemap.models.model_sitemap_url_standard import StandardSitemapURL
-from swing_sitemap.models.model_sitemap_url_video import VideoSitemapURL
+from swing.sitemap.models.model_sitemap_url import SitemapURL, URL
+from swing.sitemap.models.model_sitemap_url_custom import CustomSitemapURL
+from swing.sitemap.models.model_sitemap_url_image import ImageSitemapURL
+from swing.sitemap.models.model_sitemap_url_news import NewsSitemapURL
+from swing.sitemap.models.model_sitemap_url_standard import StandardSitemapURL
+from swing.sitemap.models.model_sitemap_url_video import VideoSitemapURL
 
 __all__ = [
     "CustomSitemapURL",

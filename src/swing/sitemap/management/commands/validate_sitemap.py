@@ -25,7 +25,7 @@ from xml.etree import ElementTree
 
 from django.core.management.base import BaseCommand, CommandError
 
-from swing_sitemap.sitemaps.sitemap_defaults import default_sitemaps
+from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 
 
 class Command(BaseCommand):

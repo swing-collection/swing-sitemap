@@ -15,7 +15,7 @@ hand-written ``django.contrib.sitemaps.Sitemap`` subclasses that wire up
 
 Typical usage::
 
-    from swing_sitemap import ModelSitemap
+    from swing.sitemap import ModelSitemap
 
     work_sitemap = ModelSitemap(
         queryset=lambda: Work.objects.filter(is_published=True),
@@ -56,8 +56,8 @@ from collections.abc import Callable, Iterable, Sequence
 from django.apps import apps
 from django.db.models import Model, QuerySet
 
-from swing_sitemap.conf import get_setting
-from swing_sitemap.sitemaps.sitemap_base import BaseSitemap
+from swing.sitemap.conf import get_setting
+from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
 
 
 QuerySetSource = QuerySet | Iterable[Model] | Callable[[], Iterable[Model]]
