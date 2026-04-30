@@ -32,7 +32,7 @@ Usage::
 from django.core.management.base import BaseCommand, CommandError
 
 from swing.sitemap.conf import get_setting
-from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
 
 
 # =============================================================================

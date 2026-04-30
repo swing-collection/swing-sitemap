@@ -20,7 +20,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from swing.sitemap.utils.util_submit_sitemap import PING_ENDPOINTS, submit_sitemap
+from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
 
 
 # =============================================================================
@@ -48,7 +48,7 @@ class TestPingEndpoints:
 class TestSubmitSitemap:
     """Tests for submit_sitemap function."""
 
-    @patch("swing.sitemap.utils.util_submit_sitemap.requests.get")
+    @patch("swing.sitemap.utils.submission.submit_sitemap.requests.get")
     def test_submit_returns_dict(self, mock_get):
         """Test that submit_sitemap returns a dictionary."""
         mock_get.return_value = MagicMock(status_code=200)
@@ -57,7 +57,7 @@ class TestSubmitSitemap:
 
         assert isinstance(result, dict)
 
-    @patch("swing.sitemap.utils.util_submit_sitemap.requests.get")
+    @patch("swing.sitemap.utils.submission.submit_sitemap.requests.get")
     def test_submit_to_all_endpoints(self, mock_get):
         """Test that submit_sitemap pings all endpoints."""
         mock_get.return_value = MagicMock(status_code=200)
@@ -66,7 +66,7 @@ class TestSubmitSitemap:
 
         assert len(result) == len(PING_ENDPOINTS)
 
-    @patch("swing.sitemap.utils.util_submit_sitemap.requests.get")
+    @patch("swing.sitemap.utils.submission.submit_sitemap.requests.get")
     def test_submit_to_specific_endpoints(self, mock_get):
         """Test submitting to specific endpoints."""
         mock_get.return_value = MagicMock(status_code=200)
@@ -79,7 +79,7 @@ class TestSubmitSitemap:
         assert "google" in result
         assert len(result) == 1
 
-    @patch("swing.sitemap.utils.util_submit_sitemap.requests.get")
+    @patch("swing.sitemap.utils.submission.submit_sitemap.requests.get")
     def test_submit_handles_connection_error(self, mock_get):
         """Test that submit_sitemap handles connection errors."""
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection failed")
@@ -93,7 +93,7 @@ class TestSubmitSitemap:
         for status in result.values():
             assert status is None
 
-    @patch("swing.sitemap.utils.util_submit_sitemap.requests.get")
+    @patch("swing.sitemap.utils.submission.submit_sitemap.requests.get")
     def test_submit_returns_status_codes(self, mock_get):
         """Test that submit_sitemap returns status codes."""
         mock_get.return_value = MagicMock(status_code=200)
