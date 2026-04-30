@@ -18,8 +18,10 @@ Signal handler for model post_delete.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 from typing import Any
 
@@ -27,6 +29,7 @@ from django.db.models import Model
 
 from swing.sitemap.conf import get_setting
 
+# Import | Local
 from .debounce import debounce
 from .invalidate_sitemap_cache import invalidate_sitemap_cache
 
@@ -36,6 +39,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Helper Functions
 # =============================================================================
+
 
 def _get_model_label(instance: Model) -> str:
     """Get the app_label.model_name string for a model instance."""
@@ -62,6 +66,7 @@ def _should_invalidate(instance: Model) -> bool:
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def sitemap_post_delete(sender: type, instance: Model, **kwargs: Any) -> None:
     """

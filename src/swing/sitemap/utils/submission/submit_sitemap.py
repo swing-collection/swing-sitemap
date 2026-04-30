@@ -20,11 +20,14 @@ Note:
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import logging
+# Import | Standard Library
 from collections.abc import Mapping
+import logging
 
+# Import | Libraries
 import requests
 
 logger = logging.getLogger(__name__)
@@ -43,6 +46,7 @@ PING_ENDPOINTS: Mapping[str, str] = {
 # =============================================================================
 # Public API
 # =============================================================================
+
 
 def submit_sitemap(
     sitemap_url: str,

@@ -18,8 +18,10 @@ Invalidate sitemap cache entries.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
 from django.core.cache import cache
@@ -32,6 +34,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def invalidate_sitemap_cache(model_label: str | None = None) -> None:
     """

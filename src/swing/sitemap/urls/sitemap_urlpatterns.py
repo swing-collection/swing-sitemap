@@ -18,21 +18,23 @@ Generate URL patterns for sitemap endpoints.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Mapping, Sequence
 
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import index as sitemap_index_view
 from django.contrib.sitemaps.views import sitemap as sitemap_view
-from django.urls import URLPattern, path
+from django.urls import path, URLPattern
 
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def sitemap_urlpatterns(
     sitemaps: Mapping[str, Sitemap | type[Sitemap]] | None = None,

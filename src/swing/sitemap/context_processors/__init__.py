@@ -18,8 +18,8 @@ Django context processors for sitemap functionality.
 # Imports
 # =============================================================================
 
+# Import | Local
 from .sitemap_url import sitemap_url
-
 
 # =============================================================================
 # Exports

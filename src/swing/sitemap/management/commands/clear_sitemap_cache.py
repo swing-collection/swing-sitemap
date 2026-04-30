@@ -65,10 +65,6 @@ class Command(BaseCommand):
         count = invalidate_cache(pattern)
 
         if count:
-            self.stdout.write(
-                self.style.SUCCESS(f"Cleared {count} cache entries.")
-            )
+            self.stdout.write(self.style.SUCCESS(f"Cleared {count} cache entries."))
         else:
-            self.stdout.write(
-                self.style.SUCCESS("Cache cleared.")
-            )
+            self.stdout.write(self.style.SUCCESS("Cache cleared."))

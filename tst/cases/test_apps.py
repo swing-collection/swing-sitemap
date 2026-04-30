@@ -14,10 +14,10 @@ Tests for swing.sitemap.apps module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from swing.sitemap.apps import SwingSitemapConfig
-
 
 # =============================================================================
 # Tests

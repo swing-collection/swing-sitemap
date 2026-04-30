@@ -12,10 +12,13 @@
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import pytest
 from django.test import Client
+
+# Import | Libraries
+import pytest
 
 pytestmark = pytest.mark.django_db
 

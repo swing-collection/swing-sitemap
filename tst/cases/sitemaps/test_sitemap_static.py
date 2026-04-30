@@ -12,15 +12,18 @@
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import datetime as _dt
 
-import pytest
 from django.test.utils import override_settings
 
-from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
+# Import | Libraries
+import pytest
 
+from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 
 # =============================================================================
 # Tests

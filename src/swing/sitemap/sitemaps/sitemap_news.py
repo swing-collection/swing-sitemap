@@ -45,10 +45,12 @@ Or with a queryset::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import datetime as _dt
+# Import | Standard Library
 from collections.abc import Callable, Iterable, Mapping, Sequence
+import datetime as _dt
 from typing import Any
 
 from django.apps import apps
@@ -58,7 +60,6 @@ from django.utils.html import escape
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-
 
 # =============================================================================
 # Types
@@ -102,14 +103,16 @@ class NewsSitemap(BaseSitemap):
     }
 
     # Valid genres per Google News spec
-    VALID_GENRES = frozenset({
-        "PressRelease",
-        "Satire",
-        "Blog",
-        "OpEd",
-        "Opinion",
-        "UserGenerated",
-    })
+    VALID_GENRES = frozenset(
+        {
+            "PressRelease",
+            "Satire",
+            "Blog",
+            "OpEd",
+            "Opinion",
+            "UserGenerated",
+        }
+    )
 
     def __init__(
         self,

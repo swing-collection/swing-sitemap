@@ -26,10 +26,9 @@ Links:
 
 
 # Import | Standard Library
-from typing import Any
 from abc import ABC, abstractmethod
+from typing import Any
 
-# Import | Libraries
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -40,6 +39,7 @@ from django.utils.translation import gettext as _
 # =============================================================================
 # Base Class
 # =============================================================================
+
 
 class BaseSitemap(Sitemap, ABC):
     """

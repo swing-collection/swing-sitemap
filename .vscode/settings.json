@@ -1,9 +1,159 @@
 {
-    "editor.fontLigatures": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.bracketPairColorization.enabled": true,
+  // =========================================================================
+  // VS Code Workspace Settings
+  // =========================================================================
+  //
+  // MINIMAL settings - tool configs live in dedicated files:
+  //
+  // Python:
+  //   - .black.toml      → Black formatting
+  //   - .flake8          → Flake8 rules
+  //   - .pylintrc        → Pylint rules
+  //   - mypy.ini         → Type checking
+  //   - .isort.cfg       → Import sorting
+  //   - .coveragerc      → Coverage settings
+  //   - pytest.ini       → Pytest settings
+  //
+  // JavaScript/CSS:
+  //   - .prettierrc.cjs  → Prettier formatting
+  //   - eslint.config.js → ESLint rules (flat config)
+  //   - .stylelintrc.cjs → Stylelint rules
+  //   - tsconfig.json    → TypeScript
+  //
+  // Git/Release:
+  //   - .commitlintrc.cjs → Commit message linting
+  //   - .releaserc.cjs    → Semantic release
+  //
+  // Editor:
+  //   - .editorconfig    → Indentation, line endings, charset
+  //
+  // =========================================================================
+
+  // =========================================================================
+  // Editor (VS Code specific - .editorconfig handles the rest)
+  // =========================================================================
+
+  "editor.formatOnSave": true,
+  "editor.rulers": [79, 120],
+  "editor.bracketPairColorization.enabled": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.minimap.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.formatOnPaste": true,
+  "cSpell.enabled": false,
+
+  "files.associations": {
+    "*.jinja": "jinja",
+    "*.html.jinja": "jinja-html"
+  },
+
+  // =========================================================================
+  // Python
+  // =========================================================================
+
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
-    "editor.wordWrap": "on",
-    "cSpell.enabled": false
+    "editor.rulers": [79],
+    "rewrap.autoWrap.enabled": true
+  },
+
+  "black-formatter.args": ["--config", "${workspaceFolder}/.black.toml"],
+
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "standard",
+  "python.testing.pytestEnabled": true,
+
+  // Pylint: use .pylintrc file (don't load plugins that may not be installed)
+  "pylint.args": [
+    "--rcfile=${workspaceFolder}/.pylintrc"
+  ],
+
+  // =========================================================================
+  // Rewrap (comment wrapping)
+  // =========================================================================
+
+  "rewrap.wrappingColumn": 79,
+  "rewrap.reformat": true,
+
+  // =========================================================================
+  // JavaScript / TypeScript
+  // =========================================================================
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "prettier.requireConfig": true,
+
+  // =========================================================================
+  // HTML / Templates
+  // =========================================================================
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jinja]": {
+    "editor.formatOnSave": false
+  },
+  "[jinja-html]": {
+    "editor.formatOnSave": false
+  },
+
+  // =========================================================================
+  // CSS / SCSS
+  // =========================================================================
+
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "stylelint.configFile": ".stylelintrc.cjs",
+
+  // =========================================================================
+  // Data Formats
+  // =========================================================================
+
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // =========================================================================
+  // Search & Explorer
+  // =========================================================================
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/htmlcov": true,
+    "**/.venv": true,
+    "**/bup": true
+  }
 }

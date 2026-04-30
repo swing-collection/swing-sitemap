@@ -34,7 +34,6 @@ from django.core.management.base import BaseCommand, CommandError
 from swing.sitemap.conf import get_setting
 from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
 
-
 # =============================================================================
 # Command
 # =============================================================================
@@ -110,13 +109,9 @@ class Command(BaseCommand):
                     self.style.ERROR(f"  {name}: FAILED (connection error)")
                 )
             elif status >= 400:
-                self.stdout.write(
-                    self.style.WARNING(f"  {name}: HTTP {status}")
-                )
+                self.stdout.write(self.style.WARNING(f"  {name}: HTTP {status}"))
             else:
-                self.stdout.write(
-                    self.style.SUCCESS(f"  {name}: HTTP {status}")
-                )
+                self.stdout.write(self.style.SUCCESS(f"  {name}: HTTP {status}"))
                 success_count += 1
 
         # Summary
@@ -131,6 +126,4 @@ class Command(BaseCommand):
                 )
             )
         else:
-            self.stdout.write(
-                self.style.ERROR("\nAll submissions failed!")
-            )
+            self.stdout.write(self.style.ERROR("\nAll submissions failed!"))

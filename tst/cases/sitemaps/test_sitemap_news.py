@@ -5,12 +5,23 @@ Tests for News Sitemap
 ======================
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
+from __future__ import annotations
+
+# Import | Standard Library
 import datetime
 from unittest.mock import Mock
 
-import pytest
 from django.test import override_settings
 from django.utils import timezone
+
+# Import | Libraries
+import pytest
 
 from swing.sitemap.sitemaps.sitemap_news import NewsSitemap
 

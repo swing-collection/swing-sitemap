@@ -18,18 +18,21 @@ Paginate all sitemaps in a mapping.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Mapping
 
 from django.contrib.sitemaps import Sitemap
 
+# Import | Local
 from .paginate_sitemap import paginate_sitemap
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def paginate_all_sitemaps(
     sitemaps: Mapping[str, Sitemap | type[Sitemap]],

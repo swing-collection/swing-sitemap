@@ -23,20 +23,23 @@ Features:
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Sequence
 from typing import Any
 
 from django.contrib.sitemaps import Sitemap
 from django.db.models import QuerySet
 
+# Import | Local
 from .get_pagination_config import get_pagination_config
-
 
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class PaginatedSitemap(Sitemap):
     """

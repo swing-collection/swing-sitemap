@@ -33,8 +33,10 @@ Usage::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 import time
 from typing import Any
@@ -45,13 +47,13 @@ from django.views.decorators.http import require_GET
 from swing.sitemap.conf import get_setting, validate_settings
 from swing.sitemap.sitemaps import default_sitemaps
 
-
 logger = logging.getLogger(__name__)
 
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 @require_GET
 def health_check(request) -> JsonResponse:
@@ -77,11 +79,13 @@ def health_check(request) -> JsonResponse:
     verbose = request.GET.get("verbose", "").lower() == "true"
 
     if quick:
-        return JsonResponse({
-            "status": "healthy",
-            "checks": {},
-            "timestamp": _now_iso(),
-        })
+        return JsonResponse(
+            {
+                "status": "healthy",
+                "checks": {},
+                "timestamp": _now_iso(),
+            }
+        )
 
     checks = {}
     overall_status = "healthy"
@@ -112,7 +116,11 @@ def health_check(request) -> JsonResponse:
     if not db_check["ok"]:
         overall_status = "unhealthy"
 
-    status_code = 200 if overall_status == "healthy" else 503 if overall_status == "unhealthy" else 200
+    status_code = (
+        200
+        if overall_status == "healthy"
+        else 503 if overall_status == "unhealthy" else 200
+    )
 
     return JsonResponse(
         {
@@ -126,7 +134,10 @@ def health_check(request) -> JsonResponse:
 
 def _now_iso() -> str:
     """Return current time as ISO string."""
-    from django.utils import timezone  # pylint: disable=import-outside-toplevel
+    from django.utils import (
+        timezone,  # pylint: disable=import-outside-toplevel
+    )
+
     return timezone.now().isoformat()
 
 
@@ -176,7 +187,9 @@ def _check_sitemaps(verbose: bool) -> dict[str, Any]:
                     count = len(items)
                     total_urls += count
                     sitemap_info[name] = {"urls": count, "ok": True}
-                except Exception as e:  # noqa: BLE001  pylint: disable=broad-exception-caught
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001  pylint: disable=broad-exception-caught
                     sitemap_info[name] = {"ok": False, "error": str(e)}
 
         result = {
@@ -206,7 +219,9 @@ def _check_cache(verbose: bool) -> dict[str, Any]:
     """Check cache backend."""
     start = time.monotonic()
     try:
-        from django.core.cache import caches  # pylint: disable=import-outside-toplevel
+        from django.core.cache import (
+            caches,  # pylint: disable=import-outside-toplevel
+        )
 
         cache_config = get_setting("cache", default={})
         backend = cache_config.get("backend", "default")
@@ -244,7 +259,9 @@ def _check_database(verbose: bool) -> dict[str, Any]:
     """Check database connectivity."""
     start = time.monotonic()
     try:
-        from django.db import connection  # pylint: disable=import-outside-toplevel
+        from django.db import (
+            connection,  # pylint: disable=import-outside-toplevel
+        )
 
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")

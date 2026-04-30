@@ -18,6 +18,7 @@ Renders a static sitemap XML using the StaticSitemap class.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.http import HttpRequest, HttpResponse
@@ -25,10 +26,10 @@ from django.shortcuts import render
 
 from swing.sitemap.sitemaps import StaticSitemap
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def static_sitemap(request: HttpRequest) -> HttpResponse:
     """Render the static sitemap XML."""

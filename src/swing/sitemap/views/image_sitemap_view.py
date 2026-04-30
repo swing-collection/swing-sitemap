@@ -18,6 +18,7 @@ Class-based view for rendering image sitemap XML.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.http import HttpRequest, HttpResponse
@@ -26,10 +27,10 @@ from django.views import View
 
 from swing.sitemap.sitemaps import ImageSitemap
 
-
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class ImageSitemapView(View):
     """

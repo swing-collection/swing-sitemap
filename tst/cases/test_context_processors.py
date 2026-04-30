@@ -14,12 +14,12 @@ Tests for swing.sitemap.context_processors module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.test import RequestFactory
 
 from swing.sitemap.context_processors import sitemap_url
-
 
 # =============================================================================
 # Tests

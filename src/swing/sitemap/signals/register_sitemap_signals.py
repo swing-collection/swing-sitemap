@@ -18,8 +18,10 @@ Register sitemap cache invalidation signals for configured models.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
 from django.apps import apps
@@ -27,6 +29,7 @@ from django.db.models.signals import post_delete, post_save
 
 from swing.sitemap.conf import get_setting
 
+# Import | Local
 from .sitemap_post_delete import sitemap_post_delete
 from .sitemap_post_save import sitemap_post_save
 
@@ -43,6 +46,7 @@ _signals_registered = False
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def register_sitemap_signals(models: list[str] | None = None) -> None:
     """

@@ -18,14 +18,16 @@ Check if pagination is needed.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .get_pagination_config import get_pagination_config
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def should_paginate(item_count: int) -> bool:
     """

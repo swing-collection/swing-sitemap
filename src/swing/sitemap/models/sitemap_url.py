@@ -18,14 +18,15 @@ Simple sitemap URL model.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.db import models
 
-
 # =============================================================================
 # Models
 # =============================================================================
+
 
 class SitemapURL(models.Model):
     """

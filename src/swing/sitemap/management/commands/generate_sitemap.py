@@ -21,6 +21,15 @@ Usage::
     python manage.py generate_sitemap --output-dir /var/www/sitemaps/ --with-index
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
+from __future__ import annotations
+
+# Import | Standard Library
 from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
@@ -101,13 +110,9 @@ class Command(BaseCommand):
 
         # Generate single file
         if output and not output_dir:
-            xml_content = self._generate_combined_sitemap(
-                sitemaps, domain, protocol
-            )
+            xml_content = self._generate_combined_sitemap(sitemaps, domain, protocol)
             Path(output).write_text(xml_content, encoding="utf-8")
-            self.stdout.write(
-                self.style.SUCCESS(f"Sitemap written to: {output}")
-            )
+            self.stdout.write(self.style.SUCCESS(f"Sitemap written to: {output}"))
             return
 
         # Generate multiple files
@@ -169,9 +174,7 @@ class Command(BaseCommand):
 
         # Generate index if requested
         if with_index:
-            index_content = self._generate_sitemap_index(
-                sitemaps, domain, protocol
-            )
+            index_content = self._generate_sitemap_index(sitemaps, domain, protocol)
             index_path = output_path / "sitemap-index.xml"
             index_path.write_text(index_content)
             self.stdout.write(f"Generated: {index_path}")

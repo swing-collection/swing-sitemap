@@ -18,6 +18,7 @@ Renders the sitemap index XML.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib.sitemaps.views import index as _index
@@ -25,10 +26,10 @@ from django.http import HttpRequest, HttpResponse
 
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def sitemap_index(
     request: HttpRequest,

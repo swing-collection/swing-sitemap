@@ -18,8 +18,10 @@ Utility helpers for sitemap generation and caching.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .cache import (
     get_cache,
     get_cached_sitemap,
@@ -29,7 +31,6 @@ from .cache import (
 )
 from .compression import compress_content, decompress_content
 from .submission import PING_ENDPOINTS, submit_sitemap
-
 
 # =============================================================================
 # Exports

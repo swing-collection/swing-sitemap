@@ -18,9 +18,18 @@ Usage::
     python manage.py validate_sitemap --all
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
+from __future__ import annotations
+
+# Import | Standard Library
+from pathlib import Path
 import re
 import urllib.request
-from pathlib import Path
 from xml.etree import ElementTree
 
 from django.core.management.base import BaseCommand, CommandError
@@ -85,8 +94,8 @@ class Command(BaseCommand):
 
     def _validate_all_sitemaps(self, strict, verbose):
         """Validate all configured sitemaps."""
-        from django.test import RequestFactory
         from django.contrib.sitemaps.views import sitemap as sitemap_view
+        from django.test import RequestFactory
 
         sitemaps = default_sitemaps()
         if not sitemaps:
@@ -102,28 +111,24 @@ class Command(BaseCommand):
             # Generate sitemap
             request = factory.get(f"/sitemap-{name}.xml", HTTP_HOST="example.com")
             try:
-                response = sitemap_view(request, {name: sitemap})
+                response = sitemap_view(request, {name: sitemap})  # type: ignore[arg-type]
                 content = response.content
             except Exception as e:
-                self.stdout.write(
-                    self.style.ERROR(f"  Failed to generate: {e}")
-                )
+                self.stdout.write(self.style.ERROR(f"  Failed to generate: {e}"))
                 all_valid = False
                 continue
 
             # Validate
-            valid = self._validate_content(content, f"sitemap-{name}.xml", strict, verbose)
+            valid = self._validate_content(
+                content, f"sitemap-{name}.xml", strict, verbose
+            )
             if not valid:
                 all_valid = False
 
         if all_valid:
-            self.stdout.write(
-                self.style.SUCCESS("\nAll sitemaps valid!")
-            )
+            self.stdout.write(self.style.SUCCESS("\nAll sitemaps valid!"))
         else:
-            self.stdout.write(
-                self.style.ERROR("\nSome sitemaps have issues.")
-            )
+            self.stdout.write(self.style.ERROR("\nSome sitemaps have issues."))
 
     def _validate_source(self, source, strict, verbose):
         """Validate a single sitemap source."""
@@ -146,7 +151,9 @@ class Command(BaseCommand):
         else:
             raise CommandError("Sitemap validation failed.")
 
-    def _validate_content(self, content, source_name, strict, verbose):
+    def _validate_content(  # noqa: C901
+        self, content, source_name, strict, verbose,
+    ):
         """Validate sitemap XML content."""
         errors = []
         warnings = []
@@ -188,19 +195,21 @@ class Command(BaseCommand):
         # Count and validate entries
         if is_index:
             entries = root.findall("sm:sitemap", self.NAMESPACES)
-            entries.extend(root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}sitemap"))
+            entries.extend(
+                root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}sitemap")
+            )
         else:
             entries = root.findall("sm:url", self.NAMESPACES)
-            entries.extend(root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url"))
+            entries.extend(
+                root.findall("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
+            )
 
         url_count = len(entries)
         if verbose:
             self.stdout.write(f"  URLs: {url_count:,}")
 
         if url_count > self.MAX_URLS:
-            errors.append(
-                f"URL count {url_count:,} exceeds limit of {self.MAX_URLS:,}"
-            )
+            errors.append(f"URL count {url_count:,} exceeds limit of {self.MAX_URLS:,}")
         elif url_count > self.MAX_URLS * 0.8:
             warnings.append(
                 f"URL count {url_count:,} is near the limit of {self.MAX_URLS:,}"
@@ -213,7 +222,7 @@ class Command(BaseCommand):
                 loc = entry.find("{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
 
             if loc is None or not loc.text:
-                errors.append(f"Entry {i+1}: Missing <loc> element")
+                errors.append(f"Entry {i + 1}: Missing <loc> element")
                 continue
 
             url = loc.text.strip()
@@ -221,17 +230,17 @@ class Command(BaseCommand):
             # Check URL length
             if len(url) > self.MAX_URL_LENGTH:
                 errors.append(
-                    f"Entry {i+1}: URL length {len(url)} exceeds {self.MAX_URL_LENGTH}"
+                    f"Entry {i + 1}: URL length {len(url)} exceeds {self.MAX_URL_LENGTH}"
                 )
 
             # Check URL format
             if not url.startswith(("http://", "https://")):
-                errors.append(f"Entry {i+1}: Invalid URL scheme: {url[:50]}")
+                errors.append(f"Entry {i + 1}: Invalid URL scheme: {url[:50]}")
 
             # Check for special characters that should be encoded
-            if any(c in url for c in "<>\"{}|\\^[]`"):
+            if any(c in url for c in '<>"{}|\\^[]`'):
                 warnings.append(
-                    f"Entry {i+1}: URL contains unencoded special characters"
+                    f"Entry {i + 1}: URL contains unencoded special characters"
                 )
 
         # Check for duplicate URLs (sample first 1000)
@@ -246,7 +255,9 @@ class Command(BaseCommand):
 
         duplicate_count = len(urls) - len(set(urls))
         if duplicate_count > 0:
-            warnings.append(f"Found {duplicate_count} duplicate URLs (sampled first 1000)")
+            warnings.append(
+                f"Found {duplicate_count} duplicate URLs (sampled first 1000)"
+            )
 
         # Report results
         self._report_results(source_name, errors, warnings)

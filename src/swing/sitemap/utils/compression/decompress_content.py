@@ -18,14 +18,16 @@ Decompress gzip content.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import gzip
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def decompress_content(content: bytes) -> bytes:
     """

@@ -18,6 +18,7 @@ Admin for standard sitemap URLs.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib import admin
@@ -25,12 +26,13 @@ from django.utils.translation import gettext_lazy as _
 
 from swing.sitemap.models import StandardSitemapURL
 
+# Import | Local
 from .admin_sitemap_url_base import BaseSitemapURLAdmin
-
 
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 @admin.register(StandardSitemapURL)
 class StandardSitemapURLAdmin(BaseSitemapURLAdmin):

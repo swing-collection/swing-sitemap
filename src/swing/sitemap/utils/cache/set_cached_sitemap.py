@@ -18,12 +18,15 @@ Cache sitemap content.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
 from swing.sitemap.conf import get_setting
 
+# Import | Local
 from .get_cache import get_cache
 
 logger = logging.getLogger(__name__)
@@ -32,6 +35,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def set_cached_sitemap(key: str, content: bytes, timeout: int | None = None) -> None:
     """

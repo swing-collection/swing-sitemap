@@ -18,10 +18,11 @@ Decorators for sitemap views and functionality.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .cached_sitemap_view import cached_sitemap_view
-
 
 # =============================================================================
 # Exports

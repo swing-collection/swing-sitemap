@@ -15,9 +15,8 @@ Tests for swing.sitemap.management.commands.validate_sitemap module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
-
-
 
 # =============================================================================
 # Tests

@@ -47,18 +47,20 @@ Or use the x-default attribute::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Mapping
 from typing import Any
 
 from django.db.models import Model
 from django.utils.html import escape
 
-
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class HreflangMixin:
     """
@@ -148,6 +150,7 @@ class HreflangMixin:
 # =============================================================================
 # Convenience Classes
 # =============================================================================
+
 
 class I18nSitemap(HreflangMixin):
     """

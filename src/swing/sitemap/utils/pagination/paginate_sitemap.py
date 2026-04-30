@@ -18,18 +18,20 @@ Paginate a sitemap into multiple sitemaps.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib.sitemaps import Sitemap
 
+# Import | Local
 from .calculate_pages import calculate_pages
 from .paginated_sitemap import PaginatedSitemap
 from .should_paginate import should_paginate
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def paginate_sitemap(
     sitemap: Sitemap,

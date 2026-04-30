@@ -18,17 +18,19 @@ Generate URL entries for a sitemap index.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Mapping
 from typing import Any
 
 from django.contrib.sitemaps import Sitemap
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_sitemap_index_urls(
     sitemaps: Mapping[str, Sitemap | type[Sitemap]],

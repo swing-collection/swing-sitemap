@@ -18,17 +18,19 @@ Backward-compatibility shims for legacy settings.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import warnings
+# Import | Standard Library
 from typing import Any
+import warnings
 
 from django.conf import settings
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def apply_legacy_shims(config: dict[str, Any]) -> None:
     """

@@ -30,14 +30,15 @@ Also provides:
 
 from swing.sitemap.mixins import HreflangMixin, I18nSitemap
 from swing.sitemap.utils.pagination import (
-    PaginatedSitemap,
     calculate_pages,
     get_pagination_config,
     paginate_all_sitemaps,
     paginate_sitemap,
+    PaginatedSitemap,
     should_paginate,
 )
 
+# Import | Local
 from .get_sitemap_index_urls import get_sitemap_index_urls
 from .sitemap_base import BaseSitemap
 from .sitemap_defaults import default_sitemaps
@@ -46,7 +47,6 @@ from .sitemap_model import ModelSitemap
 from .sitemap_news import NewsSitemap
 from .sitemap_static import StaticSitemap
 from .sitemap_video import VideoSitemap
-
 
 # =============================================================================
 # Exports

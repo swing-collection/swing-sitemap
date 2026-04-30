@@ -23,10 +23,12 @@ Usage::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import math
+# Import | Standard Library
 from collections.abc import Mapping, Sequence
+import math
 from typing import Any, TypeVar
 
 from django.contrib.sitemaps import Sitemap

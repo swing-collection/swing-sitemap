@@ -18,6 +18,7 @@ Renders an image sitemap XML using the ImageSitemap class.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.http import HttpRequest, HttpResponse
@@ -25,10 +26,10 @@ from django.shortcuts import render
 
 from swing.sitemap.sitemaps import ImageSitemap
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def image_sitemap(request: HttpRequest) -> HttpResponse:
     """Render the image sitemap XML."""

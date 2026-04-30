@@ -18,16 +18,19 @@ Calculate number of pages needed for pagination.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import math
 
+# Import | Local
 from .get_pagination_config import get_pagination_config
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def calculate_pages(item_count: int) -> int:
     """

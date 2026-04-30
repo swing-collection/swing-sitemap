@@ -14,10 +14,13 @@ Tests for swing.sitemap.models.model_sitemap_url_news module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import pytest
 from django.utils import timezone
+
+# Import | Libraries
+import pytest
 
 from swing.sitemap.models import NewsSitemapURL
 

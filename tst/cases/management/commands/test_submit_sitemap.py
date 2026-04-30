@@ -15,15 +15,18 @@ Tests for swing.sitemap.management.commands.submit_sitemap module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from io import StringIO
 from unittest.mock import patch
 
-import pytest
 from django.core.management import call_command
 from django.core.management.base import CommandError
 
+# Import | Libraries
+import pytest
 
 # =============================================================================
 # Tests

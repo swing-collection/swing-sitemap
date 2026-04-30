@@ -41,10 +41,12 @@ Or with a queryset::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import datetime as _dt
+# Import | Standard Library
 from collections.abc import Callable, Iterable, Sequence
+import datetime as _dt
 
 from django.apps import apps
 from django.db.models import Model, QuerySet
@@ -52,7 +54,6 @@ from django.utils.html import escape
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-
 
 # =============================================================================
 # Types
@@ -250,13 +251,15 @@ class ImageSitemap(BaseSitemap):
                 # Simple string URL
                 normalized.append({"loc": img})
             elif isinstance(img, dict) and img.get("loc"):
-                normalized.append({
-                    "loc": img["loc"],
-                    "caption": img.get("caption"),
-                    "geo_location": img.get("geo_location"),
-                    "title": img.get("title"),
-                    "license": img.get("license"),
-                })
+                normalized.append(
+                    {
+                        "loc": img["loc"],
+                        "caption": img.get("caption"),
+                        "geo_location": img.get("geo_location"),
+                        "title": img.get("title"),
+                        "license": img.get("license"),
+                    }
+                )
             # Skip invalid entries
 
         return normalized

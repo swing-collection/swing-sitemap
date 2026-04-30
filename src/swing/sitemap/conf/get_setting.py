@@ -18,16 +18,19 @@ Look up a configuration value by dotted path.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from typing import Any
 
+# Import | Local
 from .get_config import get_config
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_setting(*path: str, default: Any = None) -> Any:
     """

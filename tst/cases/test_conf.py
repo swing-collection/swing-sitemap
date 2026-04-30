@@ -14,15 +14,18 @@ Tests for the swing_sitemap config accessor.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import warnings
 
-import pytest
 from django.test.utils import override_settings
 
-from swing.sitemap.conf import DEFAULTS, get_config, get_setting
+# Import | Libraries
+import pytest
 
+from swing.sitemap.conf import DEFAULTS, get_config, get_setting
 
 # =============================================================================
 # Tests
@@ -57,9 +60,7 @@ def test_get_setting_dotted_lookup_with_default():
 
 
 def test_legacy_seo_priority_emits_deprecation_warning():
-    with override_settings(
-        SWING_SITEMAP={}, SEO_SITEMAP_PRIORITY={"work": 0.9}
-    ):
+    with override_settings(SWING_SITEMAP={}, SEO_SITEMAP_PRIORITY={"work": 0.9}):
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always")
             cfg = get_config()

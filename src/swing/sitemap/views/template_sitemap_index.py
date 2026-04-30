@@ -18,15 +18,16 @@ Generate sitemap index XML responses.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.http import HttpResponse
 from django.template import loader
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def sitemap_index(request):
     """Generate a sitemap index XML response."""

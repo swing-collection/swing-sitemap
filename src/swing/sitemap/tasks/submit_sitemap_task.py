@@ -18,17 +18,21 @@ Celery task for submitting sitemap to search engines.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
+from swing.sitemap.conf import get_setting
+from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
+
 try:
+    # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
     shared_task = None  # type: ignore[misc,assignment]
 
-from swing.sitemap.conf import get_setting
-from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +40,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Tasks
 # =============================================================================
+
 
 @shared_task(
     bind=True,
@@ -91,9 +96,7 @@ def submit_sitemap_task(
         if status is None:
             logger.warning("Sitemap submission to %s failed", name)
         elif status >= 400:
-            logger.warning(
-                "Sitemap submission to %s returned HTTP %d", name, status
-            )
+            logger.warning("Sitemap submission to %s returned HTTP %d", name, status)
         else:
             logger.info("Sitemap submitted to %s: HTTP %d", name, status)
 

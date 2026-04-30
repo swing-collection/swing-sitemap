@@ -14,12 +14,12 @@ Tests for swing.sitemap.generator_sitemap module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.test import RequestFactory
 
 from swing.sitemap.views.template_sitemap_index import sitemap_index
-
 
 # =============================================================================
 # Tests

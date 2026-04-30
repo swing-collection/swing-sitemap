@@ -5,11 +5,22 @@ Tests for Image Sitemap
 =======================
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
+from __future__ import annotations
+
+# Import | Standard Library
 import datetime
 from unittest.mock import Mock
 
-import pytest
 from django.test import override_settings
+
+# Import | Libraries
+import pytest
 
 from swing.sitemap.sitemaps.sitemap_image import ImageSitemap
 
@@ -157,7 +168,9 @@ class TestImageSitemap:
         img = {"loc": "...", "license": "https://creativecommons.org/licenses/by/4.0/"}
         sitemap = ImageSitemap(queryset=[])
 
-        assert sitemap.image_license(img) == "https://creativecommons.org/licenses/by/4.0/"
+        assert (
+            sitemap.image_license(img) == "https://creativecommons.org/licenses/by/4.0/"
+        )
 
     def test_urls_includes_images(self):
         """Test that _urls method includes image data."""

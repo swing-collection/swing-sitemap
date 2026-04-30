@@ -15,13 +15,14 @@ Tests for swing.sitemap.management.commands.clear_sitemap_cache module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from io import StringIO
 
 from django.core.management import call_command
 from django.test import override_settings
-
 
 # =============================================================================
 # Tests
@@ -33,7 +34,9 @@ class TestClearSitemapCacheCommand:
 
     def test_command_exists(self):
         """Test that command can be loaded."""
-        from swing.sitemap.management.commands.clear_sitemap_cache import Command
+        from swing.sitemap.management.commands.clear_sitemap_cache import (
+            Command,
+        )
 
         assert Command is not None
 

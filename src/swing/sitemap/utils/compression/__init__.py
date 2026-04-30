@@ -18,11 +18,12 @@ Utilities for compressing and decompressing sitemap content.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .compress_content import compress_content
 from .decompress_content import decompress_content
-
 
 # =============================================================================
 # Exports

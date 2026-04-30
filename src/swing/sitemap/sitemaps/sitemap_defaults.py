@@ -30,8 +30,10 @@ into the dict themselves::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Mapping
 
 from django.contrib.sitemaps import Sitemap
@@ -39,7 +41,6 @@ from django.contrib.sitemaps import Sitemap
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
-
 
 # =============================================================================
 # Functions
@@ -78,6 +79,7 @@ def default_sitemaps(
         try:
             sitemaps[key] = ModelSitemap.from_settings(key)
         except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
+            # Import | Standard Library
             import logging  # pylint: disable=import-outside-toplevel
 
             logging.getLogger(__name__).warning(
@@ -91,8 +93,11 @@ def default_sitemaps(
 
     return sitemaps
 
+
 # =============================================================================
 # Exports
 # =============================================================================
 
-__all__ = ["default_sitemaps",]
+__all__ = [
+    "default_sitemaps",
+]

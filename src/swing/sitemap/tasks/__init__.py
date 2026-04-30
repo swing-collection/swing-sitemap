@@ -24,10 +24,10 @@ Tasks:
 # Imports
 # =============================================================================
 
+# Import | Local
 from .invalidate_sitemap_cache import invalidate_sitemap_cache
 from .submit_sitemap_periodic import submit_sitemap_periodic
 from .submit_sitemap_task import submit_sitemap_task
-
 
 # =============================================================================
 # Exports

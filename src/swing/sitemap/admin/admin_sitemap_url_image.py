@@ -18,6 +18,7 @@ Admin for image sitemap URLs.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib import admin
@@ -25,12 +26,13 @@ from django.utils.translation import gettext_lazy as _
 
 from swing.sitemap.models import ImageSitemapURL
 
+# Import | Local
 from .admin_sitemap_url_base import BaseSitemapURLAdmin
-
 
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 @admin.register(ImageSitemapURL)
 class ImageSitemapURLAdmin(BaseSitemapURLAdmin):
@@ -44,7 +46,12 @@ class ImageSitemapURLAdmin(BaseSitemapURLAdmin):
         (
             _("Image Information"),
             {
-                "fields": ("image_url", "image_title", "image_caption", "image_license"),
+                "fields": (
+                    "image_url",
+                    "image_title",
+                    "image_caption",
+                    "image_license",
+                ),
             },
         ),
         (

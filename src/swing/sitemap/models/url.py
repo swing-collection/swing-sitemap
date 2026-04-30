@@ -18,14 +18,15 @@ Abstract base model for sitemap URLs.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.db import models
 
-
 # =============================================================================
 # Models
 # =============================================================================
+
 
 class URL(models.Model):
     """

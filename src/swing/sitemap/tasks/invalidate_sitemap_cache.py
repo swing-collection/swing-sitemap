@@ -18,16 +18,20 @@ Celery task for invalidating sitemap cache.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
+from swing.sitemap.conf import get_setting
+
 try:
+    # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
     shared_task = None  # type: ignore[misc,assignment]
 
-from swing.sitemap.conf import get_setting
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +39,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Tasks
 # =============================================================================
+
 
 @shared_task(bind=True)
 def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:

@@ -18,16 +18,18 @@ Retrieve a cached sitemap.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from swing.sitemap.conf import get_setting
 
+# Import | Local
 from .get_cache import get_cache
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_cached_sitemap(key: str) -> bytes | None:
     """

@@ -18,16 +18,17 @@ Get the cache backend configured for sitemaps.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.core.cache import caches
 
 from swing.sitemap.conf import get_setting
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_cache():
     """Get the cache backend configured for sitemaps."""

@@ -22,13 +22,14 @@ Handles:
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class SwingSitemapConfig(AppConfig):
     """

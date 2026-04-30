@@ -25,10 +25,12 @@ override the sitemap-level defaults.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import datetime as _dt
+# Import | Standard Library
 from collections.abc import Iterable, Sequence
+import datetime as _dt
 
 from django.urls import reverse
 

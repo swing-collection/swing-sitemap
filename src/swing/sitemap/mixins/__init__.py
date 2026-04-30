@@ -18,10 +18,11 @@ Reusable mixin classes for sitemap functionality.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .hreflang_mixin import HreflangMixin, I18nSitemap
-
 
 # =============================================================================
 # Exports

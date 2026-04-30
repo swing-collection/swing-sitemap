@@ -18,8 +18,10 @@ Class-based view for rendering sitemap index XML.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from typing import Any
 
 from django.contrib.sitemaps.views import index as _index
@@ -28,10 +30,10 @@ from django.views import View
 
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 
-
 # =============================================================================
 # Classes
 # =============================================================================
+
 
 class SitemapIndexView(View):
     """

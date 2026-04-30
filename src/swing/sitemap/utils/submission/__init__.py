@@ -18,10 +18,11 @@ Utilities for submitting sitemaps to search engines.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .submit_sitemap import PING_ENDPOINTS, submit_sitemap
-
 
 # =============================================================================
 # Exports

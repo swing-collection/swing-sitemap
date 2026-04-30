@@ -43,18 +43,22 @@ Usage::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 from typing import Any
 
+from swing.sitemap.conf import get_setting
+from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
+
 try:
+    # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
     shared_task = None  # type: ignore[misc,assignment]
 
-from swing.sitemap.conf import get_setting
-from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
 
 logger = logging.getLogger(__name__)
 
@@ -118,9 +122,7 @@ def submit_sitemap_task(
         if status is None:
             logger.warning("Sitemap submission to %s failed", name)
         elif status >= 400:
-            logger.warning(
-                "Sitemap submission to %s returned HTTP %d", name, status
-            )
+            logger.warning("Sitemap submission to %s returned HTTP %d", name, status)
         else:
             logger.info("Sitemap submitted to %s: HTTP %d", name, status)
 
@@ -165,9 +167,7 @@ def submit_sitemap_periodic(self) -> dict[str, Any]:
     url = submit_config.get("sitemap_url")
 
     if not url:
-        logger.warning(
-            "Periodic sitemap submission skipped: no sitemap_url configured"
-        )
+        logger.warning("Periodic sitemap submission skipped: no sitemap_url configured")
         return {"sitemap_url": None, "results": {}, "skipped": True}
 
     results = submit_sitemap_task(url)

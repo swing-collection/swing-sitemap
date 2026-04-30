@@ -15,12 +15,12 @@ Tests for swing.sitemap.sitemaps.sitemap_base module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib.sitemaps import Sitemap
 
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-
 
 # =============================================================================
 # Tests
@@ -36,6 +36,7 @@ class TestBaseSitemap:
 
     def test_is_abstract(self):
         """Test that BaseSitemap is abstract (ABC)."""
+        # Import | Standard Library
         from abc import ABC
 
         assert issubclass(BaseSitemap, ABC)

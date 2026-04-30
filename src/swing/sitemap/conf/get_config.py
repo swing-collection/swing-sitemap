@@ -18,19 +18,22 @@ Retrieve merged configuration.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from typing import Any
 
 from django.conf import settings
 
+# Import | Local
 from .apply_legacy_shims import apply_legacy_shims
 from .defaults import DEFAULTS
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_config() -> dict[str, Any]:
     """

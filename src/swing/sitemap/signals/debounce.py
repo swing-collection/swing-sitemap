@@ -18,11 +18,12 @@ Debounce a function call by key.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import threading
 from typing import Any, Callable
-
 
 # =============================================================================
 # State
@@ -35,6 +36,7 @@ _debounce_lock = threading.Lock()
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def debounce(key: str, delay: float, func: Callable[[], Any]) -> None:
     """

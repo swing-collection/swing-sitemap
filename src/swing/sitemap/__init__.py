@@ -47,11 +47,12 @@ Public API::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from importlib import import_module
 from typing import Any
-
 
 # =============================================================================
 # Configuration

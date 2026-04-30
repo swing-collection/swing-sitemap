@@ -14,8 +14,10 @@ Tests for swing.sitemap.views.view_sitemap_index module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Libraries
 import pytest
 
 from swing.sitemap.views import SitemapIndexView

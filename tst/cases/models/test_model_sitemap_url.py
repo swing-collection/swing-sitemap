@@ -14,8 +14,10 @@ Tests for swing.sitemap.models.model_sitemap_url module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Libraries
 import pytest
 
 from swing.sitemap.models import SitemapURL, URL
@@ -53,7 +55,15 @@ class TestSitemapURL:
 
     def test_changefreq_choices(self):
         """Test changefreq has valid choices."""
-        valid_choices = ["always", "hourly", "daily", "weekly", "monthly", "yearly", "never"]
+        valid_choices = [
+            "always",
+            "hourly",
+            "daily",
+            "weekly",
+            "monthly",
+            "yearly",
+            "never",
+        ]
         url = SitemapURL(url="https://example.com/", changefreq="weekly")
         assert url.changefreq in valid_choices
 

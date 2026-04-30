@@ -14,6 +14,7 @@ Tests for swing.sitemap.utils cache module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from swing.sitemap.utils import (
@@ -22,7 +23,6 @@ from swing.sitemap.utils import (
     get_cache,
     make_cache_key,
 )
-
 
 # =============================================================================
 # Tests

@@ -9,10 +9,10 @@ from django.contrib.sitemaps import Sitemap
 from django.test import override_settings
 
 from swing.sitemap.sitemaps import (
-    PaginatedSitemap,
     calculate_pages,
     paginate_all_sitemaps,
     paginate_sitemap,
+    PaginatedSitemap,
     should_paginate,
 )
 

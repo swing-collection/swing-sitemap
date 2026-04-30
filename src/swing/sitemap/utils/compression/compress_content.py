@@ -18,14 +18,16 @@ Compress content using gzip.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import gzip
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def compress_content(content: bytes) -> bytes:
     """

@@ -5,11 +5,22 @@ Tests for Video Sitemap
 =======================
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
+from __future__ import annotations
+
+# Import | Standard Library
 import datetime
 from unittest.mock import Mock, patch
 
-import pytest
 from django.test import override_settings
+
+# Import | Libraries
+import pytest
 
 from swing.sitemap.sitemaps.sitemap_video import VideoSitemap
 

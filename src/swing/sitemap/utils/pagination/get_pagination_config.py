@@ -18,16 +18,18 @@ Get pagination configuration from settings.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from typing import Any
 
 from swing.sitemap.conf import get_setting
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def get_pagination_config() -> dict[str, Any]:
     """Get pagination configuration from settings."""

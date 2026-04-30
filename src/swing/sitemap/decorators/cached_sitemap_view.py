@@ -18,10 +18,12 @@ Decorator for caching sitemap views.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
-import logging
+# Import | Standard Library
 from functools import wraps
+import logging
 from typing import Any, Callable
 
 from django.http import HttpRequest, HttpResponse
@@ -37,6 +39,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def cached_sitemap_view(
     cache_key_func: Callable[[HttpRequest], str] | None = None,

@@ -18,15 +18,16 @@ Inject the sitemap URL into template context.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def sitemap_url(request: HttpRequest) -> dict[str, str]:
     """

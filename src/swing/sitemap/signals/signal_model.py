@@ -39,8 +39,10 @@ your app's ``ready()`` method::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 import threading
 from typing import Any, Callable
@@ -145,9 +147,7 @@ def _should_invalidate(instance: Model) -> bool:
     if configured_models:
         model_label = _get_model_label(instance)
         # Check both exact match and case-insensitive
-        if not any(
-            m.lower() == model_label.lower() for m in configured_models
-        ):
+        if not any(m.lower() == model_label.lower() for m in configured_models):
             return False
 
     return True
@@ -177,7 +177,9 @@ def sitemap_post_save(sender: type, instance: Model, **kwargs: Any) -> None:
         if signals_config.get("auto_submit", False):
             try:
                 # pylint: disable=import-outside-toplevel
-                from swing.sitemap.tasks.submit_sitemap import submit_sitemap_task
+                from swing.sitemap.tasks.submit_sitemap import (
+                    submit_sitemap_task,
+                )
 
                 submit_sitemap_task.delay()
             except ImportError:
@@ -260,7 +262,9 @@ def register_sitemap_signals(models: list[str] | None = None) -> None:
             post_delete.connect(sitemap_post_delete, sender=model, weak=False)
             logger.info("Registered sitemap signals for %s", model_path)
         except LookupError:
-            logger.warning("Model %s not found, skipping signal registration", model_path)
+            logger.warning(
+                "Model %s not found, skipping signal registration", model_path
+            )
 
     _signals_registered = True
 

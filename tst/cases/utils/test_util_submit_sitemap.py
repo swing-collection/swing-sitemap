@@ -14,14 +14,16 @@ Tests for swing.sitemap.utils.util_submit_sitemap module.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from unittest.mock import MagicMock, patch
 
+# Import | Libraries
 import requests
 
 from swing.sitemap.utils.submission import PING_ENDPOINTS, submit_sitemap
-
 
 # =============================================================================
 # Tests

@@ -49,8 +49,10 @@ Or, driven entirely by settings::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 from collections.abc import Callable, Iterable, Sequence
 
 from django.apps import apps
@@ -58,7 +60,6 @@ from django.db.models import Model, QuerySet
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-
 
 QuerySetSource = QuerySet | Iterable[Model] | Callable[[], Iterable[Model]]
 

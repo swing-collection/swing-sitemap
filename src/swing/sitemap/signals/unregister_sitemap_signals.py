@@ -18,8 +18,10 @@ Unregister sitemap cache invalidation signals.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 
 from django.apps import apps
@@ -27,6 +29,7 @@ from django.db.models.signals import post_delete, post_save
 
 from swing.sitemap.conf import get_setting
 
+# Import | Local
 from .sitemap_post_delete import sitemap_post_delete
 from .sitemap_post_save import sitemap_post_save
 
@@ -37,6 +40,7 @@ logger = logging.getLogger(__name__)
 # Functions
 # =============================================================================
 
+
 def unregister_sitemap_signals(models: list[str] | None = None) -> None:
     """
     Unregister sitemap cache invalidation signals.
@@ -46,6 +50,7 @@ def unregister_sitemap_signals(models: list[str] | None = None) -> None:
             If not provided, uses ``SWING_SITEMAP['signals']['models']``.
     """
     # pylint: disable=import-outside-toplevel
+    # Import | Local
     from .register_sitemap_signals import _signals_registered
 
     signals_config = get_setting("signals", default={}) or {}

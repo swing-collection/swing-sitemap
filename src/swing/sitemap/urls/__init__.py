@@ -33,12 +33,13 @@ Or, with custom sitemaps::
 # Imports
 # =============================================================================
 
+# Import | Local
 from .sitemap_urlpatterns import sitemap_urlpatterns
-
 
 # =============================================================================
 # Lazy urlpatterns
 # =============================================================================
+
 
 # Default ``urlpatterns`` for projects that prefer ``include()``::
 #

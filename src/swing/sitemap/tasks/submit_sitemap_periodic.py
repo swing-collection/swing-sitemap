@@ -18,19 +18,24 @@ Periodic Celery task for sitemap submission.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 from typing import Any
 
+from swing.sitemap.conf import get_setting
+
+# Import | Local
+from .submit_sitemap_task import submit_sitemap_task
+
 try:
+    # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
     shared_task = None  # type: ignore[misc,assignment]
 
-from swing.sitemap.conf import get_setting
-
-from .submit_sitemap_task import submit_sitemap_task
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +43,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # Tasks
 # =============================================================================
+
 
 @shared_task(bind=True)
 def submit_sitemap_periodic(self) -> dict[str, Any]:
@@ -63,9 +69,7 @@ def submit_sitemap_periodic(self) -> dict[str, Any]:
     url = submit_config.get("sitemap_url")
 
     if not url:
-        logger.warning(
-            "Periodic sitemap submission skipped: no sitemap_url configured"
-        )
+        logger.warning("Periodic sitemap submission skipped: no sitemap_url configured")
         return {"sitemap_url": None, "results": {}, "skipped": True}
 
     results = submit_sitemap_task(url)

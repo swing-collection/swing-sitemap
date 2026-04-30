@@ -41,11 +41,13 @@ Or with a queryset::
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
+from collections.abc import Callable, Iterable, Mapping, Sequence
 import datetime as _dt
 import logging
-from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any
 
 from django.apps import apps
@@ -54,7 +56,6 @@ from django.utils.html import escape
 
 from swing.sitemap.conf import get_setting
 from swing.sitemap.sitemaps.sitemap_base import BaseSitemap
-
 
 logger = logging.getLogger(__name__)
 
@@ -380,7 +381,7 @@ class VideoSitemap(BaseSitemap):
             )
         return date.strftime("%Y-%m-%d")
 
-    def _build_video_xml(self, obj: Model) -> str:
+    def _build_video_xml(self, obj: Model) -> str:  # noqa: C901
         """Build the video:video XML element for an item."""
         # Validate required fields
         is_valid, missing = self._validate_item(obj)
@@ -425,9 +426,7 @@ class VideoSitemap(BaseSitemap):
 
         pub_date = self.video_publication_date(obj)
         if pub_date:
-            parts.append(
-                f"<video:publication_date>{pub_date}</video:publication_date>"
-            )
+            parts.append(f"<video:publication_date>{pub_date}</video:publication_date>")
 
         rating = self.video_rating(obj)
         if rating is not None:
@@ -481,7 +480,9 @@ class VideoSitemap(BaseSitemap):
             name = escape(uploader.get("name", ""))
             info = uploader.get("info", "")
             if info:
-                parts.append(f'<video:uploader info="{escape(info)}">{name}</video:uploader>')
+                parts.append(
+                    f'<video:uploader info="{escape(info)}">{name}</video:uploader>'
+                )
             else:
                 parts.append(f"<video:uploader>{name}</video:uploader>")
 

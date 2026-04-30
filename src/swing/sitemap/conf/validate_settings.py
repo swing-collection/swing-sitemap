@@ -24,14 +24,17 @@ Checks for:
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import logging
 from typing import Any
 
 from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 
+# Import | Local
 from .get_config import get_config
 
 logger = logging.getLogger(__name__)
@@ -41,20 +44,23 @@ logger = logging.getLogger(__name__)
 # Constants
 # =============================================================================
 
-VALID_CHANGEFREQ = frozenset({
-    "always",
-    "hourly",
-    "daily",
-    "weekly",
-    "monthly",
-    "yearly",
-    "never",
-})
+VALID_CHANGEFREQ = frozenset(
+    {
+        "always",
+        "hourly",
+        "daily",
+        "weekly",
+        "monthly",
+        "yearly",
+        "never",
+    }
+)
 
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def validate_model_path(path: str, context: str) -> bool:
     """
@@ -72,8 +78,7 @@ def validate_model_path(path: str, context: str) -> bool:
         return True
     except (LookupError, ValueError) as e:
         raise ImproperlyConfigured(
-            f"SWING_SITEMAP {context}: Invalid model path '{path}'. "
-            f"Error: {e}"
+            f"SWING_SITEMAP {context}: Invalid model path '{path}'. " f"Error: {e}"
         ) from e
 
 
@@ -191,7 +196,10 @@ def validate_cache_config(config: dict[str, Any]) -> list[str]:
 
         backend = cache_config.get("backend", "default")
         try:
-            from django.core.cache import caches  # pylint: disable=import-outside-toplevel
+            from django.core.cache import (  # pylint: disable=import-outside-toplevel
+                caches,
+            )
+
             _ = caches[backend]  # Check cache backend exists
         except Exception as e:
             raise ImproperlyConfigured(

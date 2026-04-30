@@ -14,6 +14,7 @@ Tests for default_sitemaps factory.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
 from django.contrib.auth import get_user_model
@@ -22,7 +23,6 @@ from django.test.utils import override_settings
 from swing.sitemap.sitemaps.sitemap_defaults import default_sitemaps
 from swing.sitemap.sitemaps.sitemap_model import ModelSitemap
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
-
 
 # =============================================================================
 # Tests

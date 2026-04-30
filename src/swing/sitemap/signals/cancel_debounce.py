@@ -18,14 +18,16 @@ Cancel a pending debounced function.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Local
 from .debounce import _debounce_lock, _debounce_timers
-
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def cancel_debounce(key: str) -> None:
     """Cancel a pending debounced function."""

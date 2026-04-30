@@ -18,16 +18,18 @@ Build a cache key from prefix and parts.
 # Imports
 # =============================================================================
 
+# Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
 import hashlib
 
 from swing.sitemap.conf import get_setting
 
-
 # =============================================================================
 # Functions
 # =============================================================================
+
 
 def make_cache_key(prefix: str, *parts: str) -> str:
     """
