@@ -51,3 +51,23 @@ class TestSitemapUrlContextProcessor:
         ctx = sitemap_url(request)
 
         assert ctx["SITEMAP_URL"].startswith("http://")
+
+    def test_fallback_to_default_path(self):
+        """Test fallback to /sitemap.xml when no URL names found."""
+        # Import | Standard Library
+        from unittest.mock import patch
+
+        request = RequestFactory().get("/", HTTP_HOST="example.com")
+
+        # Mock reverse to always raise NoReverseMatch
+        with patch(
+            "swing.sitemap.context_processors.sitemap_url.reverse"
+        ) as mock_reverse:
+            from django.urls import NoReverseMatch
+
+            mock_reverse.side_effect = NoReverseMatch()
+
+            ctx = sitemap_url(request)
+
+            # Should fall back to /sitemap.xml
+            assert "/sitemap.xml" in ctx["SITEMAP_URL"]

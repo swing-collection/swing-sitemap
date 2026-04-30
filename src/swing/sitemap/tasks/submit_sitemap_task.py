@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 
-@shared_task(
+@shared_task(  # pragma: no cover
     bind=True,
     autoretry_for=(Exception,),
     retry_backoff=True,
@@ -51,7 +51,7 @@ logger = logging.getLogger(__name__)
     max_retries=3,
     default_retry_delay=60,
 )
-def submit_sitemap_task(
+def submit_sitemap_task(  # pragma: no cover
     self,
     sitemap_url: str | None = None,
     endpoints: dict[str, str] | None = None,

@@ -24,10 +24,10 @@ Usage::
 # =============================================================================
 
 # Import | Local
-from .video_sitemap_model import VIDEO_SITEMAP_MODEL
+from .video_sitemap_model import VIDEO_SITEMAP_MODEL  # pragma: no cover
 
 # =============================================================================
 # Exports
 # =============================================================================
 
-__all__ = ["VIDEO_SITEMAP_MODEL"]
+__all__ = ["VIDEO_SITEMAP_MODEL"]  # pragma: no cover

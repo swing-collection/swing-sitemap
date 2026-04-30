@@ -218,6 +218,149 @@ class TestVideoSitemap:
         assert sitemap.video_thumbnail_loc(video) == "https://example.com/custom.jpg"
         assert sitemap.video_description(video) == "Custom description"
 
+    def test_video_rating(self):
+        """Test video_rating method."""
+        video = Mock()
+        video.video_rating = 4.5
+        sitemap = VideoSitemap(queryset=[video])
+
+        rating = sitemap.video_rating(video)
+        assert rating == 4.5
+
+    def test_video_rating_clamped(self):
+        """Test video rating is clamped to valid range."""
+        video = Mock()
+        video.video_rating = 6.0  # Above max
+        sitemap = VideoSitemap(queryset=[video])
+
+        rating = sitemap.video_rating(video)
+        assert rating == 5.0
+
+        video.video_rating = -1.0  # Below min
+        rating = sitemap.video_rating(video)
+        assert rating == 0.0
+
+    def test_video_view_count(self):
+        """Test video_view_count method."""
+        video = Mock()
+        video.video_view_count = 12345
+        sitemap = VideoSitemap(queryset=[video])
+
+        count = sitemap.video_view_count(video)
+        assert count == 12345
+
+    def test_video_family_friendly(self):
+        """Test video_family_friendly method."""
+        video = Mock()
+        video.video_family_friendly = True
+        sitemap = VideoSitemap(queryset=[video])
+
+        result = sitemap.video_family_friendly(video)
+        assert result == "yes"
+
+        video.video_family_friendly = False
+        result = sitemap.video_family_friendly(video)
+        assert result == "no"
+
+    def test_video_restriction(self):
+        """Test video_restriction method."""
+        video = Mock()
+        video.video_restriction = {"relationship": "deny", "countries": "US GB"}
+        sitemap = VideoSitemap(queryset=[video])
+
+        result = sitemap.video_restriction(video)
+        assert result == {"relationship": "deny", "countries": "US GB"}
+
+    def test_video_platform(self):
+        """Test video_platform method."""
+        video = Mock()
+        video.video_platform = {"relationship": "allow", "platforms": "web mobile"}
+        sitemap = VideoSitemap(queryset=[video])
+
+        result = sitemap.video_platform(video)
+        assert result == {"relationship": "allow", "platforms": "web mobile"}
+
+    def test_video_tags(self):
+        """Test video_tags method."""
+        video = Mock()
+        video.video_tags = ["tag1", "tag2", "tag3"]
+        sitemap = VideoSitemap(queryset=[video])
+
+        tags = sitemap.video_tags(video)
+        assert tags == ["tag1", "tag2", "tag3"]
+
+    def test_video_category(self):
+        """Test video_category method."""
+        video = Mock()
+        video.video_category = "Technology"
+        sitemap = VideoSitemap(queryset=[video])
+
+        category = sitemap.video_category(video)
+        assert category == "Technology"
+
+    def test_video_uploader(self):
+        """Test video_uploader method."""
+        video = Mock()
+        video.video_uploader = {"name": "John Doe", "info": "https://example.com/john"}
+        sitemap = VideoSitemap(queryset=[video])
+
+        uploader = sitemap.video_uploader(video)
+        assert uploader == {"name": "John Doe", "info": "https://example.com/john"}
+
+    def test_video_live(self):
+        """Test video_live method."""
+        video = Mock()
+        video.video_live = True
+        sitemap = VideoSitemap(queryset=[video])
+
+        result = sitemap.video_live(video)
+        assert result == "yes"
+
+    def test_video_requires_subscription(self):
+        """Test video_requires_subscription method."""
+        video = Mock()
+        video.video_requires_subscription = True
+        sitemap = VideoSitemap(queryset=[video])
+
+        result = sitemap.video_requires_subscription(video)
+        assert result == "yes"
+
+    def test_video_player_loc(self):
+        """Test video_player_loc method."""
+        video = Mock()
+        video.video_player_url = "https://example.com/player/1"
+        sitemap = VideoSitemap(queryset=[video])
+
+        player = sitemap.video_player_loc(video)
+        assert player == "https://example.com/player/1"
+
+    def test_video_expiration_date(self):
+        """Test video_expiration_date method."""
+        video = Mock()
+        video.video_expiration_date = datetime.date(2025, 12, 31)
+        sitemap = VideoSitemap(queryset=[video])
+
+        exp_date = sitemap.video_expiration_date(video)
+        assert exp_date == "2025-12-31"
+
+    def test_video_publication_date(self):
+        """Test video_publication_date method."""
+        video = Mock()
+        video.video_publication_date = datetime.datetime(2024, 1, 15, 10, 30, 0)
+        sitemap = VideoSitemap(queryset=[video])
+
+        pub_date = sitemap.video_publication_date(video)
+        assert "2024-01-15" in pub_date
+
+    def test_validate_item_missing_fields(self):
+        """Test _validate_item with missing required fields."""
+        video = Mock(spec=[])  # No video attributes
+        sitemap = VideoSitemap(queryset=[video])
+
+        is_valid, errors = sitemap._validate_item(video)
+        assert not is_valid
+        assert len(errors) > 0
+
 
 @pytest.mark.django_db
 class TestVideoSitemapFromSettings:

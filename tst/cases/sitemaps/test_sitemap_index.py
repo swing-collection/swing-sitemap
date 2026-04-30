@@ -119,6 +119,111 @@ class TestPaginatedSitemap:
 
         assert paginated.location(1) == "https://example.com/1/"
 
+    def test_paginated_sitemap_lastmod(self):
+        """Test lastmod method delegates to source."""
+        source = SimpleSitemap([1, 2, 3])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        # SimpleSitemap doesn't have lastmod, so should return None
+        result = paginated.lastmod(1)
+        assert result is None
+
+    def test_paginated_sitemap_lastmod_with_source(self):
+        """Test lastmod delegates to source when source has lastmod."""
+        # Import | Standard Library
+        from datetime import datetime
+
+        class SitemapWithLastmod(SimpleSitemap):
+            def lastmod(self, item):
+                return datetime(2024, 1, item)
+
+        source = SitemapWithLastmod([1, 2, 3])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        result = paginated.lastmod(2)
+        assert result == datetime(2024, 1, 2)
+
+    def test_paginated_sitemap_get_latest_lastmod_no_items(self):
+        """Test get_latest_lastmod returns None for empty items."""
+        source = SimpleSitemap([])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        assert paginated.get_latest_lastmod() is None
+
+    def test_paginated_sitemap_get_latest_lastmod_no_lastmod(self):
+        """Test get_latest_lastmod returns None when source has no lastmod."""
+        source = SimpleSitemap([1, 2, 3])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        assert paginated.get_latest_lastmod() is None
+
+    def test_paginated_sitemap_get_latest_lastmod(self):
+        """Test get_latest_lastmod returns max date."""
+        # Import | Standard Library
+        from datetime import datetime
+
+        class SitemapWithLastmod(SimpleSitemap):
+            def lastmod(self, item):
+                if item == 2:
+                    return None  # Test None filtering
+                return datetime(2024, 1, item)
+
+        source = SitemapWithLastmod([1, 2, 3])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        result = paginated.get_latest_lastmod()
+        assert result == datetime(2024, 1, 3)
+
+    def test_paginated_sitemap_generator_items(self):
+        """Test pagination with generator source."""
+
+        class GeneratorSitemap:
+            changefreq = "weekly"
+            priority = 0.5
+
+            def items(self):
+                # Return a generator (not sliceable)
+                return (x for x in range(100))
+
+            def location(self, item):
+                return f"https://example.com/{item}/"
+
+        source = GeneratorSitemap()
+        paginated = PaginatedSitemap(source, page=2, items_per_page=30)
+
+        # This should still work by converting to list
+        result = list(paginated.items())
+        assert len(result) == 30
+        assert result == list(range(30, 60))
+
+    def test_paginated_sitemap_no_changefreq(self):
+        """Test pagination when source has no changefreq/priority."""
+
+        class MinimalSitemap:
+            def items(self):
+                return [1, 2, 3]
+
+            def location(self, item):
+                return f"https://example.com/{item}/"
+
+        source = MinimalSitemap()
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        # Should not raise, just not have these attributes
+        assert not hasattr(paginated, "changefreq")
+        assert not hasattr(paginated, "priority")
+
+    def test_paginated_sitemap_protocol(self):
+        """Test that protocol is inherited from source."""
+
+        class SitemapWithProtocol(SimpleSitemap):
+            protocol = "https"
+
+        source = SitemapWithProtocol([1, 2, 3])
+        paginated = PaginatedSitemap(source, page=1, items_per_page=10)
+
+        assert paginated.protocol == "https"
+
 
 class TestPaginateSitemap:
     """Test paginate_sitemap function."""

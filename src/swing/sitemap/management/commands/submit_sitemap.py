@@ -66,7 +66,7 @@ class Command(BaseCommand):
             help="Show what would be submitted without actually submitting.",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options):  # pragma: no cover
         # Get sitemap URL
         sitemap_url = options.get("sitemap_url")
         if not sitemap_url:

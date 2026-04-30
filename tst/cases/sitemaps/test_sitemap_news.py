@@ -226,6 +226,53 @@ class TestNewsSitemap:
         sitemap = NewsSitemap(queryset=[], max_age_hours=48)
         assert sitemap.max_age_hours == 48
 
+    def test_news_title_escapes_html(self):
+        """Test news title escapes HTML characters."""
+        article = MockArticle(pk=1, title="<script>alert('xss')</script>")
+        sitemap = NewsSitemap(queryset=[article])
+
+        title = sitemap.news_title(article)
+        # Should be escaped
+        assert "<script>" not in title
+
+    def test_news_publication_date_handles_date(self):
+        """Test news_publication_date handles date objects."""
+        article = MockArticle(pk=1)
+        article.publication_date = datetime.date(2024, 1, 15)
+        sitemap = NewsSitemap(queryset=[article])
+
+        date_str = sitemap.news_publication_date(article)
+        assert "2024-01-15" in date_str
+
+    def test_news_genres_as_list(self):
+        """Test news_genres handles list input."""
+        article = MockArticle(pk=1)
+        article.genres = ["PressRelease", "Blog"]
+        sitemap = NewsSitemap(queryset=[article])
+
+        genres = sitemap.news_genres(article)
+        assert "PressRelease" in genres
+        assert "Blog" in genres
+
+    def test_news_keywords_as_list(self):
+        """Test news_keywords handles list input."""
+        article = MockArticle(pk=1)
+        article.keywords = ["tech", "news", "breaking"]
+        sitemap = NewsSitemap(queryset=[article])
+
+        keywords = sitemap.news_keywords(article)
+        assert "tech" in keywords
+        assert "news" in keywords
+
+    def test_news_stock_tickers(self):
+        """Test news_stock_tickers method."""
+        article = MockArticle(pk=1)
+        article.stock_tickers = "NASDAQ:GOOG, NYSE:T"
+        sitemap = NewsSitemap(queryset=[article])
+
+        tickers = sitemap.news_stock_tickers(article)
+        assert "NASDAQ:GOOG" in tickers
+
 
 @pytest.mark.django_db
 class TestNewsSitemapFromSettings:

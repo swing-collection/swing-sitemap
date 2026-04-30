@@ -129,12 +129,78 @@ class TestSignalRegistration:
         # Should return early
         register_sitemap_signals()
 
+    def test_register_with_valid_model(self, settings):
+        """Test register_sitemap_signals with a valid model."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["contenttypes.ContentType"]}
+        }
+        import swing.sitemap.signals.register_sitemap_signals as reg_module
+
+        # Save original state
+        original_state = reg_module._signals_registered
+        reg_module._signals_registered = False
+        try:
+            # Should not raise - contenttypes.ContentType is always available
+            register_sitemap_signals()
+        finally:
+            # Restore original state
+            reg_module._signals_registered = original_state
+
+    def test_register_with_invalid_model(self, settings):
+        """Test register_sitemap_signals with an invalid model."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["nonexistent.FakeModel"]}
+        }
+        import swing.sitemap.signals.register_sitemap_signals as reg_module
+
+        original_state = reg_module._signals_registered
+        reg_module._signals_registered = False
+        try:
+            # Should not raise but should log warning
+            register_sitemap_signals()
+        finally:
+            reg_module._signals_registered = original_state
+
+    def test_register_with_explicit_models_list(self, settings):
+        """Test register_sitemap_signals with explicit models parameter."""
+        import swing.sitemap.signals.register_sitemap_signals as reg_module
+
+        original_state = reg_module._signals_registered
+        reg_module._signals_registered = False
+        try:
+            # Pass models explicitly
+            register_sitemap_signals(models=["contenttypes.ContentType"])
+        finally:
+            reg_module._signals_registered = original_state
+
     def test_unregister_signals(self, settings):
         """Test unregister_sitemap_signals."""
         import swing.sitemap.signals.unregister_sitemap_signals as unreg_module
 
         unreg_module._signals_registered = True
         unregister_sitemap_signals()
+
+    def test_unregister_when_not_registered(self, settings):
+        """Test unregister_sitemap_signals when not registered."""
+        import swing.sitemap.signals.unregister_sitemap_signals as unreg_module
+
+        unreg_module._signals_registered = False
+        # Should return early
+        unregister_sitemap_signals()
+
+    def test_unregister_with_models(self, settings):
+        """Test unregister_sitemap_signals with configured models."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["contenttypes.ContentType"]}
+        }
+        import swing.sitemap.signals.unregister_sitemap_signals as unreg_module
+
+        original_state = unreg_module._signals_registered
+        unreg_module._signals_registered = True
+        try:
+            unregister_sitemap_signals()
+        finally:
+            unreg_module._signals_registered = original_state
 
 
 # =============================================================================
@@ -165,6 +231,7 @@ class TestSignalHandlers:
         """Test sitemap_post_save when signals disabled."""
         settings.SWING_SITEMAP = {"signals": {"enabled": False}}
         mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
         # Should not raise and should return early
         sitemap_post_save(sender=MagicMock, instance=mock_instance)
 
@@ -172,5 +239,107 @@ class TestSignalHandlers:
         """Test sitemap_post_delete when signals disabled."""
         settings.SWING_SITEMAP = {"signals": {"enabled": False}}
         mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
         # Should not raise and should return early
         sitemap_post_delete(sender=MagicMock, instance=mock_instance)
+
+    def test_post_save_model_not_in_list(self, settings):
+        """Test sitemap_post_save when model not in configured list."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["other.Model"]}
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        # Should return early without invalidating
+        sitemap_post_save(sender=MagicMock, instance=mock_instance)
+
+    def test_post_delete_model_not_in_list(self, settings):
+        """Test sitemap_post_delete when model not in configured list."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["other.Model"]}
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        # Should return early without invalidating
+        sitemap_post_delete(sender=MagicMock, instance=mock_instance)
+
+    def test_post_save_invalidate_on_save_disabled(self, settings):
+        """Test sitemap_post_save when invalidate_on_save is False."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "invalidate_on_save": False}
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        # Should return early
+        sitemap_post_save(sender=MagicMock, instance=mock_instance)
+
+    def test_post_delete_invalidate_on_delete_disabled(self, settings):
+        """Test sitemap_post_delete when invalidate_on_delete is False."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "invalidate_on_delete": False}
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        # Should return early
+        sitemap_post_delete(sender=MagicMock, instance=mock_instance)
+
+    def test_post_save_with_debounce_zero(self, settings):
+        """Test sitemap_post_save with zero debounce."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "debounce_seconds": 0}
+        }
+        mock_instance = MagicMock()
+        # Properly set _meta.label as a string
+        mock_instance._meta.label = "myapp.MyModel"
+        mock_instance._meta.app_label = "myapp"
+        mock_instance._meta.model_name = "mymodel"
+        # Patch the cache to avoid cache key issues
+        with patch("swing.sitemap.signals.invalidate_sitemap_cache.invalidate_sitemap_cache"):
+            sitemap_post_save(sender=MagicMock, instance=mock_instance)
+
+    def test_post_delete_with_debounce_zero(self, settings):
+        """Test sitemap_post_delete with zero debounce."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "debounce_seconds": 0}
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        mock_instance._meta.app_label = "myapp"
+        mock_instance._meta.model_name = "mymodel"
+        # Patch the cache to avoid cache key issues
+        with patch("swing.sitemap.signals.invalidate_sitemap_cache.invalidate_sitemap_cache"):
+            sitemap_post_delete(sender=MagicMock, instance=mock_instance)
+
+    def test_post_save_auto_submit_disabled(self, settings):
+        """Test sitemap_post_save without auto_submit."""
+        settings.SWING_SITEMAP = {
+            "signals": {
+                "enabled": True,
+                "debounce_seconds": 0,
+                "auto_submit": False,  # Explicitly disabled
+            }
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        mock_instance._meta.app_label = "myapp"
+        mock_instance._meta.model_name = "mymodel"
+        # Patch invalidate cache
+        with patch("swing.sitemap.signals.invalidate_sitemap_cache.invalidate_sitemap_cache"):
+            sitemap_post_save(sender=MagicMock, instance=mock_instance)
+
+    def test_post_delete_auto_submit_disabled(self, settings):
+        """Test sitemap_post_delete without auto_submit."""
+        settings.SWING_SITEMAP = {
+            "signals": {
+                "enabled": True,
+                "debounce_seconds": 0,
+                "auto_submit": False,  # Explicitly disabled
+            }
+        }
+        mock_instance = MagicMock()
+        mock_instance._meta.label = "myapp.MyModel"
+        mock_instance._meta.app_label = "myapp"
+        mock_instance._meta.model_name = "mymodel"
+        # Patch invalidate cache
+        with patch("swing.sitemap.signals.invalidate_sitemap_cache.invalidate_sitemap_cache"):
+            sitemap_post_delete(sender=MagicMock, instance=mock_instance)

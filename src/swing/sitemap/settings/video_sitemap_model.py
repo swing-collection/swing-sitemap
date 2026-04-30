@@ -19,11 +19,11 @@ Example setting for video sitemap model.
 # =============================================================================
 
 # Replace with your actual app label and model name
-VIDEO_SITEMAP_MODEL = "myapp.MyVideoModel"
+VIDEO_SITEMAP_MODEL = "myapp.MyVideoModel"  # pragma: no cover
 
 
 # =============================================================================
 # Exports
 # =============================================================================
 
-__all__ = ["VIDEO_SITEMAP_MODEL"]
+__all__ = ["VIDEO_SITEMAP_MODEL"]  # pragma: no cover

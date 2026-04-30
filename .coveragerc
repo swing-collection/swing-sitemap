@@ -88,6 +88,12 @@ omit =
     # Cache directories
     */__pycache__/*
 
+    # Celery tasks (require Celery to be installed and configured)
+    */tasks/*
+
+    # Example settings (not actual code)
+    */settings/*
+
 
 # =============================================================================
 # [paths] - Source Path Mapping

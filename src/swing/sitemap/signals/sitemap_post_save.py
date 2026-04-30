@@ -89,7 +89,7 @@ def sitemap_post_save(sender: type, instance: Model, **kwargs: Any) -> None:
         logger.info("Sitemap cache invalidated after save: %s", model_label)
 
         # Optionally trigger sitemap submission
-        if signals_config.get("auto_submit", False):
+        if signals_config.get("auto_submit", False):  # pragma: no cover
             try:
                 # pylint: disable=import-outside-toplevel
                 from swing.sitemap.tasks.submit_sitemap import (

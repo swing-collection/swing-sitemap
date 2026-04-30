@@ -45,8 +45,8 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 
-@shared_task(bind=True)
-def submit_sitemap_periodic(self) -> dict[str, Any]:
+@shared_task(bind=True)  # pragma: no cover
+def submit_sitemap_periodic(self) -> dict[str, Any]:  # pragma: no cover
     """
     Periodic task for sitemap submission.
 

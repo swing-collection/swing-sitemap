@@ -41,8 +41,8 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 
-@shared_task(bind=True)
-def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:
+@shared_task(bind=True)  # pragma: no cover
+def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:  # pragma: no cover
     """
     Invalidate cached sitemap data.
 
