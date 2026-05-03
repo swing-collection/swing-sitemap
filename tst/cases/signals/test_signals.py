@@ -343,3 +343,18 @@ class TestSignalHandlers:
         # Patch invalidate cache
         with patch("swing.sitemap.signals.invalidate_sitemap_cache.invalidate_sitemap_cache"):
             sitemap_post_delete(sender=MagicMock, instance=mock_instance)
+
+    def test_unregister_with_invalid_model(self, settings):
+        """Test unregister_sitemap_signals with an invalid model."""
+        settings.SWING_SITEMAP = {
+            "signals": {"enabled": True, "models": ["nonexistent.FakeModel"]}
+        }
+        import swing.sitemap.signals.unregister_sitemap_signals as unreg_module
+
+        original_state = unreg_module._signals_registered
+        unreg_module._signals_registered = True
+        try:
+            # Should not raise - invalid model should be skipped
+            unregister_sitemap_signals()
+        finally:
+            unreg_module._signals_registered = original_state

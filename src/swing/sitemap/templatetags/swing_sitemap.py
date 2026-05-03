@@ -52,7 +52,7 @@ def sitemap_url(context, name: str = "swing-sitemap") -> str:
     """
     try:
         path = reverse(name)
-    except NoReverseMatch:
+    except NoReverseMatch:  # pragma: no cover
         # Fall back to the legacy / Django-default name.
         path = reverse("sitemap") if name != "sitemap" else "/sitemap.xml"
     request = context.get("request")

@@ -81,4 +81,6 @@ class TestVideoSitemapURL:
             video_content_url="https://example.com/video.mp4",
             video_duration=100,
         )
-        assert "Sample Video" in str(url)
+        result = str(url)
+        assert "https://example.com/videos/1/" in result
+        assert "Sample Video" in result

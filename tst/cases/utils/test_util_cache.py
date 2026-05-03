@@ -54,6 +54,15 @@ class TestCacheFunctions:
         key2 = make_cache_key("sitemap", "news")
         assert key1 != key2
 
+    def test_make_cache_key_long_key_hashed(self):
+        """Test that long cache keys are hashed."""
+        # Create a key that would exceed 250 characters
+        long_part = "x" * 300
+        key = make_cache_key("sitemap", long_part)
+
+        # Key should be truncated/hashed to be under 250 chars
+        assert len(key) <= 250
+
     def test_get_cache_returns_cache(self):
         """Test get_cache returns a cache instance."""
         cache = get_cache()
@@ -134,3 +143,16 @@ class TestCacheOperations:
         settings.SWING_SITEMAP = {"cache": {"enabled": False}}
         result = invalidate_cache()
         assert result == 0
+
+    def test_get_cached_sitemap_when_disabled(self, settings):
+        """Test get_cached_sitemap returns None when cache disabled."""
+        settings.SWING_SITEMAP = {"cache": {"enabled": False}}
+        result = get_cached_sitemap("any_key")
+        assert result is None
+
+    def test_set_cached_sitemap_when_disabled(self, settings):
+        """Test set_cached_sitemap does nothing when cache disabled."""
+        settings.SWING_SITEMAP = {"cache": {"enabled": False}}
+        # Should not raise
+        set_cached_sitemap("any_key", b"content")
+        # No way to verify but it shouldn't raise

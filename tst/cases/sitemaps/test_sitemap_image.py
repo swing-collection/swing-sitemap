@@ -216,6 +216,16 @@ class TestImageSitemap:
         assert len(images) == 1
         assert images[0]["loc"] == "https://example.com/gallery1.jpg"
 
+    def test_location_with_callable_attr(self):
+        """Test location method with callable location_attr."""
+        page = MockPage(pk=42)
+        sitemap = ImageSitemap(
+            queryset=[page],
+            location_attr=lambda obj: f"https://custom.com/item/{obj.pk}/",
+        )
+
+        assert sitemap.location(page) == "https://custom.com/item/42/"
+
 
 @pytest.mark.django_db
 class TestImageSitemapFromSettings:
@@ -241,3 +251,23 @@ class TestImageSitemapFromSettings:
         """Test that missing model raises ValueError."""
         with pytest.raises(ValueError, match="must define a 'model'"):
             ImageSitemap.from_settings("nonexistent")
+
+    @override_settings(
+        SWING_SITEMAP={
+            "image": {
+                "model": "auth.User",
+                "filters": {"is_active": True},
+                "exclude": {"is_superuser": True},
+                "order_by": ["-date_joined"],
+            },
+        }
+    )
+    def test_from_settings_with_filters_exclude_order_by(self):
+        """Test from_settings with filters, exclude, and order_by."""
+        sitemap = ImageSitemap.from_settings()
+        assert sitemap is not None
+
+        # Call items() to trigger the queryset factory
+        items = list(sitemap.items())
+        # Just verify it doesn't raise - actual filtering tested elsewhere
+        assert isinstance(items, list)

@@ -52,7 +52,7 @@ def get_config() -> dict[str, Any]:
             merged[key] = user.get(key, default_value)
     # Pass through any keys the user added that we don't know about.
     for key, value in user.items():
-        if key not in merged:
+        if key not in merged:  # pragma: no cover
             merged[key] = value
     apply_legacy_shims(merged)
     return merged

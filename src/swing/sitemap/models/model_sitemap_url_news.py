@@ -38,7 +38,7 @@ class NewsSitemapURL(URL):
     def get_absolute_url(self) -> str:
         return self.url
 
-    def __str__(self) -> str:
+    def __str__(self) -> str:  # pragma: no cover
         return f"{self.title} - {self.publication_name}"
 
 

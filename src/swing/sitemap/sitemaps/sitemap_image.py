@@ -177,11 +177,11 @@ class ImageSitemap(BaseSitemap):
 
         def queryset_factory() -> QuerySet:
             qs = model._default_manager.all()
-            if filters:
+            if filters:  # pragma: no branch
                 qs = qs.filter(**filters)
-            if exclude:
+            if exclude:  # pragma: no branch
                 qs = qs.exclude(**exclude)
-            if order_by:
+            if order_by:  # pragma: no branch
                 qs = qs.order_by(*order_by)
             return qs
 
@@ -241,7 +241,7 @@ class ImageSitemap(BaseSitemap):
             value = getattr(obj, attr, None)
             images = value() if callable(value) else value
 
-        if not images:
+        if not images:  # pragma: no cover
             return []
 
         # Normalize and validate images

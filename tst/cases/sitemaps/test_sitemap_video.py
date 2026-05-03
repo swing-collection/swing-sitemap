@@ -385,3 +385,100 @@ class TestVideoSitemapFromSettings:
         """Test that missing model raises ValueError."""
         with pytest.raises(ValueError, match="must define a 'model'"):
             VideoSitemap.from_settings("nonexistent")
+
+    def test_build_video_xml_with_all_optional_fields(self):
+        """Test _build_video_xml with all optional fields."""
+        video = Mock()
+        video.video_title = "Test Video"
+        video.video_description = "Test description"
+        video.video_thumbnail_url = "https://example.com/thumb.jpg"
+        video.video_content_url = "https://example.com/video.mp4"
+        video.video_player_url = "https://example.com/player"
+        video.video_duration = 300
+        video.video_expiration_date = datetime.date(2025, 12, 31)
+        video.video_publication_date = datetime.datetime(2024, 1, 15, 10, 30, 0)
+        video.video_rating = 4.5
+        video.video_view_count = 1000
+        video.video_family_friendly = True
+        video.video_restriction = {"relationship": "deny", "countries": "US"}
+        video.video_platform = {"relationship": "allow", "platforms": "web"}
+        video.video_requires_subscription = True
+        video.video_live = True
+        video.video_tags = ["tag1", "tag2"]
+        video.video_category = "Tech"
+        video.video_uploader = {"name": "User", "info": "https://example.com/user"}
+
+        sitemap = VideoSitemap(queryset=[video])
+
+        xml = sitemap._build_video_xml(video)
+
+        assert "<video:player_loc>" in xml
+        assert "<video:expiration_date>" in xml
+        assert "<video:publication_date>" in xml
+        assert "<video:rating>" in xml
+        assert "<video:view_count>" in xml
+        assert "<video:family_friendly>" in xml
+        assert "<video:restriction" in xml
+        assert "<video:platform" in xml
+        assert "<video:requires_subscription>" in xml
+        assert "<video:live>" in xml
+        assert "<video:tag>" in xml
+        assert "<video:category>" in xml
+        assert "<video:uploader" in xml
+
+    def test_build_video_xml_uploader_without_info(self):
+        """Test _build_video_xml with uploader but no info URL."""
+        video = Mock()
+        video.video_title = "Test"
+        video.video_description = "Test"
+        video.video_thumbnail_url = "https://example.com/thumb.jpg"
+        video.video_content_url = "https://example.com/video.mp4"
+        video.video_uploader = {"name": "User"}  # No info URL
+        video.video_duration = None
+        video.video_expiration_date = None
+        video.video_publication_date = None
+        video.video_rating = None
+        video.video_view_count = None
+        video.video_family_friendly = None
+        video.video_restriction = None
+        video.video_platform = None
+        video.video_requires_subscription = None
+        video.video_live = None
+        video.video_tags = None
+        video.video_category = None
+        video.video_player_url = None
+
+        sitemap = VideoSitemap(queryset=[video])
+
+        xml = sitemap._build_video_xml(video)
+
+        assert "<video:uploader>User</video:uploader>" in xml
+        assert 'info="' not in xml
+
+    @override_settings(
+        SWING_SITEMAP={
+            "video": {
+                "model": "auth.User",
+                "filters": {"is_active": True},
+                "exclude": {"is_superuser": True},
+                "order_by": ["-date_joined"],
+            },
+        }
+    )
+    def test_from_settings_with_filters_exclude_order_by(self):
+        """Test from_settings with filters, exclude, and order_by."""
+        sitemap = VideoSitemap.from_settings()
+        assert sitemap is not None
+        # Call items() to trigger the queryset factory
+        items = list(sitemap.items())
+        assert isinstance(items, list)
+
+    def test_location_with_callable_attr(self):
+        """Test location method with callable location_attr."""
+        video = MockVideo(pk=42)
+        sitemap = VideoSitemap(
+            queryset=[video],
+            location_attr=lambda obj: f"https://custom.com/video/{obj.pk}/",
+        )
+
+        assert sitemap.location(video) == "https://custom.com/video/42/"

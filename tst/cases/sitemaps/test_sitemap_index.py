@@ -263,6 +263,22 @@ class TestPaginateSitemap:
         # Should have original name since it's small
         assert "pages" in result
 
+    def test_paginate_sitemap_handles_exception(self):
+        """Test paginate_sitemap handles exception in items()."""
+        # Import | Standard Library
+        from unittest.mock import MagicMock
+
+        # Create a sitemap that raises on items()
+        source = MagicMock()
+        source.items.side_effect = Exception("Items error")
+
+        result = paginate_sitemap(source, "test")
+
+        # Should return as-is without raising
+        assert len(result) == 1
+        assert "test" in result
+        assert result["test"] is source
+
 
 class TestPaginateAllSitemaps:
     """Test paginate_all_sitemaps function."""

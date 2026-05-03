@@ -55,3 +55,16 @@ class TestImageSitemapView:
         sitemap = view.get_sitemap()
 
         assert isinstance(sitemap, ImageSitemap)
+
+    def test_get_request_returns_xml_response(self):
+        """Test GET request returns XML response."""
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get("/sitemap-image.xml")
+
+        view = ImageSitemapView.as_view()
+        response = view(request)
+
+        assert response.status_code == 200
+        assert "application/xml" in response["Content-Type"]

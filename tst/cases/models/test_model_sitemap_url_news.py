@@ -79,4 +79,6 @@ class TestNewsSitemapURL:
             title="Breaking Story",
             publication_date=timezone.now(),
         )
-        assert "Breaking Story" in str(url)
+        result = str(url)
+        assert "Breaking Story" in result
+        assert "Example News" in result

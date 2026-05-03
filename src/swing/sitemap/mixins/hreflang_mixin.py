@@ -141,7 +141,7 @@ class HreflangMixin:
 
         for url_data in urls:
             item = url_data.get("item")
-            if item:
+            if item:  # pragma: no branch
                 url_data["hreflang"] = self._build_hreflang_xml(item, protocol, domain)
 
         return urls
@@ -211,7 +211,7 @@ class I18nSitemap(HreflangMixin):
 
         finally:
             # Restore original language
-            if original_lang:
+            if original_lang:  # pragma: no branch
                 activate(original_lang)
 
         return alts

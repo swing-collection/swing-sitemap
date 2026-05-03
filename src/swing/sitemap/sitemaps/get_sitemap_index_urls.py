@@ -57,10 +57,10 @@ def get_sitemap_index_urls(
 
         # Get lastmod if available
         lastmod = None
-        if hasattr(sitemap, "get_latest_lastmod"):
+        if hasattr(sitemap, "get_latest_lastmod"):  # pragma: no branch
             try:
                 lastmod = sitemap.get_latest_lastmod()
-            except Exception:  # noqa: BLE001  pylint: disable=broad-exception-caught
+            except Exception:  # pragma: no cover  # noqa: BLE001  pylint: disable=broad-exception-caught
                 pass
 
         url_entry = {

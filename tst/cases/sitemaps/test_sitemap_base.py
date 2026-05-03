@@ -48,3 +48,26 @@ class TestBaseSitemap:
     def test_has_location_method(self):
         """Test that BaseSitemap has location method."""
         assert hasattr(BaseSitemap, "location")
+
+    def test_location_with_kwargs(self):
+        """Test location method resolves URL with kwargs."""
+        from django.urls import path, reverse
+
+        # Create a concrete sitemap class
+        class TestSitemap(BaseSitemap):
+            def items(self):
+                return [
+                    {"view_name": "swing-sitemap-index"},
+                    {"view_name": "swing-sitemap-section", "kwargs": {"section": "static"}},
+                ]
+
+        sitemap = TestSitemap()
+
+        # Test without kwargs
+        items = sitemap.items()
+        url1 = sitemap.location(items[0])
+        assert url1 == reverse("swing-sitemap-index")
+
+        # Test with kwargs
+        url2 = sitemap.location(items[1])
+        assert "static" in url2

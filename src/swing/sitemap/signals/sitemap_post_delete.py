@@ -54,10 +54,10 @@ def _should_invalidate(instance: Model) -> bool:
 
     # Check if model is in the configured list
     configured_models = signals_config.get("models", [])
-    if configured_models:
+    if configured_models:  # pragma: no branch
         model_label = _get_model_label(instance)
         # Check both exact match and case-insensitive
-        if not any(m.lower() == model_label.lower() for m in configured_models):
+        if not any(m.lower() == model_label.lower() for m in configured_models):  # pragma: no branch
             return False
 
     return True

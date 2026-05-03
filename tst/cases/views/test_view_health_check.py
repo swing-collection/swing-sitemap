@@ -227,3 +227,49 @@ class TestCheckDatabase:
         result = _check_database(verbose=False)
         assert result["ok"] is False
         assert "DB error" in result["message"]
+
+
+@pytest.mark.django_db
+class TestHealthCheckEdgeCases:
+    """Tests for health_check edge cases."""
+
+    @patch("swing.sitemap.views.view_health_check._check_settings")
+    def test_health_check_degraded_on_settings_failure(self, mock_check, rf):
+        """Test health check returns degraded status on settings issues."""
+        mock_check.return_value = {"ok": False, "message": "Settings invalid"}
+
+        from swing.sitemap.views.view_health_check import health_check
+
+        request = rf.get("/health/")
+        response = health_check(request)
+
+        data = json.loads(response.content)
+        assert data["status"] == "degraded"
+
+    @patch("swing.sitemap.views.view_health_check._check_database")
+    def test_health_check_unhealthy_on_db_failure(self, mock_check, rf):
+        """Test health check returns unhealthy status on database failure."""
+        mock_check.return_value = {"ok": False, "message": "DB unreachable"}
+
+        from swing.sitemap.views.view_health_check import health_check
+
+        request = rf.get("/health/")
+        response = health_check(request)
+
+        data = json.loads(response.content)
+        assert data["status"] == "unhealthy"
+        assert response.status_code == 503
+
+    @patch("swing.sitemap.views.view_health_check._check_sitemaps")
+    def test_health_check_on_sitemap_failure(self, mock_check, rf):
+        """Test health check handles sitemap check failure."""
+        mock_check.return_value = {"ok": False, "message": "Sitemap error"}
+
+        from swing.sitemap.views.view_health_check import health_check
+
+        request = rf.get("/health/")
+        response = health_check(request)
+
+        data = json.loads(response.content)
+        # Should be unhealthy when sitemaps fail
+        assert data["status"] in ["unhealthy", "degraded"]

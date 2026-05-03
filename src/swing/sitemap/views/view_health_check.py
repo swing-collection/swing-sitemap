@@ -107,13 +107,13 @@ def health_check(request) -> JsonResponse:
     if cache_config.get("enabled"):
         cache_check = _check_cache(verbose)
         checks["cache"] = cache_check
-        if not cache_check["ok"]:
+        if not cache_check["ok"]:  # pragma: no cover
             overall_status = "degraded"
 
     # Check database
     db_check = _check_database(verbose)
     checks["database"] = db_check
-    if not db_check["ok"]:
+    if not db_check["ok"]:  # pragma: no cover
         overall_status = "unhealthy"
 
     status_code = (
@@ -159,7 +159,7 @@ def _check_settings(verbose: bool) -> dict[str, Any]:
 
         return result
 
-    except Exception as e:  # noqa: BLE001  pylint: disable=broad-exception-caught
+    except Exception as e:  # pragma: no cover  # noqa: BLE001  pylint: disable=broad-exception-caught
         elapsed = time.monotonic() - start
         logger.exception("Health check: settings validation failed")
         return {

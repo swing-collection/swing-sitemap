@@ -107,3 +107,29 @@ class TestCachedSitemapView:
         request = factory.get("/sitemap-error-test.xml")
         response = view(request)
         assert response.status_code == 500
+
+    def test_decorator_when_cache_enabled_hit(self, factory, settings):
+        """Test decorator returns cached response on hit."""
+        settings.SWING_SITEMAP = {"cache": {"enabled": True, "timeout": 60}}
+
+        call_count = 0
+
+        @cached_sitemap_view()
+        def view(request):
+            nonlocal call_count
+            call_count += 1
+            return HttpResponse("<xml/>", content_type="application/xml")
+
+        # Use a unique path
+        request1 = factory.get("/sitemap-cache-hit-test.xml")
+        response1 = view(request1)
+        assert response1.status_code == 200
+        assert response1.get("X-Sitemap-Cache") == "MISS"
+        assert call_count == 1
+
+        # Second request should be cached
+        request2 = factory.get("/sitemap-cache-hit-test.xml")
+        response2 = view(request2)
+        assert response2.status_code == 200
+        assert response2.get("X-Sitemap-Cache") == "HIT"
+        assert call_count == 1  # View was not called again

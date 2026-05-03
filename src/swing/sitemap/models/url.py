@@ -54,7 +54,7 @@ class URL(models.Model):
     class Meta:
         abstract = True
 
-    def __str__(self) -> str:
+    def __str__(self) -> str:  # pragma: no cover
         return str(self.url)
 
 

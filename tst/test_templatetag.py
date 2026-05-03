@@ -29,6 +29,12 @@ def test_template_tag_returns_relative_without_request():
     assert out == "/sitemap.xml"
 
 
+def test_template_tag_fallback_with_sitemap_name():
+    """Test that the tag falls back to '/sitemap.xml' when 'sitemap' doesn't exist."""
+    out = Template("{% load swing_sitemap %}{% sitemap_url 'sitemap' %}").render(Context())
+    assert out == "/sitemap.xml"
+
+
 def test_template_tag_returns_absolute_with_request():
     req = RequestFactory().get("/", HTTP_HOST="example.com")
     out = Template("{% load swing_sitemap %}{% sitemap_url %}").render(

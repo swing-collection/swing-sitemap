@@ -67,4 +67,6 @@ class TestImageSitemapURL:
             url="https://example.com/page/",
             image_url="https://example.com/images/photo.jpg",
         )
-        assert "example.com" in str(url)
+        result = str(url)
+        assert "https://example.com/page/" in result
+        assert "https://example.com/images/photo.jpg" in result

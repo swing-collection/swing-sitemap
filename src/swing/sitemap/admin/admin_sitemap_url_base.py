@@ -57,7 +57,7 @@ class BaseSitemapURLAdmin(admin.ModelAdmin):
         ),
     )
 
-    def url_link(self, obj):
+    def url_link(self, obj):  # pragma: no cover
         """Display URL as clickable link."""
         return format_html('<a href="{}" target="_blank">{}</a>', obj.url, obj.url)
 

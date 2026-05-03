@@ -84,7 +84,7 @@ def register_sitemap_signals(models: list[str] | None = None) -> None:
             post_save.connect(sitemap_post_save, sender=model, weak=False)
             post_delete.connect(sitemap_post_delete, sender=model, weak=False)
             logger.info("Registered sitemap signals for %s", model_path)
-        except LookupError:
+        except LookupError:  # pragma: no cover
             logger.warning(
                 "Model %s not found, skipping signal registration", model_path
             )

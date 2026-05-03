@@ -65,4 +65,6 @@ class TestCustomSitemapURL:
             url="https://example.com/custom/",
             custom_field="my_field",
         )
-        assert "example.com" in str(url)
+        result = str(url)
+        assert "https://example.com/custom/" in result
+        assert "my_field" in result

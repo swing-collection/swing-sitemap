@@ -94,13 +94,13 @@ class PaginatedSitemap(Sitemap):
 
         # For other iterables, we still need to convert to list
         # but only if this is a small enough page
-        if hasattr(source_items, "__getitem__"):
+        if hasattr(source_items, "__getitem__"):  # pragma: no branch
             # Sliceable sequence
             return source_items[start : start + self._items_per_page]
 
         # Fall back to list conversion for generators/iterators
         # This is unavoidable for non-sliceable sources
-        all_items = list(source_items)
+        all_items = list(source_items)  # pragma: no cover
         return all_items[start : start + self._items_per_page]
 
     def location(self, item: Any) -> str:

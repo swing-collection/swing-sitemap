@@ -326,3 +326,37 @@ class TestValidateSettings:
         is_valid, warnings = validate_settings(raise_errors=False)
         assert is_valid is False
         assert len(warnings) > 0
+
+    @patch("swing.sitemap.conf.validate_settings.get_config")
+    def test_validate_settings_logs_warnings(self, mock_get_config):
+        """Test validation logs warnings."""
+        # Config that triggers warnings (missing location_attr)
+        mock_get_config.return_value = {
+            "models": {
+                "test": {
+                    "model": "contenttypes.ContentType",
+                }
+            }
+        }
+
+        from swing.sitemap.conf.validate_settings import validate_settings
+
+        is_valid, warnings = validate_settings(raise_errors=False)
+        assert is_valid is True
+        assert len(warnings) > 0
+        assert any("location_attr" in w for w in warnings)
+
+    @patch("swing.sitemap.conf.validate_settings.get_config")
+    def test_validate_settings_catches_improperly_configured_no_raise(self, mock_get_config):
+        """Test validation catches ImproperlyConfigured when raise_errors=False."""
+        # Config that triggers ImproperlyConfigured error
+        mock_get_config.return_value = {
+            "models": {
+                "bad": "not_a_dict"  # This should raise ImproperlyConfigured
+            }
+        }
+
+        from swing.sitemap.conf.validate_settings import validate_settings
+
+        is_valid, warnings = validate_settings(raise_errors=False)
+        assert is_valid is False

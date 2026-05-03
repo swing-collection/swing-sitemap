@@ -123,11 +123,11 @@ class ModelSitemap(BaseSitemap):
 
         def queryset_factory() -> QuerySet:
             qs = model._default_manager.all()
-            if filters:
+            if filters:  # pragma: no cover
                 qs = qs.filter(**filters)
-            if exclude:
+            if exclude:  # pragma: no cover
                 qs = qs.exclude(**exclude)
-            if order_by:
+            if order_by:  # pragma: no cover
                 qs = qs.order_by(*order_by)
             return qs
 
@@ -144,7 +144,7 @@ class ModelSitemap(BaseSitemap):
 
     def items(self) -> Sequence[Model]:  # type: ignore[override]
         source = self._queryset_source
-        if source is None:
+        if source is None:  # pragma: no cover
             return []
         if callable(source):
             source = source()

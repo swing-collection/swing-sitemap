@@ -85,6 +85,19 @@ def test_legacy_video_model_emits_deprecation_warning():
     )
 
 
+def test_legacy_seo_changefreq_emits_deprecation_warning():
+    with override_settings(SWING_SITEMAP={}, SEO_SITEMAP_CHANGEFREQ={"work": "daily"}):
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            cfg = get_config()
+    assert cfg["changefreq"] == {"work": "daily"}
+    assert any(
+        issubclass(w.category, DeprecationWarning)
+        and "SEO_SITEMAP_CHANGEFREQ" in str(w.message)
+        for w in caught
+    )
+
+
 def test_user_settings_take_precedence_over_legacy():
     with override_settings(
         SWING_SITEMAP={"video": {"model": "auth.User"}},

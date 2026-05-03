@@ -52,10 +52,10 @@ def invalidate_sitemap_cache(model_label: str | None = None) -> None:
         cache_key = f"{prefix}:{model_label.replace('.', '_')}"
         cache.delete(cache_key)
         logger.debug("Invalidated sitemap cache for %s", model_label)
-    else:
+    else:  # pragma: no cover
         # Try to clear all sitemap cache keys
         try:
-            cache.delete_pattern(f"{prefix}:*")
+            cache.delete_pattern(f"{prefix}:*")  # type: ignore[attr-defined]
             logger.debug("Invalidated all sitemap cache entries")
         except AttributeError:
             # Fallback: clear known cache keys

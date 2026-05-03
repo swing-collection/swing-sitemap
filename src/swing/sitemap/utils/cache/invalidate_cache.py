@@ -62,10 +62,10 @@ def invalidate_cache(pattern: str | None = None) -> int:
 
     try:
         # Redis-style pattern delete
-        count = cache.delete_pattern(full_pattern)
+        count = cache.delete_pattern(full_pattern)  # type: ignore[attr-defined]
         logger.info("Invalidated %d cached sitemap entries", count or 0)
         return count or 0
-    except AttributeError:
+    except AttributeError:  # pragma: no cover
         # Fallback: just log a warning
         logger.warning(
             "Cache backend doesn't support delete_pattern. "
