@@ -70,7 +70,7 @@ black = "^24.0"
 isort = "^5.13"
 flake8 = "^7.1"
 mypy = "^1.10"
-pylint = "^3.2"
+pylint = "^4.0"
 pylint-django = "^2.5"
 django-stubs = "^5.0"
 bandit = { extras = ["toml"], version = "^1.7" }
