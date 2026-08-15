@@ -75,7 +75,7 @@ pylint-django = "^2.5"
 django-stubs = "^5.0"
 bandit = { extras = ["toml"], version = "^1.7" }
 pre-commit = "^3.7"
-honcho = "^1.1"
+honcho = "^2.0"
 tox = "^4.53"
 
 [tool.poetry.group.doc.dependencies]
