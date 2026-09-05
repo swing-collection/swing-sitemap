@@ -48,7 +48,7 @@ def get_sitemap_index_urls(
     Returns:
         List of dicts with 'location' and optional 'lastmod' keys.
     """
-    urls = []
+    urls: list[dict[str, Any]] = []
 
     for name, sitemap in sitemaps.items():
         # Instantiate if class
@@ -61,9 +61,9 @@ def get_sitemap_index_urls(
             try:
                 lastmod = sitemap.get_latest_lastmod()
             except Exception:  # pragma: no cover  # noqa: BLE001  pylint: disable=broad-exception-caught
-                pass
+                pass  # pylint: disable=unnecessary-pass
 
-        url_entry = {
+        url_entry: dict[str, Any] = {
             "location": f"sitemap-{name}.xml",
             "name": name,
         }

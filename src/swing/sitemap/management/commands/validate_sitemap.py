@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Validate Sitemap Management Command
 ====================================
@@ -109,7 +114,7 @@ class Command(BaseCommand):
             # Generate sitemap
             request = factory.get(f"/sitemap-{name}.xml", HTTP_HOST="example.com")
             try:
-                response = sitemap_view(request, {name: sitemap})  # type: ignore[arg-type]
+                response = sitemap_view(request, {name: sitemap})
                 content = response.content
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"  Failed to generate: {e}"))

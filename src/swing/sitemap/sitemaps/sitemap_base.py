@@ -27,11 +27,11 @@ Links:
 
 # Import | Standard Library
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 from typing import Any
 
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from django.utils.translation import gettext as _
 
 # Import | Local Modules
 
@@ -65,17 +65,17 @@ class BaseSitemap(Sitemap, ABC):
     # Constructor
     # =========================================================================
 
-    def __init__(self, items: list[dict[str, Any]] | None = None):
+    def __init__(self, items: Iterable[Any] | None = None):
         """
         Initialize the BaseSitemap with a list of items.
 
         Args:
-            items (list[dict[str, Any]] | None): A list of dictionaries
-                where each dictionary contains the 'view_name' and optional
-                'kwargs' for reversing URLs. Defaults to an empty list if not
-                provided.
+            items (Iterable[Any] | None): The raw items for this sitemap.
+                Subclasses interpret the element shape (e.g. dicts with a
+                'view_name' key, or plain URL-name strings). Defaults to an
+                empty list if not provided.
         """
-        self.items_list = items or []
+        self.items_list: list[Any] = list(items) if items is not None else []
 
     # Abstract Methods
     # =========================================================================
@@ -90,7 +90,7 @@ class BaseSitemap(Sitemap, ABC):
             list[dict[str, Any]]: A list of items where each item is a dictionary
             containing at least a 'view_name' key.
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass
 
     def location(self, item: dict[str, Any]) -> str:
         """

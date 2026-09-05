@@ -18,7 +18,7 @@ Tests for swing.sitemap.apps module.
 from __future__ import annotations
 
 # Import | Standard Library
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 # Import | Libraries
 import pytest

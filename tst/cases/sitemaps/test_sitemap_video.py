@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Tests for Video Sitemap
 =======================
@@ -15,7 +20,7 @@ from __future__ import annotations
 
 # Import | Standard Library
 import datetime
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from django.test import override_settings
 

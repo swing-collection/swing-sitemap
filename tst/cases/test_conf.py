@@ -23,7 +23,6 @@ import warnings
 from django.test.utils import override_settings
 
 # Import | Libraries
-import pytest
 
 from swing.sitemap.conf import DEFAULTS, get_config, get_setting
 

@@ -49,10 +49,6 @@ def unregister_sitemap_signals(models: list[str] | None = None) -> None:
         models: Optional list of model paths to unregister.
             If not provided, uses ``SWING_SITEMAP['signals']['models']``.
     """
-    # pylint: disable=import-outside-toplevel
-    # Import | Local
-    from .register_sitemap_signals import _signals_registered
-
     signals_config = get_setting("signals", default={}) or {}
     model_paths = models or signals_config.get("models", [])
 
@@ -63,7 +59,7 @@ def unregister_sitemap_signals(models: list[str] | None = None) -> None:
             post_delete.disconnect(sitemap_post_delete, sender=model)
             logger.info("Unregistered sitemap signals for %s", model_path)
         except LookupError:
-            pass
+            pass  # pylint: disable=unnecessary-pass
 
 
 # =============================================================================

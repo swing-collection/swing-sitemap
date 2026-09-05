@@ -19,6 +19,8 @@ from django.test import RequestFactory
 # Import | Libraries
 import pytest
 
+from swing.sitemap.views.view_health_check import HealthCheckView
+
 
 @pytest.fixture
 def rf():
@@ -82,34 +84,28 @@ class TestHealthCheck:
 
 
 class TestNowIso:
-    """Tests for _now_iso function."""
+    """Tests for HealthCheckView._now_iso."""
 
     def test_returns_iso_string(self):
         """Test returns ISO formatted string."""
-        from swing.sitemap.views.view_health_check import _now_iso
-
-        result = _now_iso()
+        result = HealthCheckView()._now_iso()
         assert isinstance(result, str)
         # ISO format contains T separator
         assert "T" in result
 
 
 class TestCheckSettings:
-    """Tests for _check_settings function."""
+    """Tests for HealthCheckView._check_settings."""
 
     def test_check_settings_valid(self):
         """Test check_settings with valid settings."""
-        from swing.sitemap.views.view_health_check import _check_settings
-
-        result = _check_settings(verbose=False)
+        result = HealthCheckView()._check_settings(verbose=False)
         assert result["ok"] is True
         assert "duration_ms" in result
 
     def test_check_settings_verbose_with_warnings(self):
         """Test check_settings verbose mode shows warnings."""
-        from swing.sitemap.views.view_health_check import _check_settings
-
-        result = _check_settings(verbose=True)
+        result = HealthCheckView()._check_settings(verbose=True)
         assert result["ok"] is True
         # Warnings may or may not be present depending on config
 
@@ -118,21 +114,17 @@ class TestCheckSettings:
         """Test check_settings handles exceptions."""
         mock_validate.side_effect = Exception("Test error")
 
-        from swing.sitemap.views.view_health_check import _check_settings
-
-        result = _check_settings(verbose=False)
+        result = HealthCheckView()._check_settings(verbose=False)
         assert result["ok"] is False
         assert "Test error" in result["message"]
 
 
 class TestCheckSitemaps:
-    """Tests for _check_sitemaps function."""
+    """Tests for HealthCheckView._check_sitemaps."""
 
     def test_check_sitemaps_default(self):
         """Test check_sitemaps with default config."""
-        from swing.sitemap.views.view_health_check import _check_sitemaps
-
-        result = _check_sitemaps(verbose=False)
+        result = HealthCheckView()._check_sitemaps(verbose=False)
         assert result["ok"] is True
         assert "sitemap_count" in result
         assert "duration_ms" in result
@@ -144,9 +136,7 @@ class TestCheckSitemaps:
         mock_sitemap.items.return_value = ["url1", "url2"]
         mock_sitemaps.return_value = {"test": mock_sitemap}
 
-        from swing.sitemap.views.view_health_check import _check_sitemaps
-
-        result = _check_sitemaps(verbose=True)
+        result = HealthCheckView()._check_sitemaps(verbose=True)
         assert result["ok"] is True
         assert "sitemaps" in result
         assert "test" in result["sitemaps"]
@@ -157,9 +147,7 @@ class TestCheckSitemaps:
         """Test check_sitemaps handles exceptions."""
         mock_sitemaps.side_effect = Exception("Test error")
 
-        from swing.sitemap.views.view_health_check import _check_sitemaps
-
-        result = _check_sitemaps(verbose=False)
+        result = HealthCheckView()._check_sitemaps(verbose=False)
         assert result["ok"] is False
         assert "Test error" in result["message"]
 
@@ -170,9 +158,7 @@ class TestCheckSitemaps:
         mock_sitemap.items.side_effect = Exception("Sitemap error")
         mock_sitemaps.return_value = {"broken": mock_sitemap}
 
-        from swing.sitemap.views.view_health_check import _check_sitemaps
-
-        result = _check_sitemaps(verbose=True)
+        result = HealthCheckView()._check_sitemaps(verbose=True)
         assert result["ok"] is True  # Overall still ok
         assert "broken" in result["sitemaps"]
         assert result["sitemaps"]["broken"]["ok"] is False
@@ -180,13 +166,11 @@ class TestCheckSitemaps:
 
 @pytest.mark.django_db
 class TestCheckCache:
-    """Tests for _check_cache function."""
+    """Tests for HealthCheckView._check_cache."""
 
     def test_check_cache_works(self):
         """Test check_cache with default cache."""
-        from swing.sitemap.views.view_health_check import _check_cache
-
-        result = _check_cache(verbose=False)
+        result = HealthCheckView()._check_cache(verbose=False)
         assert result["ok"] is True
         assert "duration_ms" in result
         assert result["message"] == "Cache working"
@@ -197,22 +181,18 @@ class TestCheckCache:
         # Configure to use a non-existent cache backend
         mock_get_setting.return_value = {"backend": "nonexistent_cache_backend"}
 
-        from swing.sitemap.views.view_health_check import _check_cache
-
-        result = _check_cache(verbose=False)
+        result = HealthCheckView()._check_cache(verbose=False)
         assert result["ok"] is False
         assert "error" in result["message"].lower()
 
 
 @pytest.mark.django_db
 class TestCheckDatabase:
-    """Tests for _check_database function."""
+    """Tests for HealthCheckView._check_database."""
 
     def test_check_database_works(self):
         """Test check_database with default database."""
-        from swing.sitemap.views.view_health_check import _check_database
-
-        result = _check_database(verbose=False)
+        result = HealthCheckView()._check_database(verbose=False)
         assert result["ok"] is True
         assert "duration_ms" in result
         assert result["message"] == "Database connected"
@@ -222,9 +202,7 @@ class TestCheckDatabase:
         """Test check_database handles exceptions."""
         mock_conn.cursor.side_effect = Exception("DB error")
 
-        from swing.sitemap.views.view_health_check import _check_database
-
-        result = _check_database(verbose=False)
+        result = HealthCheckView()._check_database(verbose=False)
         assert result["ok"] is False
         assert "DB error" in result["message"]
 
@@ -233,7 +211,7 @@ class TestCheckDatabase:
 class TestHealthCheckEdgeCases:
     """Tests for health_check edge cases."""
 
-    @patch("swing.sitemap.views.view_health_check._check_settings")
+    @patch.object(HealthCheckView, "_check_settings")
     def test_health_check_degraded_on_settings_failure(self, mock_check, rf):
         """Test health check returns degraded status on settings issues."""
         mock_check.return_value = {"ok": False, "message": "Settings invalid"}
@@ -246,7 +224,7 @@ class TestHealthCheckEdgeCases:
         data = json.loads(response.content)
         assert data["status"] == "degraded"
 
-    @patch("swing.sitemap.views.view_health_check._check_database")
+    @patch.object(HealthCheckView, "_check_database")
     def test_health_check_unhealthy_on_db_failure(self, mock_check, rf):
         """Test health check returns unhealthy status on database failure."""
         mock_check.return_value = {"ok": False, "message": "DB unreachable"}
@@ -260,7 +238,7 @@ class TestHealthCheckEdgeCases:
         assert data["status"] == "unhealthy"
         assert response.status_code == 503
 
-    @patch("swing.sitemap.views.view_health_check._check_sitemaps")
+    @patch.object(HealthCheckView, "_check_sitemaps")
     def test_health_check_on_sitemap_failure(self, mock_check, rf):
         """Test health check handles sitemap check failure."""
         mock_check.return_value = {"ok": False, "message": "Sitemap error"}

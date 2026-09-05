@@ -21,6 +21,9 @@ Class-based view for rendering video sitemap XML.
 # Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
+from typing import Any
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
@@ -59,7 +62,7 @@ class VideoSitemapView(View):
         """Return the sitemap instance."""
         return self.sitemap_class()
 
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Handle GET request and render the sitemap XML."""
         sitemap = self.get_sitemap()
         urls = sitemap.get_urls()

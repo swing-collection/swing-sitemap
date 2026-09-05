@@ -45,7 +45,7 @@ Or with a queryset::
 from __future__ import annotations
 
 # Import | Standard Library
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable
 import datetime as _dt
 
 from django.apps import apps
@@ -63,6 +63,9 @@ QuerySetSource = QuerySet | Iterable[Model] | Callable[[], Iterable[Model]]
 
 # Image data structure
 ImageData = dict[str, str | None]
+
+# An image_attr source may yield a plain string URL or a full ImageData dict.
+RawImageEntry = str | ImageData
 
 
 # =============================================================================
@@ -102,7 +105,7 @@ class ImageSitemap(BaseSitemap):
         *,
         date_field: str | None = None,
         location_attr: str | Callable[[Model], str] = "get_absolute_url",
-        image_attr: str | Callable[[Model], list[ImageData]] = "get_images",
+        image_attr: str | Callable[[Model], list[RawImageEntry]] = "get_images",
         priority: float | None = None,
         changefreq: str | None = None,
     ) -> None:
@@ -198,7 +201,13 @@ class ImageSitemap(BaseSitemap):
     # Sitemap protocol
     # -------------------------------------------------------------------------
 
-    def items(self) -> Sequence[Model]:
+    # NOTE: BaseSitemap declares items()/location() around dict-shaped
+    # entries (view_name-based sitemaps); this subclass models items as
+    # Django Model instances instead, which mypy flags as a Liskov
+    # violation. Properly resolving this would mean making BaseSitemap
+    # generic over the item type across the whole sitemaps/ hierarchy - a
+    # moderate refactor out of scope for this pass.
+    def items(self) -> Iterable[Model]:  # type: ignore[override]
         source = self._queryset_source
         if source is None:
             return []
@@ -211,7 +220,7 @@ class ImageSitemap(BaseSitemap):
             return None
         return getattr(obj, self.date_field, None)
 
-    def location(self, item: Model) -> str:  # noqa: W0237
+    def location(self, item: Model) -> str:  # type: ignore[override]  # noqa: W0237
         """Return the absolute URL for the page containing images."""
         attr = self.location_attr
         if callable(attr):
@@ -235,6 +244,7 @@ class ImageSitemap(BaseSitemap):
         - license (optional): License URL
         """
         attr = self.image_attr
+        images: list[RawImageEntry] | None
         if callable(attr):
             images = attr(obj)
         else:
@@ -266,7 +276,7 @@ class ImageSitemap(BaseSitemap):
 
     def image_loc(self, img: ImageData) -> str:
         """Return the image URL (required)."""
-        return img.get("loc", "")
+        return img.get("loc") or ""
 
     def image_caption(self, img: ImageData) -> str | None:
         """Return the image caption."""
@@ -293,7 +303,9 @@ class ImageSitemap(BaseSitemap):
 
     def _urls(self, page, protocol, domain):
         """Override to inject image data into URL entries."""
-        urls = super()._urls(page, protocol, domain)
+        # Django's Sitemap._urls is a real, private runtime method but is
+        # not declared in django-stubs' public .pyi surface.
+        urls = super()._urls(page, protocol, domain)  # type: ignore[misc]
         for url in urls:
             item = url["item"]
             url["images"] = self.get_images(item)

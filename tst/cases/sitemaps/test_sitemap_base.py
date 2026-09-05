@@ -51,7 +51,7 @@ class TestBaseSitemap:
 
     def test_location_with_kwargs(self):
         """Test location method resolves URL with kwargs."""
-        from django.urls import path, reverse
+        from django.urls import reverse
 
         # Create a concrete sitemap class
         class TestSitemap(BaseSitemap):

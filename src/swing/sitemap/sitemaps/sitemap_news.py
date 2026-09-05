@@ -226,7 +226,13 @@ class NewsSitemap(BaseSitemap):
     # Sitemap protocol
     # -------------------------------------------------------------------------
 
-    def items(self) -> Sequence[Model]:
+    # NOTE: BaseSitemap declares items()/location() around dict-shaped
+    # entries (view_name-based sitemaps); this subclass models items as
+    # Django Model instances instead, which mypy flags as a Liskov
+    # violation. Properly resolving this would mean making BaseSitemap
+    # generic over the item type across the whole sitemaps/ hierarchy - a
+    # moderate refactor out of scope for this pass.
+    def items(self) -> Sequence[Model]:  # type: ignore[override]
         source = self._queryset_source
         if source is None:
             return []
@@ -240,7 +246,7 @@ class NewsSitemap(BaseSitemap):
             return None
         return getattr(obj, self.date_field, None)
 
-    def location(self, item: Model) -> str:  # noqa: W0237
+    def location(self, item: Model) -> str:  # type: ignore[override]  # noqa: W0237
         """Return the absolute URL for the article."""
         attr = self.location_attr
         if callable(attr):
@@ -379,7 +385,9 @@ class NewsSitemap(BaseSitemap):
 
     def _urls(self, page, protocol, domain):
         """Override to inject news XML into URL data."""
-        urls = super()._urls(page, protocol, domain)
+        # Django's Sitemap._urls is a real, private runtime method but is
+        # not declared in django-stubs' public .pyi surface.
+        urls = super()._urls(page, protocol, domain)  # type: ignore[misc]
         for url in urls:
             item = url["item"]
             url["news"] = self._build_news_xml(item)

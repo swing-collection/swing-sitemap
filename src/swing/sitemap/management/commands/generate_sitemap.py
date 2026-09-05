@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Generate Sitemap Management Command
 ====================================
@@ -31,6 +36,7 @@ from __future__ import annotations
 
 # Import | Standard Library
 from pathlib import Path
+from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError
 from django.test import RequestFactory
@@ -84,7 +90,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Get sitemaps
-        sitemaps = default_sitemaps()
+        # Typed as dict[str, Any]: this local gets reassigned across branches
+        # below (filtered subset, paginated dict[str, Sitemap]) and dict's
+        # invariance makes a narrower `Sitemap | type[Sitemap]` annotation
+        # reject those reassignments.
+        sitemaps: dict[str, Any] = default_sitemaps()
 
         # Filter to specific sections if requested
         sections = options.get("sections")

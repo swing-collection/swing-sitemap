@@ -7,7 +7,7 @@
 
 [project]
 name = "swing_sitemap"
-version = "0.1.2"
+version = "0.2.0"
 description = "Django app for generating XML sitemaps"
 license = { text = "BSD-3-Clause" }
 readme = "README.md"
@@ -24,6 +24,8 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -56,6 +58,8 @@ packages = [{ include = "swing", from = "src" }]
 
 [tool.poetry.dependencies]
 django = ">=5.0,<7.0"
+python = ">=3.12,<4.0"
+requests = ">=2.31,<3.0"
 
 
 # =============================================================================
@@ -73,6 +77,7 @@ mypy = "^1.10"
 pylint = "^3.2"
 pylint-django = "^2.5"
 django-stubs = "^5.0"
+types-requests = "^2.31"
 bandit = { extras = ["toml"], version = "^1.7" }
 pre-commit = "^3.7"
 honcho = "^1.1"

@@ -88,9 +88,11 @@ class PaginatedSitemap(Sitemap):
         source_items = self._source.items()
         start = (self._page - 1) * self._items_per_page
 
-        # Use database-level slicing for QuerySet (uses LIMIT/OFFSET)
+        # Use database-level slicing for QuerySet (uses LIMIT/OFFSET).
+        # Wrapping in list() only evaluates the sliced page, not the full
+        # queryset, so this still avoids loading all items into memory.
         if isinstance(source_items, QuerySet):
-            return source_items[start : start + self._items_per_page]
+            return list(source_items[start : start + self._items_per_page])
 
         # For other iterables, we still need to convert to list
         # but only if this is a small enough page

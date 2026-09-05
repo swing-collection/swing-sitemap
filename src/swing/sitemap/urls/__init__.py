@@ -26,6 +26,14 @@ Or, with custom sitemaps::
         *sitemap_urlpatterns({"pages": MyPageSitemap}, include_index=True),
     ]
 
+For dynamic sitemaps using DynamicSitemapView::
+
+    from swing.sitemap.urls import dynamic_sitemap_urlpatterns
+
+    urlpatterns = [
+        *dynamic_sitemap_urlpatterns(MySitemapView),
+    ]
+
 """
 
 
@@ -34,7 +42,7 @@ Or, with custom sitemaps::
 # =============================================================================
 
 # Import | Local
-from .sitemap_urlpatterns import sitemap_urlpatterns
+from .sitemap_urlpatterns import dynamic_sitemap_urlpatterns, sitemap_urlpatterns
 
 # =============================================================================
 # Lazy urlpatterns
@@ -59,4 +67,8 @@ def __getattr__(name: str):  # PEP 562
 # Exports
 # =============================================================================
 
-__all__ = ["sitemap_urlpatterns", "urlpatterns"]  # noqa: F822
+__all__ = [
+    "dynamic_sitemap_urlpatterns",
+    "sitemap_urlpatterns",
+    "urlpatterns",
+]  # noqa: F822

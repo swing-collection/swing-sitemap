@@ -6,10 +6,10 @@
 # =============================================================================
 
 """
-Image Sitemap Class-Based View
-===============================
+News Sitemap Class-Based View
+==============================
 
-Class-based view for rendering image sitemap XML.
+Class-based view for rendering news sitemap XML.
 
 """
 
@@ -21,45 +21,48 @@ Class-based view for rendering image sitemap XML.
 # Import | Future
 from __future__ import annotations
 
+# Import | Standard Library
+from typing import Any
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from swing.sitemap.sitemaps import ImageSitemap
+from swing.sitemap.sitemaps import NewsSitemap
 
 # =============================================================================
 # Classes
 # =============================================================================
 
 
-class ImageSitemapView(View):
+class NewsSitemapView(View):
     """
-    Class-based view for rendering image sitemap XML.
+    Class-based view for rendering news sitemap XML.
 
     Usage::
 
-        from swing.sitemap.views import ImageSitemapView
+        from swing.sitemap.views import NewsSitemapView
 
         urlpatterns = [
-            path("sitemap-image.xml", ImageSitemapView.as_view()),
+            path("sitemap-news.xml", NewsSitemapView.as_view()),
         ]
 
     Attributes:
-        sitemap_class: The sitemap class to use. Defaults to ImageSitemap.
+        sitemap_class: The sitemap class to use. Defaults to NewsSitemap.
         template_name: Template for rendering the sitemap XML.
         content_type: Response content type.
 
     """
 
-    sitemap_class = ImageSitemap
-    template_name = "swing/sitemap/sitemap_image.xml"
+    sitemap_class = NewsSitemap
+    template_name = "swing/sitemap/sitemap_news.xml"
     content_type = "application/xml"
 
-    def get_sitemap(self) -> ImageSitemap:
+    def get_sitemap(self) -> NewsSitemap:
         """Return the sitemap instance."""
         return self.sitemap_class()
 
-    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         """Handle GET request and render the sitemap XML."""
         sitemap = self.get_sitemap()
         urls = sitemap.get_urls()
@@ -75,4 +78,4 @@ class ImageSitemapView(View):
 # Exports
 # =============================================================================
 
-__all__ = ["ImageSitemapView"]
+__all__ = ["NewsSitemapView"]

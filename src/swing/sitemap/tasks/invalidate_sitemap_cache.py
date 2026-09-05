@@ -30,7 +30,7 @@ try:
     # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
-    shared_task = None  # type: ignore[misc,assignment]
+    shared_task = None
 
 
 logger = logging.getLogger(__name__)
@@ -68,7 +68,9 @@ def invalidate_sitemap_cache(self, cache_key: str | None = None) -> bool:  # pra
         # Note: This requires cache backend that supports delete_pattern
         # For other backends, we track keys separately
         try:
-            cache.delete_pattern(f"{prefix}:*")
+            # Redis-specific extension not declared on django-stubs' BaseCache;
+            # the AttributeError fallback below covers backends without it.
+            cache.delete_pattern(f"{prefix}:*")  # type: ignore[attr-defined]
             logger.info("Invalidated all sitemap cache entries")
         except AttributeError:
             # Fallback for backends without delete_pattern

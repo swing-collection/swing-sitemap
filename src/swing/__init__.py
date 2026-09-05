@@ -33,4 +33,4 @@ from pkgutil import extend_path
 # Variables
 # =============================================================================
 
-__path__ = extend_path(__path__, __name__)  # type: ignore[assignment,name-defined]
+__path__ = extend_path(__path__, __name__)

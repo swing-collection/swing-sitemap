@@ -20,14 +20,11 @@ from __future__ import annotations
 
 # Import | Standard Library
 from io import StringIO
-from pathlib import Path
-import tempfile
 from unittest.mock import MagicMock, patch
 
 from django.contrib.sitemaps import Sitemap
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.http import HttpResponse
 
 # Import | Libraries
 import pytest
@@ -107,7 +104,6 @@ class TestGenerateSitemapCommand:
     def test_generate_sitemap_index_method(self):
         """Test _generate_sitemap_index method."""
         # Import | Standard Library
-        from datetime import datetime
 
         from swing.sitemap.management.commands.generate_sitemap import Command
 
@@ -125,9 +121,6 @@ class TestGenerateSitemapCommand:
         from datetime import datetime
 
         from swing.sitemap.management.commands.generate_sitemap import Command
-        from swing.sitemap.sitemaps.get_sitemap_index_urls import (
-            get_sitemap_index_urls,
-        )
 
         cmd = Command()
 

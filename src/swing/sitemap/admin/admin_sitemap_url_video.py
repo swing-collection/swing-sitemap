@@ -100,7 +100,9 @@ class VideoSitemapURLAdmin(BaseSitemapURLAdmin):
             return f"{seconds}s"
         return "-"
 
-    video_duration_display.short_description = _("Duration")
+    video_duration_display.short_description = _(  # type: ignore[attr-defined]
+        "Duration"
+    )
 
 
 # =============================================================================

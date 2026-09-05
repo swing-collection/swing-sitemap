@@ -136,8 +136,10 @@ class HreflangMixin:
 
         This should be called via super() in the implementing class.
         """
-        # Call parent _urls method
-        urls = super()._urls(page, protocol, domain)
+        # Call parent _urls method.
+        # Django's Sitemap._urls is a real, private runtime method but is
+        # not declared in django-stubs' public .pyi surface.
+        urls = super()._urls(page, protocol, domain)  # type: ignore[misc]
 
         for url_data in urls:
             item = url_data.get("item")

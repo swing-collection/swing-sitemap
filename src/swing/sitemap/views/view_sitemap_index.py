@@ -65,10 +65,10 @@ class SitemapIndexView(View):
 
     """
 
-    sitemaps: dict | None = None
+    sitemaps: dict[str, Any] | None = None
     sitemap_url_name: str = "swing-sitemap-section"
 
-    def get_sitemaps(self) -> dict:
+    def get_sitemaps(self) -> dict[str, Any]:
         """Return the sitemaps mapping."""
         if self.sitemaps is not None:
             return self.sitemaps

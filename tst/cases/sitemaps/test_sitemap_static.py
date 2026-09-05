@@ -21,7 +21,6 @@ import datetime as _dt
 from django.test.utils import override_settings
 
 # Import | Libraries
-import pytest
 
 from swing.sitemap.sitemaps.sitemap_static import StaticSitemap
 

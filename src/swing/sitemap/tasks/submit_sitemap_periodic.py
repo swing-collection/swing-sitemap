@@ -34,7 +34,7 @@ try:
     # Import | Libraries
     from celery import shared_task
 except ImportError:  # pragma: no cover
-    shared_task = None  # type: ignore[misc,assignment]
+    shared_task = None
 
 
 logger = logging.getLogger(__name__)

@@ -53,7 +53,7 @@ Or, driven entirely by settings::
 from __future__ import annotations
 
 # Import | Standard Library
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable
 
 from django.apps import apps
 from django.db.models import Model, QuerySet
@@ -142,7 +142,7 @@ class ModelSitemap(BaseSitemap):
     # Sitemap contract
     # =========================================================================
 
-    def items(self) -> Sequence[Model]:  # type: ignore[override]
+    def items(self) -> Iterable[Model]:  # type: ignore[override]
         source = self._queryset_source
         if source is None:  # pragma: no cover
             return []
@@ -155,7 +155,7 @@ class ModelSitemap(BaseSitemap):
             return None
         return getattr(obj, self.date_field, None)
 
-    def location(self, item: Model) -> str:  # noqa: W0237
+    def location(self, item: Model) -> str:  # type: ignore[override]  # noqa: W0237
         attr = self.location_attr
         if callable(attr):
             return attr(item)

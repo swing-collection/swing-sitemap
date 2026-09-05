@@ -89,7 +89,12 @@ class StaticSitemap(BaseSitemap):
     # Sitemap protocol
     # -------------------------------------------------------------------------
 
-    def items(self) -> Sequence[StaticItem]:
+    # NOTE: BaseSitemap declares items()/location() around dict-shaped
+    # entries; this subclass also accepts plain URL-name strings, which
+    # mypy flags as a Liskov violation. Properly resolving this would mean
+    # making BaseSitemap generic over the item type across the whole
+    # sitemaps/ hierarchy - a moderate refactor out of scope for this pass.
+    def items(self) -> Sequence[StaticItem]:  # type: ignore[override]
         return self.items_list
 
     def location(self, item: StaticItem) -> str:
